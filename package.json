@@ -1,0 +1,24 @@
+{
+  "name": "wxapp-ivory-tower-timetable",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {
+    "@dcloudio/uni-ui": "^1.1.9"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UESTC-cantdoit/wxapp-ivory-tower-timetable.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UESTC-cantdoit/wxapp-ivory-tower-timetable/issues"
+  },
+  "homepage": "https://github.com/UESTC-cantdoit/wxapp-ivory-tower-timetable#readme"
+}
