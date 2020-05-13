@@ -1,7 +1,9 @@
 {
   "pages": [
+    "pages/home/home",
     "pages/getSubject/getSubject",
-    "pages/subject/subject"
+    "pages/subject/subject",
+    "pages/event/event"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -9,5 +11,27 @@
     "navigationBarTitleText": "象牙塔课表",
     "navigationBarTextStyle": "white"
   },
-  "sitemapLocation": "sitemap.json"
+  "tabBar": {
+    "list": [{
+      "pagePath": "pages/home/home",
+      "text": "主页",
+      "iconPath": "icons/主页.png",
+      "selectedIconPath": "icons/主页_selected.png"
+    }, {
+      "pagePath": "pages/getSubject/getSubject",
+      "text": "课表",
+      "iconPath": "icons/课表.png",
+      "selectedIconPath": "icons/课表_selected.png"
+    }, {
+      "pagePath": "pages/event/event",
+      "text": "日程",
+      "iconPath": "icons/日程.png",
+      "selectedIconPath": "icons/日程_selected.png"
+    }]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "useExtendedLib": {
+    "weui": true
+  }
 }
