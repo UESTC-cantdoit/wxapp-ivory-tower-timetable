@@ -7,9 +7,9 @@
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#1E90FF",
-    "navigationBarTitleText": "象牙塔课表",
-    "navigationBarTextStyle": "white"
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "象牙塔课程表",
+    "navigationBarTextStyle": "black"
   },
   "tabBar": {
     "list": [{
