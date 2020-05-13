@@ -62,7 +62,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var ukcxx = wx.getStorageSync('kcxx');
+    var kcxx = wx.getStorageSync('kcxx');
     var skcd = wx.getStorageSync('skcd');
     this.setData({ kcxx: kcxx });
     this.setData({ skcd: skcd});
