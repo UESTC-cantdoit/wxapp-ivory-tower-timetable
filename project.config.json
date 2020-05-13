@@ -16,8 +16,8 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.11.0",
-	"appid": "wx594ab6a5177b4e30",
-	"projectname": "Journal",
+	"appid": "wxf1ed36c4ecd942d7",
+	"projectname": "象牙塔课程表",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},
