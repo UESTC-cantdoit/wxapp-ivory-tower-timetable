@@ -1,0 +1,22 @@
+{
+  "name": "wxapp-ivory-tower-timetable",
+  "version": "1.0.0",
+  "description": "一款基于微信小程序开发的由课程驱动的大学生专用待办事项工具。",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UESTC-cantdoit/wxapp-ivory-tower-timetable.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UESTC-cantdoit/wxapp-ivory-tower-timetable/issues"
+  },
+  "homepage": "https://github.com/UESTC-cantdoit/wxapp-ivory-tower-timetable#readme",
+  "dependencies": {
+    "@vant/weapp": "^1.3.0"
+  }
+}

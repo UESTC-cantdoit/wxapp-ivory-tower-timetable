@@ -1,2 +1,14 @@
 <!--pages/home.wxml-->
-<text>pages/home.wxml</text>
+<template name="noClass">
+  
+</template>
+
+
+<template name="haveClass">
+
+</template>
+
+
+<block>
+  <template is="noClass"/>
+</block>

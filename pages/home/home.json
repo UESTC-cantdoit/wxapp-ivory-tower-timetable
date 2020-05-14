@@ -1,7 +1,6 @@
 {
-  "usingComponents": {},
-  "backgroundTextStyle": "light",
-  "navigationBarBackgroundColor": "#ffffff",
-  "navigationBarTitleText": "象牙塔课程表",
-  "navigationBarTextStyle": "black"
+  "usingComponents": {
+
+  },
+  "navigationBarTitleText": "象牙塔课程表"
 }

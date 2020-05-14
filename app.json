@@ -5,6 +5,7 @@
     "pages/getSubject/getSubject",
     "pages/event/event",
     "pages/event/eventCreate",
+    "pages/event/eventDetails",
     "pages/event/eventList",
     "pages/event/eventModify",
     "pages/class/classCreate",
@@ -12,7 +13,6 @@
     "pages/class/classSetting"
   ],
   "window": {
-    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#ffffff",
     "navigationBarTitleText": "象牙塔课程表",
     "navigationBarTextStyle": "black"
@@ -40,8 +40,11 @@
     ]
   },
   "sitemapLocation": "sitemap.json",
-  "style": "v2",
-  "useExtendedLib": {
-    "weui": true
+  "usingComponents": {
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "van-image": "@vant/weapp/image/index",
+    "van-panel": "@vant/weapp/panel/index"
   }
 }
