@@ -1,1 +1,12 @@
 /* pages/home.wxss */
+.container {
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0rpx 0rpx 20rpx 0rpx;
+  box-sizing: border-box;
+}
+
+.content {
+  padding: 20px;
+}

@@ -1,14 +1,51 @@
 <!--pages/home.wxml-->
 <template name="noClass">
-  
+  <van-cell title="我的班级" label="您尚未加入班级哦" value="无" icon="friends-o" size="large" />
+  <view class="container">
+    <van-panel use-footer-slot>
+      <view slot="footer">
+        <van-row gutter="5">
+          <van-col span="12">
+            <van-button type="info" block>创建班级</van-button>
+          </van-col>
+          <van-col span="12">
+            <van-button type="primary" block>加入班级</van-button>
+          </van-col>
+        </van-row>
+      </view>
+    </van-panel>
+  </view>
 </template>
 
-
-<template name="haveClass">
-
+<template name="myClass">
+  <view class="container">
+    <van-cell title="我的班级" value="互加二班" icon="friends-o" size="large" />
+    <!-- value 显示活动中的课程数 -->
+    <van-cell title="课程库" is-link value="12" />
+    <!-- value 显示活动中的日程数 -->
+    <van-cell title="日程库" label="新增 2 个日程" is-link value="9" />
+  </view>
 </template>
-
 
 <block>
   <template is="noClass"/>
+  <template is="myClass"/>
 </block>
+
+<view class="container">
+  <van-cell title="我的日程" icon="underway-o" size="large" />
+  <van-collapse value="{{ activeCollapse }}" bind:change="onChange" border="false">
+    <van-collapse-item title="关注日程" label="您有 3 项需要关注的日程" name="focusEvent">
+      <van-cell title="微积分作业" clickable value="12 小时" />
+      <van-cell title="数据库建模" clickable value="16 小时" />
+      <van-cell title="数学建模小组会议" clickable value="1 天 06 小时" />
+    </van-collapse-item>
+    <van-collapse-item title="星标日程" name="starEvent">
+      <van-cell title="微信小程序设计" clickable value="17 天 23 小时" />
+    </van-collapse-item>
+  </van-collapse>
+</view>
+
+<view class="container">
+  <van-cell title="偏好设置" icon="setting-o" size="large" is-link />
+</view>

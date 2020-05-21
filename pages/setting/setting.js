@@ -1,17 +1,13 @@
-// pages/home.js
+// pages/setting/setting.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    activeCollapse: ['focusEvent']
+
   },
-  onChange(event) {
-    this.setData({
-      activeCollapse: event.detail,
-    });
-  },
+
   /**
    * 生命周期函数--监听页面加载
    */

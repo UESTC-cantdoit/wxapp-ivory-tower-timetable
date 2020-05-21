@@ -10,7 +10,8 @@
     "pages/event/eventModify",
     "pages/class/classCreate",
     "pages/class/classJoin",
-    "pages/class/classSetting"
+    "pages/class/classSetting",
+    "pages/setting/setting"
   ],
   "window": {
     "navigationBarBackgroundColor": "#ffffff",
@@ -41,10 +42,15 @@
   },
   "sitemapLocation": "sitemap.json",
   "usingComponents": {
+    "van-button": "@vant/weapp/button/index",
     "van-cell": "@vant/weapp/cell/index",
     "van-cell-group": "@vant/weapp/cell-group/index",
     "van-icon": "@vant/weapp/icon/index",
     "van-image": "@vant/weapp/image/index",
-    "van-panel": "@vant/weapp/panel/index"
+    "van-panel": "@vant/weapp/panel/index",
+    "van-row": "@vant/weapp/row/index",
+    "van-col": "@vant/weapp/col/index",
+    "van-collapse": "@vant/weapp/collapse/index",
+    "van-collapse-item": "@vant/weapp/collapse-item/index"
   }
 }
