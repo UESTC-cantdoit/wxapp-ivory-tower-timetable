@@ -5,12 +5,24 @@ Page({
    * 页面的初始数据
    */
   data: {
+    haveClass: false,
+    applyClass: false,
     activeCollapse: ['focusEvent']
   },
   onChange(event) {
     this.setData({
       activeCollapse: event.detail,
     });
+  },
+  createClass: function(e) {
+    wx.navigateTo({
+      url: '../class/classCreate'
+    })
+  },
+  joinClass: function(e) {
+    wx.navigateTo({
+      url: '../class/classJoin'
+    })
   },
   /**
    * 生命周期函数--监听页面加载
