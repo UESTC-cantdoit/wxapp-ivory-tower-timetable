@@ -5,7 +5,42 @@ Page({
    * 页面的初始数据
    */
   data: {
+    haveSearchedClass: false,
+    classExist: false,
+    classId: '',
+    searchedClassId: '',
+    searchedClassName: ''
+  },
 
+  inputClassId: function(e) {
+    this.setData({ classId: e.detail });
+  },
+
+  searchClass: function(e) {
+    this.setData({
+      searchedClassId: this.data.classId,
+      haveSearchedClass: true
+    });
+    if (this.data.searchedClassId === 'test') {
+      this.setData({
+        searchedClassName: '互加二班',
+        classExist: true
+      });
+    }
+  },
+
+  joinClass: function(e) {
+    wx.showModal({
+      title: '加入班级',
+      content: '您将加入班级：' + this.data.searchedClassName,
+      success: (res) => {
+        if (res.confirm) {
+          console.log('Join class successfully.');
+        } else {
+          console.log('Cancel.');
+        }
+      },
+    });
   },
 
   /**

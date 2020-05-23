@@ -1,2 +1,34 @@
 <!--pages/class/classJoin.wxml-->
-<text>pages/class/classJoin.wxml</text>
+<view class="container">
+  <view class="background-title">搜索班级</view>
+  <van-field
+    label="班级编号"
+    placeholder="请输入班级编号"
+    maxlength="8"
+    clearable
+    center
+    bind:input="inputClassId"
+    use-button-slot
+  >
+    <van-button slot="button" size="small" type="primary" bind:click="searchClass">搜索</van-button>
+  </van-field>
+</view>
+
+<view wx:if="{{ haveSearchedClass }}">
+  <view wx:if="{{ classExist }}">
+    <view class="container">
+      <view class="background-title">搜索结果</view>
+      <van-cell title="班级编号" value="{{ searchedClassId }}" />
+      <van-cell title="班级昵称" value="{{ searchedClassName }}" />
+    </view>
+    <van-button type="primary" block bind:click="joinClass">加入班级</van-button>
+  </view>
+
+  <view wx:if="{{ !classExist }}">
+    <view class="container">
+      <view class="background-title">搜索结果</view>
+      <van-cell title="班级编号" value="{{ searchedClassId }}" />
+      <van-cell title="未搜索到班级或班级不允许被搜索" />
+    </view>
+  </view>
+</view>
