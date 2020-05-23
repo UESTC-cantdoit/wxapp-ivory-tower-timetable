@@ -1,2 +1,48 @@
 <!--pages/class/classCreate.wxml-->
-<text>pages/class/classCreate.wxml</text>
+<view class="container">
+  <view class="background-title">基本信息</view>
+  <van-field
+    label="班级名称"
+    placeholder="请输入班级名称"
+    maxlength="12"
+    clearable
+    bind:input="inputClassName"
+  />
+</view>
+
+<view class="container">
+  <view class="background-title">班级设置</view>
+  <van-cell title="允许被搜索" use-label-slot>
+    <view>
+      <van-switch
+        checked="{{ enableSearch }}"
+        active-color="#07c160"
+        inactive-color="#ee0a24"
+        size="24px"
+        bind:change="enableSearchOnChange"
+      />
+    </view>
+    <view slot="label" wx:if="{{ !enableSearch }}">
+      同学只能通过二维码或邀请加入班级
+    </view>
+  </van-cell>
+  <van-cell title="启用公告" use-label-slot>
+    <view>
+      <van-switch
+        checked="{{ enableAnnouncement }}"
+        active-color="#07c160"
+        inactive-color="#ee0a24"
+        size="24px"
+        bind:change="enableAnnouncementOnChange"
+      />
+    </view>
+    <view slot="label" wx:if="{{ !enableAnnouncement }}">
+      您可以随时启用公告功能
+    </view>
+  </van-cell>
+</view>
+
+<view class="container">
+  <view class="background-title">最后一步</view>
+  <van-button type="primary" block disabled="{{ createClassDisabled }}" bind:click="createClass">创建班级</van-button>
+</view>

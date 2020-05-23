@@ -5,7 +5,69 @@ Page({
    * 页面的初始数据
    */
   data: {
+    enableSearch: true,
+    enableAnnouncement: true,
+    createClassDisabled: true,
+    className: '',
+  },
 
+  inputClassName: function(e) {
+    this.setData({ className: e.detail });
+    if (e.detail !== '') {
+      this.setData({
+        createClassDisabled: false
+      });
+    } else {
+      this.setData({
+        createClassDisabled: true
+      });
+    }
+  },
+
+  enableSearchOnChange({ detail }) {
+    if (this.data.enableSearch === true) {
+      wx.showModal({
+        title: '提示',
+        content: '关闭后将不能用班级号搜索班级',
+        success: (res) => {
+          if (res.confirm) {
+            this.setData({ enableSearch: detail });
+          }
+        },
+      });
+    } else {
+      this.setData({ enableSearch: detail });
+    }
+  },
+
+  enableAnnouncementOnChange({ detail }) {
+    if (this.data.enableAnnouncement === true) {
+      wx.showModal({
+        title: '提示',
+        content: '关闭后将不能创建所有同学共享的“公告”公用日程',
+        success: (res) => {
+          if (res.confirm) {
+            this.setData({ enableAnnouncement: detail });
+          }
+        },
+      });
+    } else {
+      this.setData({ enableAnnouncement: detail });
+    }
+  },
+
+  createClass: function(e) {
+    wx.showModal({
+      title: '创建班级',
+      content: '您将创建班级：' + this.data.className,
+      success: (res) => {
+        if (res.confirm) {
+          console.log('Crate class successfully.');
+        } else {
+          console.log('Cancel.');
+        }
+      },
+    });
   },
 
   /**
