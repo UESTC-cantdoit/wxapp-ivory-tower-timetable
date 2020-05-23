@@ -17,15 +17,18 @@ Page({
   },
 
   searchClass: function(e) {
-    this.setData({
-      searchedClassId: this.data.classId,
-      haveSearchedClass: true
-    });
-    if (this.data.searchedClassId === 'test') {
+    if (this.data.classId !== '') {
       this.setData({
-        searchedClassName: '互加二班',
-        classExist: true
+        searchedClassId: this.data.classId,
+        haveSearchedClass: true,
+        classExist: false
       });
+      if (this.data.searchedClassId === 'test') {
+        this.setData({
+          searchedClassName: '互加二班',
+          classExist: true
+        });
+      }
     }
   },
 
