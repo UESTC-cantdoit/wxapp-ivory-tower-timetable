@@ -18,7 +18,7 @@
         checked="{{ enableSearch }}"
         active-color="#07c160"
         inactive-color="#ee0a24"
-        size="24px"
+        size="20px"
         bind:change="enableSearchOnChange"
       />
     </view>
@@ -32,7 +32,7 @@
         checked="{{ enableAnnouncement }}"
         active-color="#07c160"
         inactive-color="#ee0a24"
-        size="24px"
+        size="20px"
         bind:change="enableAnnouncementOnChange"
       />
     </view>

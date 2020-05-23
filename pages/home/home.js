@@ -9,21 +9,31 @@ Page({
     applyClass: false,
     activeCollapse: ['focusEvent']
   },
-  onChange(event) {
+
+  onChangeCollapse(event) {
     this.setData({
       activeCollapse: event.detail,
     });
   },
+
   createClass: function(e) {
     wx.navigateTo({
       url: '../class/classCreate'
     })
   },
+
   joinClass: function(e) {
     wx.navigateTo({
       url: '../class/classJoin'
     })
   },
+
+  addEvent: function(e) {
+    wx.navigateTo({
+      url: '../event/eventCreate'
+    })
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */

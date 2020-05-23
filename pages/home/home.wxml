@@ -30,8 +30,10 @@
 </view>
 
 <view class="container">
-  <van-cell title="我的日程" icon="underway-o" size="large" />
-  <van-collapse value="{{ activeCollapse }}" bind:change="onChange" border="false">
+  <van-cell title="我的日程" icon="underway-o" size="large">
+    <van-icon slot="right-icon" name="plus" bind:click="addEvent" />
+  </van-cell>
+  <van-collapse value="{{ activeCollapse }}" bind:change="onChangeCollapse" border="false">
     <van-collapse-item title="关注日程" label="您有 {{ focusEventNum }} 项需要关注的日程" name="focusEvent">
       <van-cell title="微积分作业" clickable value="12 小时" />
       <van-cell title="数据库建模" clickable value="16 小时" />
