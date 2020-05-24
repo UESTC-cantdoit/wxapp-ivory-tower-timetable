@@ -25,6 +25,13 @@ App({
     }
   },
   globalData:{
-    userInfo:null
+    userInfo: null,
+    haveClass: false,
+    applyClass: false,
+    courses: [
+      {courseName: '微积分', class: '互加二班'},
+      {courseName: '概率论', class: '互加二班'},
+      {courseName: '计算机组成原理', class: 'null'}
+    ]
   }
 })

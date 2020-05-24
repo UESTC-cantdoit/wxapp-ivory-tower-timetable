@@ -5,8 +5,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    haveClass: false,
-    applyClass: false,
+    haveClass: getApp().globalData.haveClass,
+    applyClass: getApp().globalData.applyClass,
     activeCollapse: ['focusEvent']
   },
 
