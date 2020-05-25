@@ -46,3 +46,7 @@
   <view class="background-title">最后一步</view>
   <van-button type="primary" block disabled="{{ createClassDisabled }}" bind:click="createClass">创建班级</van-button>
 </view>
+
+<view wx:if="{{!openid}}">
+  <button open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="onGotUserInfo">登录</button>
+</view>

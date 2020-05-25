@@ -9,6 +9,9 @@ Page({
     enableAnnouncement: true,
     createClassDisabled: true,
     className: '',
+    classId:0,
+    openid:"",
+    userinfo:{}, //测试用临时用户信息
   },
 
   inputClassName: function(e) {
@@ -62,6 +65,29 @@ Page({
       content: '您将创建班级：' + this.data.className,
       success: (res) => {
         if (res.confirm) {
+          const _this = this;
+          //调用生成班级id云函数
+          wx.cloud.callFunction({
+            name: "get_new_classId",
+            success:res=>{
+              console.log("res",res)
+              _this.setData({
+                classId : parseInt(res.result.data[0].classId) + 1
+              })
+              console.log("classId",_this.data.classId);
+              //调用创建班级云函数
+              wx.cloud.callFunction({
+                name: "classCreate",
+                data: {
+                  className:_this.data.className,
+                  enableSearch: _this.data.enableSearch,
+                  enableAnnouncement: _this.data.enableAnnouncement,
+                  openid: _this.data.openid,
+                  classId: _this.data.classId,
+                }
+              })
+            }
+          })
           console.log('Crate class successfully.');
         } else {
           console.log('Cancel.');
@@ -69,6 +95,29 @@ Page({
       },
     });
   },
+
+//临时登录 
+  onGotUserInfo:function(e){
+    const that = this;
+    wx.cloud.callFunction({
+      name:"get_openid",
+      success:res=>{
+        console.log("云函数调用成功")
+        that.setData({
+          openid:res.result.openid,
+          userinfo: e.detail.userInfo
+        })
+        that.data.userinfo.openid = that.data.openid
+        console.log("userinfo", that.data.userinfo)
+      },
+      fail:res=>{
+        console.log("云函数调用失败")
+      }
+    })
+  },
+//测试用代码段
+
+
 
   /**
    * 生命周期函数--监听页面加载

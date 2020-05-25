@@ -1,6 +1,6 @@
 {
 	"description": "项目配置文件",
-  "cloudfunctionRoot":"cloudfunctions/",
+	"cloudfunctionRoot": "cloudfunctions/",
 	"packOptions": {
 		"ignore": []
 	},
@@ -9,7 +9,6 @@
 		"es6": true,
 		"enhance": false,
 		"postcss": true,
-		"preloadBackgroundData": false,
 		"minified": true,
 		"newFeature": true,
 		"coverView": true,
@@ -24,7 +23,9 @@
 			"ignore": [],
 			"disablePlugins": [],
 			"outputPath": ""
-		}
+		},
+		"preloadBackgroundData": false,
+		"useCompilerModule": false
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.11.0",
@@ -36,6 +37,7 @@
 	"isGameTourist": false,
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
+	"cloudfunctionTemplateRoot": "cloudfunctionTemplate",
 	"condition": {
 		"search": {
 			"current": -1,
