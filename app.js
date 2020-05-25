@@ -5,6 +5,11 @@ App({
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
+    //指定云开发环境
+    wx.cloud.init({
+      env:'timetable-81f1c',
+      traceUser:true
+    })
   },
   getUserInfo:function(cb){
     var that = this
