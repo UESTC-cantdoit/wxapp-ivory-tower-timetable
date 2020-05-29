@@ -31,7 +31,7 @@
   <van-field
     label="日程名称"
     placeholder="请输入日程名称"
-    maxlength="12"
+    maxlength="20"
     clearable
     bind:input="inputEventName"
   />
@@ -59,6 +59,7 @@
     custom-style="height: 50%;"
   >
     <van-datetime-picker
+      title="设置截止时间"
       type="datetime"
       value="{{ currentDate }}"
       min-date="{{ minDate }}"
@@ -77,7 +78,7 @@
       />
     </view>
     <view slot="label" wx:if="{{ !syncToClass }}">
-      您可以随时同步该日程到班级日程库
+      不同步到班级日程库
     </view>
   </van-cell>
 </view>

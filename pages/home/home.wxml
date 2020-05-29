@@ -48,3 +48,7 @@
 <view class="container">
   <van-cell title="偏好设置" icon="setting-o" size="large" is-link />
 </view>
+
+<view class="container">
+  <van-cell title="添加课程" label="临时进入按钮" icon="add-o" is-link bind:click="createCourse" />
+</view>

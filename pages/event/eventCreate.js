@@ -102,7 +102,7 @@ Page({
       content: '您将创建日程：' + this.data.eventName,
       success: (res) => {
         if (res.confirm) {
-          console.log('Crate event successfully.');
+          console.log('Create event successfully.');
         } else {
           console.log('Cancel.');
         }

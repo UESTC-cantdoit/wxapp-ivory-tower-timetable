@@ -1,0 +1,96 @@
+<!--pages/course/courseCreate.wxml-->
+<view class="container">
+  <view class="background-title">基本信息</view>
+  <van-field
+    label="课程名称"
+    placeholder="请输入课程名称"
+    maxlength="20"
+    clearable
+    bind:input="inputCourseName"
+  />
+  <van-field
+    label="任课教师"
+    placeholder="请输入任课教师姓名"
+    maxlength="12"
+    clearable
+    bind:input="inputCourseTeacher"
+  />
+</view>
+
+<template name="courseTimeItem">
+  <van-swipe-cell
+    right-width="{{ 65 }}"
+    async-close
+    bind:close="courseTimeItemOnClose"
+    data-id="{{ id }}"
+  >
+    <van-cell
+      title="选择时间"
+      value="周 {{ weekDay }} 第 {{ startTime }}-{{ endTime }} 节课"
+      wx:if="{{ startTime != endTime }}"
+    />
+    <van-cell
+      title="选择时间"
+      value="周 {{ weekDay }} 第 {{ startTime }} 节课"
+      wx:else
+    />
+    <view slot="right" class="van-swipe-cell__right">删除</view>
+  </van-swipe-cell>
+</template>
+
+<view class="container">
+  <view class="background-title">上课时间</view>
+  <block wx:for="{{ selectCourseTime }}" wx:key="id">
+    <template is="courseTimeItem" data="{{ ...item }}" />
+  </block>
+  <van-button
+    type="default"
+    icon="edit"
+    block
+    bind:click="showTimePicker"
+  >添加上课时间</van-button>
+  <van-popup
+    show="{{ timePickerOnShow }}"
+    position="bottom"
+    custom-style="height: 50%;"
+  >
+    <van-picker
+      show-toolbar
+      title="添加上课时间"
+      columns="{{ timeSelectColumns }}"
+      bind:change="timeSelectOnChange"
+      bind:cancel="timeSelectOnCancel"
+      bind:confirm="timeSelectOnConfirm"
+    />
+  </van-popup>
+</view>
+
+<view class="container" wx:if="{{ haveClass }}">
+  <view class="background-title">课程设置</view>
+  <van-cell title="同步到班级" use-label-slot>
+    <view>
+      <van-switch
+        checked="{{ syncToClass }}"
+        active-color="#07c160"
+        inactive-color="#ee0a24"
+        size="20px"
+        bind:change="syncToClassOnChange"
+      />
+    </view>
+    <view slot="label" wx:if="{{ !syncToClass }}">
+      不同步到班级课程库
+    </view>
+  </van-cell>
+</view>
+
+<view class="container">
+  <view class="background-title">最后一步</view>
+  <van-button
+    type="primary"
+    block
+    disabled="{{ courseName=='' || courseTeacher=='' || selectCourseTime.length==0 }}"
+    bind:click="createCourse"
+  >创建课程</van-button>
+</view>
+
+<van-notify id="van-notify" />
