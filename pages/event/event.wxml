@@ -1,12 +1,13 @@
 <!--pages/event/event.wxml-->
-<page
+<view
   bind:touchstart="touchStart" 
   bind:touchend="touchEnd" 
-  bind:touchcancel="touchCancel">
-</page>
-
-<van-tabs active="{{ activeTab }}">
-  <van-tab title="当前日程" />
-  <van-tab title="结束日程" />
-  <van-tab title="星标日程" />
-</van-tabs>
+  bind:touchcancel="touchCancel"
+  style="width:100%;height:100%;"
+>
+  <van-tabs active="{{ activeTab }}">
+    <van-tab title="当前日程" />
+    <van-tab title="结束日程" />
+    <van-tab title="星标日程" />
+  </van-tabs>
+</view>

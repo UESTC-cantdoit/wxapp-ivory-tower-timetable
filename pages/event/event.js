@@ -1,4 +1,5 @@
 // pages/event/event.js
+// 滑动手势处理 https://www.jianshu.com/p/d4bb2f8eedc3
 let minOffset = 30; //最小偏移量，低于这个值不响应滑动处理
 let minTime = 60; // 最小时间，单位：毫秒，低于这个值不响应滑动处理
 let startX = 0; //开始时的X坐标
