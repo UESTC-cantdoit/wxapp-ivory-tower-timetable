@@ -34,7 +34,8 @@ Page({
       endTime: '8'
     }],
     haveClass: getApp().globalData.haveClass,
-    syncToClass: false
+    syncToClass: false,
+    onCreateCourseProcess: false
   },
 
   inputCourseName(value) {
@@ -133,6 +134,9 @@ Page({
       content: '您将创建课程：' + this.data.courseName,
       success: (res) => {
         if (res.confirm) {
+          this.setData({
+            onCreateCourseProcess: true
+          })
           console.log('Create course successfully.');
         } else {
           console.log('Cancel.');

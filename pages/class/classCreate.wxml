@@ -44,5 +44,20 @@
 
 <view class="container">
   <view class="background-title">最后一步</view>
-  <van-button type="primary" block disabled="{{ createClassDisabled }}" bind:click="createClass">创建班级</van-button>
+  <!-- 确认创建班级过程时隐藏 -->
+  <van-button
+    type="primary"
+    block
+    disabled="{{ createClassDisabled }}"
+    bind:click="createClass"
+    wx:if="{{ !onCreateClassProcess }}"
+  >创建班级</van-button>
+  <!-- 确认创建班级过程时显示 -->
+  <van-button
+    type="primary"
+    block
+    wx:if="{{ onCreateClassProcess }}"
+    loading
+    loading-text="创建班级中..."
+  />
 </view>

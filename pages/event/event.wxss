@@ -1,1 +1,5 @@
 /* pages/event/event.wxss */
+page {
+  font-size: 16px;
+  background: #ffffff;
+}

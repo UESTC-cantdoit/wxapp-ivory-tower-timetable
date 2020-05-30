@@ -22,11 +22,33 @@
 </view>
 
 <view class="container" wx:if="{{ haveClass }}">
-  <van-cell title="我的班级" value="互加二班" icon="friends-o" size="large" />
-  <!-- value 显示活动中的课程数 -->
-  <van-cell title="课程库" is-link value="{{ activeCourseNum }}" />
-  <!-- value 显示活动中的日程数 -->
-  <van-cell title="日程库" label="新增 {{ newEventNum }} 个日程" is-link value="{{ activeEventNum }}" />
+  <van-cell-group>
+    <van-cell title="我的班级" value="互加二班" icon="friends-o" size="large" />
+    <!-- value 显示活动中的课程数 -->
+    <van-cell
+      title="课程库"
+      is-link
+      use-label-slot
+      value="{{ activeCourseNum }}"
+      bind:click="toCourseList"
+    >
+      <view slot="label" wx:if="{{ newCourseNum != 0 }}">
+        新增 {{ newCourseNum }} 个课程
+      </view>
+    </van-cell>
+    <!-- value 显示活动中的日程数 -->
+    <van-cell
+      title="日程库"
+      is-link
+      use-label-slot
+      value="{{ activeEventNum }}"
+      bind:click="toEventList"
+    >
+      <view slot="label" wx:if="{{ newEventNum != 0 }}">
+        新增 {{ newEventNum }} 个日程
+      </view>
+    </van-cell>
+  </van-cell-group>
 </view>
 
 <view class="container">

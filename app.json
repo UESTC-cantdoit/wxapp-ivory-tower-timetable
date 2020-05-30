@@ -12,7 +12,10 @@
     "pages/class/classJoin",
     "pages/class/classSetting",
     "pages/setting/setting",
-    "pages/course/courseCreate"
+    "pages/course/courseCreate",
+    "pages/course/courseList",
+    "pages/common/success",
+    "pages/common/ops"
   ],
   "window": {
     "navigationBarBackgroundColor": "#ffffff",
@@ -58,6 +61,9 @@
     "van-picker": "@vant/weapp/picker/index",
     "van-datetime-picker": "@vant/weapp/datetime-picker/index",
     "van-popup": "@vant/weapp/popup/index",
-    "van-notify": "@vant/weapp/notify/index"
+    "van-notify": "@vant/weapp/notify/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "van-tab": "@vant/weapp/tab/index",
+    "van-tabs": "@vant/weapp/tabs/index"
   }
 }

@@ -7,7 +7,11 @@ Page({
   data: {
     haveClass: getApp().globalData.haveClass,
     applyClass: getApp().globalData.applyClass,
-    activeCollapse: ['focusEvent']
+    activeCollapse: ['focusEvent'],
+    activeCourseNum: 8,
+    newCourseNum: 0,
+    activeEventNum: 19,
+    newEventNum: 1
   },
 
   onChangeCollapse(event) {
@@ -16,19 +20,31 @@ Page({
     });
   },
 
-  createClass: function(e) {
+  createClass() {
     wx.navigateTo({
       url: '../class/classCreate'
     })
   },
 
-  joinClass: function(e) {
+  joinClass() {
     wx.navigateTo({
       url: '../class/classJoin'
     })
   },
 
-  addEvent: function(e) {
+  toCourseList() {
+    wx.navigateTo({
+      url: '../course/courseList',
+    })
+  },
+
+  toEventList() {
+    wx.navigateTo({
+      url: '../event/eventList',
+    })
+  },
+
+  addEvent() {
     wx.navigateTo({
       url: '../event/eventCreate'
     })

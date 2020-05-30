@@ -9,6 +9,7 @@ Page({
     enableAnnouncement: true,
     createClassDisabled: true,
     className: '',
+    onCreateClassProcess: false
   },
 
   inputClassName: function(e) {
@@ -62,6 +63,9 @@ Page({
       content: '您将创建班级：' + this.data.className,
       success: (res) => {
         if (res.confirm) {
+          this.setData({
+            onCreateClassProcess: true
+          })
           console.log('Crate class successfully.');
         } else {
           console.log('Cancel.');
