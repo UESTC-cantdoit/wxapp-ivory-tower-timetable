@@ -11,7 +11,11 @@
     "pages/class/classCreate",
     "pages/class/classJoin",
     "pages/class/classSetting",
-    "pages/setting/setting"
+    "pages/setting/setting",
+    "pages/course/courseCreate",
+    "pages/course/courseList",
+    "pages/common/success",
+    "pages/common/ops"
   ],
   "window": {
     "navigationBarBackgroundColor": "#ffffff",
@@ -45,6 +49,7 @@
     "van-button": "@vant/weapp/button/index",
     "van-cell": "@vant/weapp/cell/index",
     "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-swipe-cell": "@vant/weapp/swipe-cell/index",
     "van-icon": "@vant/weapp/icon/index",
     "van-panel": "@vant/weapp/panel/index",
     "van-row": "@vant/weapp/row/index",
@@ -55,6 +60,11 @@
     "van-switch": "@vant/weapp/switch/index",
     "van-picker": "@vant/weapp/picker/index",
     "van-datetime-picker": "@vant/weapp/datetime-picker/index",
-    "van-popup": "@vant/weapp/popup/index"
+    "van-popup": "@vant/weapp/popup/index",
+    "van-notify": "@vant/weapp/notify/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "van-tab": "@vant/weapp/tab/index",
+    "van-tabs": "@vant/weapp/tabs/index",
+    "van-sticky": "@vant/weapp/sticky/index"
   }
 }

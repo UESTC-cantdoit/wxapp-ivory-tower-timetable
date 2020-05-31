@@ -22,16 +22,38 @@
 </view>
 
 <view class="container" wx:if="{{ haveClass }}">
-  <van-cell title="我的班级" value="互加二班" icon="friends-o" size="large" />
-  <!-- value 显示活动中的课程数 -->
-  <van-cell title="课程库" is-link value="{{ activeCourseNum }}" />
-  <!-- value 显示活动中的日程数 -->
-  <van-cell title="日程库" label="新增 {{ newEventNum }} 个日程" is-link value="{{ activeEventNum }}" />
+  <van-cell-group>
+    <van-cell title="我的班级" value="互加二班" icon="friends-o" size="large" />
+    <!-- value 显示活动中的课程数 -->
+    <van-cell
+      title="课程库"
+      is-link
+      use-label-slot
+      value="{{ activeCourseNum }}"
+      bind:click="toCourseList"
+    >
+      <view slot="label" wx:if="{{ newCourseNum != 0 }}">
+        新增 {{ newCourseNum }} 个课程
+      </view>
+    </van-cell>
+    <!-- value 显示活动中的日程数 -->
+    <van-cell
+      title="日程库"
+      is-link
+      use-label-slot
+      value="{{ activeEventNum }}"
+      bind:click="toEventList"
+    >
+      <view slot="label" wx:if="{{ newEventNum != 0 }}">
+        新增 {{ newEventNum }} 个日程
+      </view>
+    </van-cell>
+  </van-cell-group>
 </view>
 
 <view class="container">
   <van-cell title="我的日程" icon="underway-o" size="large">
-    <van-icon slot="right-icon" name="plus" bind:click="addEvent" />
+    <van-icon slot="right-icon" name="plus" bind:click="createEvent" />
   </van-cell>
   <van-collapse value="{{ activeCollapse }}" bind:change="onChangeCollapse" border="false">
     <van-collapse-item title="关注日程" label="您有 {{ focusEventNum }} 项需要关注的日程" name="focusEvent">
@@ -47,4 +69,8 @@
 
 <view class="container">
   <van-cell title="偏好设置" icon="setting-o" size="large" is-link />
+</view>
+
+<view class="container">
+  <van-cell title="添加课程" label="临时进入按钮" icon="add-o" is-link bind:click="createCourse" />
 </view>

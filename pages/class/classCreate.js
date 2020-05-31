@@ -12,6 +12,7 @@ Page({
     classId:0,
     openid:"",
     userinfo:{}, //测试用临时用户信息
+    onCreateClassProcess: false
   },
 
   inputClassName: function(e) {
@@ -65,6 +66,9 @@ Page({
       content: '您将创建班级：' + this.data.className,
       success: (res) => {
         if (res.confirm) {
+          this.setData({
+            onCreateClassProcess: true
+          })
           const _this = this;
           //调用生成班级id云函数
           wx.cloud.callFunction({

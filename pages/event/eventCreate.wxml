@@ -2,16 +2,13 @@
 <view class="container">
   <view class="background-title">基本信息</view>
   <van-cell title="课程" center is-link use-label-slot bind:click="showCoursePicker">
-    <view wx:if="{{ selectCourse == null }}">
-      未设置
-    </view>
-    <view wx:else>
+    <view>
       {{ selectCourse }}
     </view>
-    <view slot="label" wx:if="{{ selectCourse !== null && selectCourseBelongToClass }}">
+    <view slot="label" wx:if="{{ selectCourse !== '不选择' && selectCourseBelongToClass }}">
       选择课程可同步到班级
     </view>
-    <view slot="label" wx:elif="{{ selectCourse !== null && !selectCourseBelongToClass }}">
+    <view slot="label" wx:elif="{{ selectCourse !== '不选择' && !selectCourseBelongToClass }}">
       选择课程不可同步到班级
     </view>
   </van-cell>
@@ -31,7 +28,7 @@
   <van-field
     label="日程名称"
     placeholder="请输入日程名称"
-    maxlength="12"
+    maxlength="20"
     clearable
     bind:input="inputEventName"
   />
@@ -59,6 +56,7 @@
     custom-style="height: 50%;"
   >
     <van-datetime-picker
+      title="设置截止时间"
       type="datetime"
       value="{{ currentDate }}"
       min-date="{{ minDate }}"
@@ -77,12 +75,27 @@
       />
     </view>
     <view slot="label" wx:if="{{ !syncToClass }}">
-      您可以随时同步该日程到班级日程库
+      不同步到班级日程库
     </view>
   </van-cell>
 </view>
 
 <view class="container">
   <view class="background-title">最后一步</view>
-  <van-button type="primary" block disabled="{{ eventName==null || selectEndTime==null }}" bind:click="createEvent">创建日程</van-button>
+  <!-- 确认创建日程过程时隐藏 -->
+  <van-button
+    type="primary"
+    block
+    disabled="{{ eventName==null || selectEndTime==null }}"
+    bind:click="createEvent"
+    wx:if="{{ !onCreateEventProcess }}"
+  >创建日程</van-button>
+  <!-- 确认创建日程过程时显示 -->
+  <van-button
+    type="primary"
+    block
+    wx:if="{{ onCreateEventProcess }}"
+    loading
+    loading-text="创建日程中..."
+  />
 </view>

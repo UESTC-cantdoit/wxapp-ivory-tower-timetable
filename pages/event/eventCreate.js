@@ -8,7 +8,7 @@ Page({
     courses: getApp().globalData.courses,
     coursePickerCourses: null,
     coursePickerOnShow: false,
-    selectCourse: null,
+    selectCourse: '不选择',
     selectCourseBelongToClass: false,
     eventName: null,
     eventDescription: null,
@@ -19,6 +19,7 @@ Page({
     minDate: new Date(new Date().getTime() + 2 * 3600000).getTime(),
     haveClass: getApp().globalData.haveClass,
     syncToClass: false,
+    onCreateEventProcess: false
   },
 
   inputEventName(value) {
@@ -102,7 +103,10 @@ Page({
       content: '您将创建日程：' + this.data.eventName,
       success: (res) => {
         if (res.confirm) {
-          console.log('Crate event successfully.');
+          this.setData({
+            onCreateEventProcess: true
+          })
+          console.log('Create event successfully.');
         } else {
           console.log('Cancel.');
         }
