@@ -87,7 +87,7 @@ Page({
   timeSelectOnChange(e) { // 选择的上课时间改变时
     const selectArray = e.detail.picker.children;
     this.setData({
-      weekDay: selectArray[0].__data__.currentIndex + 1,
+      selectWeekDay: selectArray[0].__data__.currentIndex + 1,
       selectTimeOne: selectArray[1].__data__.currentIndex + 1,
       selectTimeTwo: selectArray[2].__data__.currentIndex + 1
     })

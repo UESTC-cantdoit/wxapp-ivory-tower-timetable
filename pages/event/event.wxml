@@ -5,9 +5,40 @@
   bind:touchcancel="touchCancel"
   style="width:100%;height:100%;"
 >
-  <van-tabs active="{{ activeTab }}">
-    <van-tab title="当前日程" />
-    <van-tab title="结束日程" />
-    <van-tab title="星标日程" />
+  <van-tabs
+    active="{{ activeTab }}"
+    color="#ff7214"
+    swipeable
+    sticky
+  >
+    <van-tab title="当前日程">
+      <template is="event" />
+      <template is="event" />
+      <template is="event" />
+      <template is="event" />
+      <template is="event" />
+    </van-tab>
+    <van-tab title="结束日程">
+      <template is="event" />
+      <template is="event" />
+    </van-tab>
+    <van-tab title="星标日程">
+    </van-tab>
   </van-tabs>
 </view>
+
+<template name="event">
+  <view class="container">
+    <van-panel title="这是一个事件" desc="数据库原理及运用（文军）" status="12 小时">
+      <view class="content">
+        完成数据库建模作业 P12-P13
+      </view>
+    </van-panel>
+  </view>
+</template>
+
+<template name="noEvent">
+
+</template>
+
+<van-icon name="add" class="float-btn" bind:click="createEvent" />

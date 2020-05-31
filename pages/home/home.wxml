@@ -53,7 +53,7 @@
 
 <view class="container">
   <van-cell title="我的日程" icon="underway-o" size="large">
-    <van-icon slot="right-icon" name="plus" bind:click="addEvent" />
+    <van-icon slot="right-icon" name="plus" bind:click="createEvent" />
   </van-cell>
   <van-collapse value="{{ activeCollapse }}" bind:change="onChangeCollapse" border="false">
     <van-collapse-item title="关注日程" label="您有 {{ focusEventNum }} 项需要关注的日程" name="focusEvent">

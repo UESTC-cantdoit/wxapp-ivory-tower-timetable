@@ -2,16 +2,13 @@
 <view class="container">
   <view class="background-title">基本信息</view>
   <van-cell title="课程" center is-link use-label-slot bind:click="showCoursePicker">
-    <view wx:if="{{ selectCourse == null }}">
-      未设置
-    </view>
-    <view wx:else>
+    <view>
       {{ selectCourse }}
     </view>
-    <view slot="label" wx:if="{{ selectCourse !== null && selectCourseBelongToClass }}">
+    <view slot="label" wx:if="{{ selectCourse !== '不选择' && selectCourseBelongToClass }}">
       选择课程可同步到班级
     </view>
-    <view slot="label" wx:elif="{{ selectCourse !== null && !selectCourseBelongToClass }}">
+    <view slot="label" wx:elif="{{ selectCourse !== '不选择' && !selectCourseBelongToClass }}">
       选择课程不可同步到班级
     </view>
   </van-cell>

@@ -44,7 +44,7 @@ Page({
     })
   },
 
-  addEvent() {
+  createEvent() {
     wx.navigateTo({
       url: '../event/eventCreate'
     })

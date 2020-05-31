@@ -1,7 +1,7 @@
 // pages/event/event.js
 // 滑动手势处理 https://www.jianshu.com/p/d4bb2f8eedc3
 let minOffset = 30; //最小偏移量，低于这个值不响应滑动处理
-let minTime = 60; // 最小时间，单位：毫秒，低于这个值不响应滑动处理
+let minTime = 40; // 最小时间，单位：毫秒，低于这个值不响应滑动处理
 let startX = 0; //开始时的X坐标
 let startY = 0; //开始时的Y坐标
 let startTime = 0; //开始时的毫秒数
@@ -12,7 +12,14 @@ Page({
    * 页面的初始数据
    */
   data: {
-    activeTab: 0
+    activeTab: 0,
+    tabEnd: 2, // 标签数量减一
+  },
+
+  createEvent() {
+    wx.navigateTo({
+      url: '../event/eventCreate'
+    })
   },
 
   /**
@@ -39,6 +46,8 @@ Page({
    */
   touchEnd: function (e) {
     console.log('touchEnd', e)
+    const activeTab = this.data.activeTab;
+    const tabEnd = this.data.tabEnd;
     var endX = e.changedTouches[0].pageX;
     var endY = e.changedTouches[0].pageY;
     var touchTime = new Date().getTime() - startTime;//计算滑动时间
@@ -48,8 +57,6 @@ Page({
       //2.判断偏移量：分X、Y
       var xOffset = endX - startX;
       var yOffset = endY - startY;
-      console.log('xOffset', xOffset)
-      console.log('yOffset', yOffset)
       //①条件1（偏移量x或者y要大于最小偏移量）
       //②条件2（可以判断出是左右滑动还是上下滑动）
       if (Math.abs(xOffset) >= Math.abs(yOffset) && Math.abs(xOffset) >= minOffset) {
@@ -57,8 +64,22 @@ Page({
         //③条件3（判断偏移量的正负）
         if (xOffset < 0) {
           console.log('向左滑动')
+          if (activeTab < tabEnd) {
+            this.setData({
+              activeTab: activeTab + 1
+            })
+          } else {
+            console.log('标签页不变')
+          }
         } else {
           console.log('向右滑动')
+          if (activeTab > 0) {
+            this.setData({
+              activeTab: activeTab - 1
+            })
+          } else {
+            console.log('标签页不变')
+          }
         }
       } else if (Math.abs(xOffset) < Math.abs(yOffset) && Math.abs(yOffset) >= minOffset) {
         //上下滑动

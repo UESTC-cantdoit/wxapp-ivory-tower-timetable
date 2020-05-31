@@ -8,7 +8,7 @@ Page({
     courses: getApp().globalData.courses,
     coursePickerCourses: null,
     coursePickerOnShow: false,
-    selectCourse: null,
+    selectCourse: '不选择',
     selectCourseBelongToClass: false,
     eventName: null,
     eventDescription: null,
