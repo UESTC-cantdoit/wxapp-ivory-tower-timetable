@@ -1,13 +1,13 @@
 <!--pages/event/event.wxml-->
 <view
+  style="width:100%;height:100%;"
   bind:touchstart="touchStart" 
   bind:touchend="touchEnd" 
   bind:touchcancel="touchCancel"
-  style="width:100%;height:100%;"
 >
   <van-tabs
     active="{{ activeTab }}"
-    color="#ff7214"
+    color="#04BE02"
     swipeable
     animated
     sticky

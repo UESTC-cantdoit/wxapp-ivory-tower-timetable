@@ -12,11 +12,9 @@ Page({
     selectCourseBelongToClass: false,
     eventName: null,
     eventDescription: null,
-    selectEndDate: null,
-    selectEndTime: null,
-    timePickerOnShow: false,
-    currentDate: new Date().getTime(),
-    minDate: new Date(new Date().getTime() + 2 * 3600000).getTime(),
+    selectEndDate: null,  // 标准 Date() 时间，为选择当天的零时零分零秒
+    selectEndDateOnDisplay: '', // 显示在界面上的日期
+    datePickerOnShow: false,
     haveClass: getApp().globalData.haveClass,
     syncToClass: false,
     onCreateEventProcess: false
@@ -73,27 +71,26 @@ Page({
     });
   },
 
-  showTimePicker() {
-    this.setData({ timePickerOnShow: true });
+  showDatePicker() {
+    this.setData({ datePickerOnShow: true });
   },
 
-  timePickerOnConfirm(value) {
-    var selectEndDate = new Date(value.detail);
-    var selectEndTime = selectEndDate.getFullYear() + "-" +
-      ((selectEndDate.getMonth()+1)>=10?selectEndDate.getMonth()+1:"0"+(selectEndDate.getMonth()+1)) + "-" +
-      ((selectEndDate.getDate())>=10?selectEndDate.getDate():"0"+selectEndDate.getDate()) + " " +
-      ((selectEndDate.getHours())>=10?selectEndDate.getHours():"0"+selectEndDate.getHours()) + ":" +
-      ((selectEndDate.getMinutes())>=10?selectEndDate.getMinutes():"0"+selectEndDate.getMinutes())
+  datePickerOnConfirm(value) {
+    const date = new Date(value.detail); // 获取选择的日期
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const selectEndDateOnDisplay = year + '-' + ((month > 10) ? month : ('0' + month)) + '-' + ((day > 10) ? day : ('0' + day));
     this.setData({
-      selectEndDate: selectEndDate,
-      selectEndTime: selectEndTime,
-      timePickerOnShow: false
+      selectEndDate: date,
+      selectEndDateOnDisplay: selectEndDateOnDisplay,
+      datePickerOnShow: false
     });
   },
 
-  timePickerOnCancel() {
+  datePickerOnClose() {
     this.setData({
-      timePickerOnShow: false
+      datePickerOnShow: false
     });
   },
 

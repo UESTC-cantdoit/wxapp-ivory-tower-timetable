@@ -16,13 +16,13 @@ Page({
     tabEnd: 2, // 标签数量减一
     showFloatBtn: true,
     fadeAnimation: '',
-    event: [
+    event: [ // 获取时应按照 event 截止时间 eventEndDate 由早及晚依次获取
       {
         eventId: '22314',
         eventTitle: '这是一个事件',
         eventBindCourse: '数据库原理及运用',
         eventStatus: '已完成',
-        eventEndDate: '2020/05/31', // 理论上直接使用 Date() 函数的值，这里是测试方便
+        eventEndDate: '2020-05-31', // 理论上直接使用 Date() 函数的值，这里是测试方便
         eventDescription: '利用 Powerdesigner 完成数据库建模作业',
         eventSync: true,
         eventStar: false
@@ -32,7 +32,7 @@ Page({
         eventTitle: '这是另一个事件',
         eventBindCourse: '微积分',
         eventStatus: '进行中',
-        eventEndDate: '2020/06/12',
+        eventEndDate: '2020-06-12',
         eventDescription: '在 MOOC 提交作业',
         eventSync: false,
         eventStar: true
@@ -42,7 +42,7 @@ Page({
         eventTitle: '这是又另一个事件',
         eventBindCourse: '达芬奇',
         eventStatus: '已结束',
-        eventEndDate: '2020/04/23',
+        eventEndDate: '2020-04-23',
         eventDescription: '是一个艺术家',
         eventSync: true,
         eventStar: true
@@ -50,12 +50,10 @@ Page({
     ],
     showEventActionSheet: false,
     eventOperations: [],
-    defaultEventOperations: [
-      {
-        name: '修改日程信息',
-        className: 'modifyEventInfo'
-      }
-    ],
+    eventOperationModifyEventInfo: {
+      name: '修改日程信息',
+      className: 'modifyEventInfo'
+    },
     eventOperationSetEventStar: {
       name: '设置日程星标',
       color: '#FF8533',
@@ -93,15 +91,18 @@ Page({
   showEventOperation(event) {
     const eventStar = event.currentTarget.dataset.eventstar;
     const eventStatus = event.currentTarget.dataset.eventstatus;
-    let eventOperations = this.data.defaultEventOperations; // 这里莫名其妙取到了实参
-    if (eventStar) {
+    let eventOperations = [];
+    if (eventStatus == '进行中') { // 进行中的日程可修改信息
+      eventOperations.push(this.data.eventOperationModifyEventInfo);
+    }
+    if (eventStar) { // 拥有星标的日程可以取消星标
       eventOperations.push(this.data.eventOperationCancelEventStar);
-    } else {
+    } else { // 没有星标的日程可以设置星标
       eventOperations.push(this.data.eventOperationSetEventStar);
     }
-    if (eventStatus == '进行中' || eventStatus == '已结束') {
+    if (eventStatus == '进行中' || eventStatus == '已结束') { // 进行中或已结束的日程可以设置已完成
       eventOperations.push(this.data.eventOperationSetEventFinished);
-    } else {
+    } else {  // 设置已完成的日程可以取消已完成
       eventOperations.push(this.data.eventOperationCancelEventFinished);
     }
     this.setData({
@@ -114,7 +115,6 @@ Page({
       eventOperations: eventOperations,
       showEventActionSheet: true
     });
-    eventOperations.splice(1, 2); // 删除实参中添加的两项
   },
 
   eventActionSheetOnClose() {

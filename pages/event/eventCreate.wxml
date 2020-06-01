@@ -6,10 +6,10 @@
       {{ selectCourse }}
     </view>
     <view slot="label" wx:if="{{ selectCourse !== '不选择' && selectCourseBelongToClass }}">
-      选择课程可同步到班级
+      日程可同步到班级
     </view>
     <view slot="label" wx:elif="{{ selectCourse !== '不选择' && !selectCourseBelongToClass }}">
-      选择课程不可同步到班级
+      选择课程未同步到班级，日程不可同步到班级
     </view>
   </van-cell>
   <van-popup
@@ -44,34 +44,26 @@
 
 <view class="container">
   <view class="background-title">日程设置</view>
-  <van-cell title="截止时间" center is-link use-label-slot bind:click="showTimePicker">
-    <view wx:if="{{ selectEndTime !== null }}">
-      {{ selectEndTime }}
+  <van-cell title="截止日期" center is-link use-label-slot bind:click="showDatePicker">
+    <view>
+      {{ selectEndDateOnDisplay }}
     </view>
-    <view slot="label" wx:if="{{ selectEndTime == null }}">
-      您至少设置两小时后的时间
+    <view slot="label" wx:if="{{ selectEndDateOnDisplay == '' }}">
+      您至多选择当前日期的六个月后
     </view>
   </van-cell>
-  <van-popup
-    show="{{ timePickerOnShow }}"
-    position="bottom"
-    custom-style="height: 50%;"
-    round
-    bind:close="timePickerOnCancel"
-  >
-    <van-datetime-picker
-      title="设置截止时间"
-      type="datetime"
-      value="{{ currentDate }}"
-      min-date="{{ minDate }}"
-      bind:confirm="timePickerOnConfirm"
-      bind:cancel="timePickerOnCancel"
-    />
-  </van-popup>
-  <van-cell title="同步到班级" use-label-slot wx:if="{{ selectCourseBelongToClass }}">
+  <van-calendar
+    title="选择截止日期"
+    color="#04BE02"
+    show="{{ datePickerOnShow }}"
+    bind:close="datePickerOnClose"
+    bind:confirm="datePickerOnConfirm"
+  />
+  <van-cell title="同步到班级" use-label-slot center>
     <view>
       <van-switch
         checked="{{ syncToClass }}"
+        disabled="{{ !selectCourseBelongToClass }}"
         active-color="#07c160"
         inactive-color="#ee0a24"
         size="20px"
@@ -80,6 +72,9 @@
     </view>
     <view slot="label" wx:if="{{ !syncToClass }}">
       不同步到班级日程库
+    </view>
+    <view slot="label" wx:else>
+      同步到班级日程库
     </view>
   </van-cell>
 </view>
@@ -90,7 +85,7 @@
   <van-button
     type="primary"
     block
-    disabled="{{ eventName==null || selectEndTime==null }}"
+    disabled="{{ eventName==null || selectEndDateOnDisplay=='' }}"
     bind:click="createEvent"
     wx:if="{{ !onCreateEventProcess }}"
   >创建日程</van-button>
