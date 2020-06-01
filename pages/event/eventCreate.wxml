@@ -16,6 +16,8 @@
     show="{{ coursePickerOnShow }}"
     position="bottom"
     custom-style="height: 50%;"
+    round
+    bind:close="coursePickerOnCancel"
   >
     <van-picker
       show-toolbar
@@ -54,6 +56,8 @@
     show="{{ timePickerOnShow }}"
     position="bottom"
     custom-style="height: 50%;"
+    round
+    bind:close="timePickerOnCancel"
   >
     <van-datetime-picker
       title="设置截止时间"

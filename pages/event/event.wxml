@@ -9,36 +9,85 @@
     active="{{ activeTab }}"
     color="#ff7214"
     swipeable
+    animated
     sticky
   >
-    <van-tab title="当前日程">
-      <template is="event" />
-      <template is="event" />
-      <template is="event" />
-      <template is="event" />
-      <template is="event" />
-    </van-tab>
     <van-tab title="结束日程">
-      <template is="event" />
-      <template is="event" />
+      <block wx:for="{{ event }}" wx:key="eventId">
+        <view wx:if="{{ item.eventStatus == '已结束' || item.eventStatus == '已完成' }}">
+          <template is="event" data="{{ ...item }}" />
+        </view>
+      </block>
+    </van-tab>
+    <van-tab title="当前日程">
+      <block wx:for="{{ event }}" wx:key="eventId">
+        <view wx:if="{{ item.eventStatus == '进行中' }}">
+          <template is="event" data="{{ ...item }}" />
+        </view>
+      </block>
     </van-tab>
     <van-tab title="星标日程">
+      <block wx:for="{{ event }}" wx:key="eventId">
+        <view wx:if="{{ item.eventStar }}">
+          <template is="event" data="{{ ...item }}" />
+        </view>
+      </block>
     </van-tab>
   </van-tabs>
 </view>
 
 <template name="event">
   <view class="container">
-    <van-panel title="这是一个事件" desc="数据库原理及运用（文军）" status="12 小时">
-      <view class="content">
-        完成数据库建模作业 P12-P13
+    <van-panel>
+      <view slot="header">
+        <van-cell
+          value="{{ eventEndDate }}"
+          label="{{ eventBindCourse }}"
+          center
+          clickable
+          bind:click="showEventOperation"
+          data-eventId="{{ eventId }}"
+          data-eventTitle="{{ eventTitle }}"
+          data-eventStatus="{{ eventStatus }}"
+          data-eventStar="{{ eventStar }}"
+        >
+          <view slot="title">
+            <view class="title">{{ eventTitle }}</view>
+            <van-tag type="primary" wx:if="{{ eventStatus == '进行中' }}" class="tag">进行中</van-tag>
+            <van-tag wx:elif="{{ eventStatus == '已完成' }}" class="tag">已完成</van-tag>
+            <van-tag type="danger" wx:elif="{{ eventStatus == '已结束' }}" class="tag">已结束</van-tag>
+            <van-tag plain type="success" wx:if="{{ eventSync }}" class="tag">同步</van-tag>
+            <van-tag plain color="#f2826a" wx:if="{{ eventStar }}" class="tag">星标</van-tag>
+          </view>
+        </van-cell>
+      </view>
+      <!-- 已完成日程使用删除线标注并置灰色 -->
+      <view class="content decorationText" wx:if="{{ eventStatus == '已完成' }}">
+        {{ eventDescription }}
+      </view>
+      <view class="content" wx:else>
+        {{ eventDescription }}
       </view>
     </van-panel>
   </view>
 </template>
 
 <template name="noEvent">
-
+  <!-- To do -->
 </template>
 
-<van-icon name="add" class="float-btn" bind:click="createEvent" />
+<van-icon
+  name="add"
+  class="float-btn"
+  bind:click="createEvent"
+/>
+
+<van-action-sheet
+  description="{{ selectEvent.title }}"
+  show="{{ showEventActionSheet }}"
+  actions="{{ eventOperations }}"
+  cancel-text="取消"
+  bind:cancel="eventActionSheetOnClose"
+  bind:close="eventActionSheetOnClose"
+  bind:select="eventActionSheetOnSelect"
+/>

@@ -3,6 +3,22 @@ page {
   height: 100%;
 }
 
+.title {
+  display: inline-block;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+.tag {
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.decorationText {
+  text-decoration:line-through;
+  color: grey;
+}
+
 .content {
   padding-left: 20px;
   padding-right: 20px;
@@ -13,7 +29,7 @@ page {
 
 .float-btn {
   position: fixed;
-  z-index: 9999;
+  z-index: 2;
   bottom: 0;
   right: 0;
   margin: 15px;

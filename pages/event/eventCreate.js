@@ -41,9 +41,9 @@ Page({
   coursePickerOnConfirm(value) {
     const courseName = value.detail.value.text;
     const courseClass = value.detail.value.class;
-    if (courseName === '未设置') {
+    if (courseName === '不选择') {
       this.setData({
-        selectCourse: null
+        selectCourse: '不选择'
       });
     } else {
       this.setData({
@@ -126,7 +126,7 @@ Page({
    */
   onReady: function () {
     var coursesArr = [];
-    coursesArr.push({ text: '未设置', class: 'null' });
+    coursesArr.push({ text: '不选择', class: 'null' });
     this.data.courses.forEach(function(course) {
       coursesArr.push({ text: course.courseName, class: course.class });
     });
