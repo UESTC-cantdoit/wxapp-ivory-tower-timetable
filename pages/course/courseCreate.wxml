@@ -53,6 +53,8 @@
     show="{{ timePickerOnShow }}"
     position="bottom"
     custom-style="height: 50%;"
+    round
+    bind:close="timeSelectOnCancel"
   >
     <van-picker
       show-toolbar

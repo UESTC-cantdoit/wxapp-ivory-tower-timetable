@@ -5,7 +5,6 @@
     "pages/getSubject/getSubject",
     "pages/event/event",
     "pages/event/eventCreate",
-    "pages/event/eventDetails",
     "pages/event/eventList",
     "pages/event/eventModify",
     "pages/class/classCreate",
@@ -59,12 +58,15 @@
     "van-field": "@vant/weapp/field/index",
     "van-switch": "@vant/weapp/switch/index",
     "van-picker": "@vant/weapp/picker/index",
-    "van-datetime-picker": "@vant/weapp/datetime-picker/index",
+    "van-calendar": "@vant/weapp/calendar/index",
     "van-popup": "@vant/weapp/popup/index",
     "van-notify": "@vant/weapp/notify/index",
     "van-loading": "@vant/weapp/loading/index",
     "van-tab": "@vant/weapp/tab/index",
     "van-tabs": "@vant/weapp/tabs/index",
-    "van-sticky": "@vant/weapp/sticky/index"
+    "van-sticky": "@vant/weapp/sticky/index",
+    "van-tag": "@vant/weapp/tag/index",
+    "van-image": "@vant/weapp/image/index",
+    "van-action-sheet": "@vant/weapp/action-sheet/index"
   }
 }

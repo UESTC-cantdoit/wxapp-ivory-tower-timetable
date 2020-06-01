@@ -12,8 +12,74 @@ Page({
    * 页面的初始数据
    */
   data: {
-    activeTab: 0,
+    activeTab: 1,
     tabEnd: 2, // 标签数量减一
+    showFloatBtn: true,
+    fadeAnimation: '',
+    event: [ // 获取时应按照 event 截止时间 eventEndDate 由早及晚依次获取
+      {
+        eventId: '22314',
+        eventTitle: '这是一个事件',
+        eventBindCourse: '数据库原理及运用',
+        eventStatus: '已完成',
+        eventEndDate: '2020-05-31', // 理论上直接使用 Date() 函数的值，这里是测试方便
+        eventDescription: '利用 Powerdesigner 完成数据库建模作业',
+        eventSync: true,
+        eventStar: false
+      },
+      {
+        eventId: '22315',
+        eventTitle: '这是另一个事件',
+        eventBindCourse: '微积分',
+        eventStatus: '进行中',
+        eventEndDate: '2020-06-12',
+        eventDescription: '在 MOOC 提交作业',
+        eventSync: false,
+        eventStar: true
+      },
+      {
+        eventId: '22316',
+        eventTitle: '这是又另一个事件',
+        eventBindCourse: '达芬奇',
+        eventStatus: '已结束',
+        eventEndDate: '2020-04-23',
+        eventDescription: '是一个艺术家',
+        eventSync: true,
+        eventStar: true
+      }
+    ],
+    showEventActionSheet: false,
+    eventOperations: [],
+    eventOperationModifyEventInfo: {
+      name: '修改日程信息',
+      className: 'modifyEventInfo'
+    },
+    eventOperationSetEventStar: {
+      name: '设置日程星标',
+      color: '#FF8533',
+      className: 'setEventStar'
+    },
+    eventOperationCancelEventStar: {
+      name: '取消日程星标',
+      color: '#FF3333',
+      className: 'cancelEventStar'
+    },
+    eventOperationSetEventFinished: {
+      name: '设置日程完成',
+      color: '#07c160',
+      className: 'setEventFinished'
+    },
+    eventOperationCancelEventFinished: {
+      name: '取消日程完成',
+      color: '#FF3333',
+      className: 'cancelEventFinished'
+    },
+    selectEvent: {
+      id: null,
+      title: null,
+      star: null,
+      status: null
+    }
   },
 
   createEvent() {
@@ -22,11 +88,109 @@ Page({
     })
   },
 
+  showEventOperation(event) {
+    const eventStar = event.currentTarget.dataset.eventstar;
+    const eventStatus = event.currentTarget.dataset.eventstatus;
+    let eventOperations = [];
+    if (eventStatus == '进行中') { // 进行中的日程可修改信息
+      eventOperations.push(this.data.eventOperationModifyEventInfo);
+    }
+    if (eventStar) { // 拥有星标的日程可以取消星标
+      eventOperations.push(this.data.eventOperationCancelEventStar);
+    } else { // 没有星标的日程可以设置星标
+      eventOperations.push(this.data.eventOperationSetEventStar);
+    }
+    if (eventStatus == '进行中' || eventStatus == '已结束') { // 进行中或已结束的日程可以设置已完成
+      eventOperations.push(this.data.eventOperationSetEventFinished);
+    } else {  // 设置已完成的日程可以取消已完成
+      eventOperations.push(this.data.eventOperationCancelEventFinished);
+    }
+    this.setData({
+      selectEvent: {
+        id: event.currentTarget.dataset.eventid,
+        title: event.currentTarget.dataset.eventtitle,
+        star: eventStar,
+        status: eventStatus
+      },
+      eventOperations: eventOperations,
+      showEventActionSheet: true
+    });
+  },
+
+  eventActionSheetOnClose() {
+    this.setData({
+      showEventActionSheet: false
+    })
+  },
+
+  eventActionSheetOnSelect(e) {
+    const eventId = this.data.selectEvent.id; // 该日程的 id
+    let event = this.data.event;
+    switch(e.detail.className) {
+      case 'modifyEventInfo':
+        // to do: 跳转到修改日程页面
+        wx.navigateTo({
+          url: '../event/eventModify?eventId=' + eventId
+        });
+        break;
+      case 'setEventFinished':
+        // to do: 设置该日程已完成
+        for (let i=0; i<event.length; i++) {
+          if (event[i].eventId == eventId) {
+            event[i].eventStatus = '已完成';
+            break;
+          }
+        }
+        this.setData({
+          event: event
+        })
+        break;
+      case 'setEventStar':
+        // to do: 设置该日程星标
+        for (let i=0; i<event.length; i++) {
+          if (event[i].eventId == eventId) {
+            event[i].eventStar = true;
+            break;
+          }
+        }
+        this.setData({
+          event: event
+        })
+        break;
+      case 'cancelEventFinished':
+        // to do: 取消设置该日程已完成
+        for (let i=0; i<event.length; i++) {
+          if (event[i].eventId == eventId) {
+            // if (event[i].eventEndDate > (new Date().getTime()))
+            event[i].eventStatus = '进行中';
+            // else
+            // event[i].eventStatus = '已结束';
+            break;
+          }
+        }
+        this.setData({
+          event: event
+        })
+        break;
+      case 'cancelEventStar':
+        // to do: 取消设置该日程星标
+        for (let i=0; i<event.length; i++) {
+          if (event[i].eventId == eventId) {
+            event[i].eventStar = false;
+            break;
+          }
+        }
+        this.setData({
+          event: event
+        })
+        break;
+    }
+  },
+
   /**
    * 触摸事件开始，初始化startX、startY和startTime
    */
   touchStart: function (e) {
-    console.log('touchStart', e)
     startX = e.touches[0].pageX; // 获取触摸时的x坐标  
     startY = e.touches[0].pageY; // 获取触摸时的x坐标
     startTime = new Date().getTime(); //获取毫秒数
@@ -45,7 +209,6 @@ Page({
    * 触摸事件结束
    */
   touchEnd: function (e) {
-    console.log('touchEnd', e)
     const activeTab = this.data.activeTab;
     const tabEnd = this.data.tabEnd;
     var endX = e.changedTouches[0].pageX;
@@ -63,35 +226,27 @@ Page({
         //左右滑动
         //③条件3（判断偏移量的正负）
         if (xOffset < 0) {
-          console.log('向左滑动')
           if (activeTab < tabEnd) {
             this.setData({
               activeTab: activeTab + 1
             })
-          } else {
-            console.log('标签页不变')
           }
         } else {
-          console.log('向右滑动')
           if (activeTab > 0) {
             this.setData({
               activeTab: activeTab - 1
             })
-          } else {
-            console.log('标签页不变')
           }
         }
       } else if (Math.abs(xOffset) < Math.abs(yOffset) && Math.abs(yOffset) >= minOffset) {
         //上下滑动
         //③条件3（判断偏移量的正负）
         if (yOffset < 0) {
-          console.log('向上滑动')
+
         } else {
-          console.log('向下滑动')
+
         }
       }
-    } else {
-      console.log('滑动时间过短', touchTime)
     }
   },
 
