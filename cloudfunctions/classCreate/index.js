@@ -11,7 +11,7 @@ exports.main = async (event, context) => {
         className: event.className,
         enableSearch: event.enableSearch,
         enableAnnouncement: event.enableAnnouncement,
-        openid: event.openid,
+        _openid: event.openid,
         classId: event.classId.toString(),
       }
     })

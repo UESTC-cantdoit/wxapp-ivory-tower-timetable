@@ -100,27 +100,6 @@ Page({
     });
   },
 
-//临时登录 
-  onGotUserInfo:function(e){
-    const that = this;
-    wx.cloud.callFunction({
-      name:"get_openid",
-      success:res=>{
-        console.log("云函数调用成功")
-        that.setData({
-          openid:res.result.openid,
-          userinfo: e.detail.userInfo
-        })
-        that.data.userinfo.openid = that.data.openid
-        console.log("userinfo", that.data.userinfo)
-      },
-      fail:res=>{
-        console.log("云函数调用失败")
-      }
-    })
-  },
-//测试用代码段
-
 
 
   /**

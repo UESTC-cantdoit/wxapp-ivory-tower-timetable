@@ -1,4 +1,5 @@
 // pages/class/classJoin.js
+const db = wx.cloud.database();
 Page({
 
   /**
@@ -47,7 +48,13 @@ Page({
       content: '您将加入班级：' + this.data.searchedClassName,
       success: (res) => {
         if (res.confirm) {
-          //TODO
+          //云数据库操作：添加记录
+          db.collection('users-class').add({
+            data: {
+              classId:this.data.searchedClassId
+            }
+          })
+          //云数据库操作结束
           console.log('Join class successfully.');
         } else {
           console.log('Cancel.');

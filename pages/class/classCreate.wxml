@@ -61,7 +61,3 @@
     loading-text="创建班级中..."
   />
 </view>
-
-<view wx:if="{{!openid}}">
-  <button open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="onGotUserInfo">登录</button>
-</view>

@@ -56,6 +56,26 @@ Page({
     })
   },
 
+  onGotUserInfo:function(e){
+    const that = this
+    wx.cloud.callFunction({
+      name:"get_openid",
+      success:res=>{
+        console.log("云函数调用成功")
+        that.setData({
+          openid:res.result.openid,
+          userinfo: e.detail.userInfo
+        })
+        that.data.userinfo.openid = that.data.openid
+        console.log("userinfo", that.data.userinfo)
+        wx.setStorageSync("userinfo", that.data.userinfo)
+      },
+      fail:res=>{
+        console.log("云函数调用失败")
+      }
+    })
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -74,7 +94,11 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.setData({
+      haveClass: getApp().globalData.haveClass,
+      applyClass: getApp().globalData.applyClass,
+      openid: getApp().globalData.userInfo.openid
+    })
   },
 
   /**
