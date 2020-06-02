@@ -6,7 +6,7 @@ Page({
    */
   data: {
     globalDisabled: true, // 根据是否为课程所有者判断
-    eventId: null,  // 通过路由传值获取
+    eventId: null,  // 通过路由传值自动获取
     courses: getApp().globalData.courses,
     coursePickerCourses: null,
     coursePickerOnShow: false,
