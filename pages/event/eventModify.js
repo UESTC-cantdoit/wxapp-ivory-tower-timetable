@@ -5,7 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    globalDisabled: true, // 根据是否为课程所有者判断
+    globalDisabled: true, // 根据是否为日程所有者判断
     eventId: null,  // 通过路由传值自动获取
     courses: getApp().globalData.courses,
     coursePickerCourses: null,
@@ -19,7 +19,7 @@ Page({
     datePickerOnShow: false,
     haveClass: getApp().globalData.haveClass,
     syncToClass: false, // 需要获取
-    onCreateEventProcess: false
+    onModifyEventProcess: false
   },
 
   inputEventName(value) {
@@ -104,16 +104,16 @@ Page({
     });
   },
 
-  createEvent() {
+  modifyEvent() {
     wx.showModal({
-      title: '创建日程',
-      content: '您将创建日程：' + this.data.eventName,
+      title: '修改日程',
+      content: '您将修改日程：' + this.data.eventName,
       success: (res) => {
         if (res.confirm) {
           this.setData({
-            onCreateEventProcess: true
+            onModifyEventProcess: true
           })
-          console.log('Create event successfully.');
+          console.log('Modify event successfully.');
         } else {
           console.log('Cancel.');
         }

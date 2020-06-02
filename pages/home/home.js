@@ -32,6 +32,12 @@ Page({
     })
   },
 
+  toAppSetting() {
+    wx.navigateTo({
+      url: '../setting/setting'
+    })
+  },
+
   toClassSetting() {
     wx.navigateTo({
       url: '../class/classSetting'

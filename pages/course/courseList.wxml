@@ -1,2 +1,79 @@
 <!--pages/course/courseList.wxml-->
-<text>pages/course/courseList.wxml</text>
+<van-index-bar wx:if="{{ course.length !== 0 }}" index-list="{{ anchorIndexList }}">
+  <view wx:for="{{ courseAnchorIndexList }}" wx:key="anchorIndex">
+    <template is="indexBarItem" data="{{ ...item }}" />
+  </view>
+  <van-divider contentPosition="center" class="background-text">没有您所修的课程？</van-divider>
+  <van-button
+    block
+    type="primary"
+    bind:click="createCourse"
+  >创建课程</van-button>
+</van-index-bar>
+
+<!-- 班级课程库没有课程时显示 -->
+<view wx:else>
+  <view class="background-title">Ops</view>
+  <view class="container center-item">
+    <van-image
+      round
+      width="20rem"
+      height="20rem"
+      src="https://i1.fuimg.com/720339/0d3c32d4969711da.jpg"
+    />
+    <view class="background-text">
+      <view>似乎还没有人添加课程到这里，</view>
+      <view>您就是第一个尝试吃“螃蟹”的人，</view>
+      <view>现在就创建同步课程吧！</view>
+    </view>
+    <van-divider />
+    <van-button
+      round
+      type="primary"
+      bind:click="createCourse"
+    >创建课程</van-button>
+  </view>
+</view>
+
+<template name="indexBarItem">
+  <view>
+    <van-index-anchor use-slot>
+      <view class="background-title">{{ anchorIndex }}</view>
+    </van-index-anchor>
+    <view wx:for="{{ course }}" wx:key="courseId">
+      <template is="course" data="{{ ...item }}" />
+    </view>
+  </view>
+</template>
+
+<template name="course">
+  <van-cell title="{{ courseName }}" label="{{ courseTeacher }}" center>
+    <view>
+      <!-- 非课程拥有者未添加课程时 -->
+      <van-button
+        plain
+        type="primary"
+        size="small"
+        bind:click="addToCourse"
+        data-courseId="{{ courseId }}"
+        wx:if="{{ !haveAddedToCourse }}"
+      >添加到课程表</van-button>
+      <!-- 非课程拥有者已添加课程后 -->
+      <van-button
+        type="danger"
+        size="small"
+        bind:click="removeFromCourse"
+        data-courseId="{{ courseId }}"
+        wx:elif="{{ haveAddedToCourse && !ownCourse }}"
+      >已添加此课程</van-button>
+      <!-- 课程拥有者 -->
+      <van-button
+        type="info"
+        size="small"
+        bind:click="modifyCourse"
+        data-courseId="{{ courseId }}"
+        wx:elif="{{ ownCourse }}"
+      >修改课程信息</van-button>
+    </view>
+  </van-cell>
+</template>
