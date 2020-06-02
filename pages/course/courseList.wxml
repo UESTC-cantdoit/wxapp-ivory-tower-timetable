@@ -8,7 +8,7 @@
     block
     type="primary"
     bind:click="createCourse"
-  >创建课程</van-button>
+  >新建课程</van-button>
 </van-index-bar>
 
 <!-- 班级课程库没有课程时显示 -->
@@ -31,7 +31,7 @@
       round
       type="primary"
       bind:click="createCourse"
-    >创建课程</van-button>
+    >新建课程</van-button>
   </view>
 </view>
 

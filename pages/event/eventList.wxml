@@ -2,22 +2,32 @@
 <view>
   <view class="background-title">其他用户的同步日程</view>
   <!-- 未检索到已添加课程的其他同学同步日程时，显示 emptyEventList -->
-  <view>
-    <template is="emptyEventList" wx:if="{{ event.length == 0 }}" data="{{ noteInfo }}" />
+  <view wx:if="{{ event.length == 0 }}">
+    <template is="emptyEventList" data="{{ noteInfo }}" />
   </view>
-  <view wx:for="{{ event }}" wx:key="eventId" wx:if="{{ event.length !== 0 }}">
-    <template is="event" data="{{ ...item }}" />
+  <view wx:else>
+    <view wx:for="{{ event }}" wx:key="eventId">
+      <template is="event" data="{{ ...item }}" />
+    </view>
   </view>
 </view>
 
 <view>
   <view class="background-title">您的同步日程</view>
   <!-- 未检索到用户的同步日程时，显示 emptyOwnEventList -->
-  <view>
-    <template is="emptyOwnEventList" wx:if="{{ event.length == 0 }}" />
+  <view wx:if="{{ event.length == 0 }}">
+    <template is="emptyOwnEventList" />
   </view>
-  <view wx:for="{{ event }}" wx:key="eventId" wx:if="{{ event.length !== 0 }}">
-    <template is="ownEvent" data="{{ ...item }}" />
+  <view wx:else>
+    <view wx:for="{{ event }}" wx:key="eventId">
+      <template is="ownEvent" data="{{ ...item }}" />
+    </view>
+    <van-divider contentPosition="center" class="background-text">为班级贡献更多</van-divider>
+    <van-button
+      block
+      type="primary"
+      bind:click="createEvent"
+    >新建日程</van-button>
   </view>
 </view>
 
@@ -123,6 +133,6 @@
       round
       type="primary"
       bind:click="createEvent"
-    >创建日程</van-button>
+    >新建日程</van-button>
   </view>
 </template>
