@@ -10,7 +10,9 @@ Page({
     coursePickerCourses: null,
     coursePickerOnShow: false,
     selectCourse: '不选择',
-    selectCourse_id: undefined,
+    selectCourse_id: null,
+    selectCourse_classId: null,
+    selectCourse_index: null,
     selectCourseBelongToClass: false,
     eventName: null,
     eventDescription: null,
@@ -41,6 +43,9 @@ Page({
   coursePickerOnConfirm(value) {
     const courseName = value.detail.value.text;
     const courseClass = value.detail.value.class;
+    this.setData({
+      selectCourse_index: value.detail.index,
+    });
     if (courseName === '不选择') {
       this.setData({
         selectCourse: '不选择'
@@ -48,11 +53,8 @@ Page({
     } else {
       this.setData({
         selectCourse: courseName,
-        selectCourse_id: course_id,
-        selectCourse_classId: course_classId
       });
     }
-
     if (courseClass === 'null') {
       this.setData({
         selectCourseBelongToClass: false
@@ -108,29 +110,36 @@ Page({
             onCreateEventProcess: true
           })
           //云数据库操作 添加记录至 events 集合
-          if (this.data.selectCourse == null) {
+          if (this.data.selectCourse == '不选择') {
             db.collection('events').add({
               data: {
                 eventName: this.data.eventName,
                 eventDescription: this.data.eventDescription,
-                endTime: this.data.selectEndTime,
+                endDate: this.data.selectEndDate,
               }
             })
           }else if (this.data.syncToClass == false){
+            this.setData({
+              selectCourse_id: this.data.courses[this.data.selectCourse_index-1]._id,
+            })
             db.collection('events').add({
               data: {
                 eventName: this.data.eventName,
                 eventDescription: this.data.eventDescription,
-                endTime: this.data.selectEndTime,
+                endDate: this.data.selectEndDate,
                 course_id: this.data.selectCourse_id
               }
             })
           }else if (this.data.syncToClass == true){
+            this.setData({
+              selectCourse_id: this.data.courses[this.data.selectCourse_index-1]._id,
+              selectCourse_classId: this.data.courses[this.data.selectCourse_index-1].classId
+            })
             db.collection('events').add({
               data: {
                 eventName: this.data.eventName,
                 eventDescription: this.data.eventDescription,
-                endTime: this.data.selectEndTime,
+                endDate: this.data.selectEndDate,
                 course_id: this.data.selectCourse_id,
                 course_classId: this.data.selectCourse_classId,
               }
@@ -157,13 +166,6 @@ Page({
    */
   onReady: function () {
     // var coursesArr = [];
-    // coursesArr.push({ text: '未设置', class: 'null' });
-    // this.data.courses.forEach(function(course) {
-    //   coursesArr.push({ text: course.courseName, class: course.class });
-    // });
-    // this.setData({ coursePickerCourses: coursesArr });
-    
-    // var coursesArr = [];
     // coursesArr.push({ text: '不选择', class: 'null' });
     // this.data.courses.forEach(function(course) {
     //   coursesArr.push({ text: course.courseName, class: course.class });
@@ -179,13 +181,11 @@ Page({
       courses: getApp().globalData.courses
     })
     var coursesArr = [];
-    coursesArr.push({ text: '未设置', class: 'null' });
+    coursesArr.push({ text: '不选择', class: 'null' });
     this.data.courses.forEach(function(course) {
       coursesArr.push({
         text: course.courseName,
         class: course.class,
-        _id: course._id,
-        classId: course.classId
       });
     });
     this.setData({ coursePickerCourses: coursesArr });
