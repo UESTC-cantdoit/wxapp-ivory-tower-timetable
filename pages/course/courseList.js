@@ -153,7 +153,7 @@ Page({
       function distinct(arr) {
         return Array.from(new Set(arr))
       }
-      distinct(anchorIndex);
+      anchorIndex = distinct(anchorIndex);
       //返回数据
       this.setData({
         anchorIndexList: anchorIndex,
