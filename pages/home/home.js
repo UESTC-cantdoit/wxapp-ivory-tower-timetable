@@ -32,6 +32,18 @@ Page({
     })
   },
 
+  toAppSetting() {
+    wx.navigateTo({
+      url: '../setting/setting'
+    })
+  },
+
+  toClassSetting() {
+    wx.navigateTo({
+      url: '../class/classSetting'
+    })
+  },
+
   toCourseList() {
     wx.navigateTo({
       url: '../course/courseList',

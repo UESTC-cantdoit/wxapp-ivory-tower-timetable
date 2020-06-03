@@ -81,20 +81,12 @@
 
 <view class="container">
   <view class="background-title">最后一步</view>
-  <!-- 确认创建日程过程时隐藏 -->
   <van-button
     type="primary"
     block
     disabled="{{ eventName==null || selectEndDateOnDisplay=='' }}"
     bind:click="createEvent"
-    wx:if="{{ !onCreateEventProcess }}"
-  >创建日程</van-button>
-  <!-- 确认创建日程过程时显示 -->
-  <van-button
-    type="primary"
-    block
-    wx:if="{{ onCreateEventProcess }}"
-    loading
+    loading="{{ onCreateEventProcess }}"
     loading-text="创建日程中..."
-  />
+  >创建日程</van-button>
 </view>

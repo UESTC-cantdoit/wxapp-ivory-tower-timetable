@@ -87,22 +87,14 @@
 
 <view class="container">
   <view class="background-title">最后一步</view>
-  <!-- 确认创建课程过程时隐藏 -->
   <van-button
     type="primary"
     block
     disabled="{{ courseName=='' || courseTeacher=='' || selectCourseTime.length==0 }}"
     bind:click="createCourse"
-    wx:if="{{ !onCreateCourseProcess }}"
-  >创建课程</van-button>
-  <!-- 确认创建课程过程时显示 -->
-  <van-button
-    type="primary"
-    block
-    wx:if="{{ onCreateCourseProcess }}"
-    loading
+    loading="{{ onCreateCourseProcess }}"
     loading-text="创建课程中..."
-  />
+  >创建课程</van-button>
 </view>
 
 <van-notify id="van-notify" />

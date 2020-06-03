@@ -84,7 +84,7 @@ Page({
 
   createEvent() {
     wx.navigateTo({
-      url: '../event/eventCreate'
+      url: 'eventCreate'
     })
   },
 
@@ -130,7 +130,7 @@ Page({
       case 'modifyEventInfo':
         // to do: 跳转到修改日程页面
         wx.navigateTo({
-          url: '../event/eventModify?eventId=' + eventId
+          url: 'eventModify?eventId=' + eventId
         });
         break;
       case 'setEventFinished':

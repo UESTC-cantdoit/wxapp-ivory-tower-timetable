@@ -14,7 +14,8 @@
     "pages/course/courseCreate",
     "pages/course/courseList",
     "pages/common/success",
-    "pages/common/ops"
+    "pages/common/ops",
+    "pages/course/courseModify"
   ],
   "window": {
     "navigationBarBackgroundColor": "#ffffff",
@@ -67,6 +68,7 @@
     "van-sticky": "@vant/weapp/sticky/index",
     "van-tag": "@vant/weapp/tag/index",
     "van-image": "@vant/weapp/image/index",
-    "van-action-sheet": "@vant/weapp/action-sheet/index"
+    "van-action-sheet": "@vant/weapp/action-sheet/index",
+    "van-divider": "@vant/weapp/divider/index"
   }
 }

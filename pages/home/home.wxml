@@ -23,7 +23,14 @@
 
 <view class="container" wx:if="{{ haveClass }}">
   <van-cell-group>
-    <van-cell title="我的班级" value="互加二班" icon="friends-o" size="large" />
+    <van-cell
+      title="我的班级"
+      value="互加二班"
+      icon="friends-o"
+      size="large"
+      clickable
+      bind:click="toClassSetting"
+    />
     <!-- value 显示活动中的课程数 -->
     <van-cell
       title="课程库"
@@ -68,11 +75,11 @@
 </view>
 
 <view class="container">
-  <van-cell title="偏好设置" icon="setting-o" size="large" is-link />
+  <van-cell title="偏好设置" icon="setting-o" size="large" is-link bind:click="toAppSetting" />
 </view>
 
 <view class="container">
-  <van-cell title="添加课程" label="临时进入按钮" icon="add-o" is-link bind:click="createCourse" />
+  <van-cell title="添加课程" label="临时进入按钮" icon="add-o" size="large" is-link bind:click="createCourse" />
 </view>
 
 <!-- 临时登录 -->

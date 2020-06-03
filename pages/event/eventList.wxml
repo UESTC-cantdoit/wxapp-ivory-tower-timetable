@@ -1,2 +1,138 @@
 <!--pages/event/eventList.wxml-->
-<text>pages/event/eventList.wxml</text>
+<view>
+  <view class="background-title">其他用户的同步日程</view>
+  <!-- 未检索到已添加课程的其他同学同步日程时，显示 emptyEventList -->
+  <view wx:if="{{ event.length == 0 }}">
+    <template is="emptyEventList" data="{{ noteInfo }}" />
+  </view>
+  <view wx:else>
+    <view wx:for="{{ event }}" wx:key="eventId">
+      <template is="event" data="{{ ...item }}" />
+    </view>
+  </view>
+</view>
+
+<view>
+  <view class="background-title">您的同步日程</view>
+  <!-- 未检索到用户的同步日程时，显示 emptyOwnEventList -->
+  <view wx:if="{{ event.length == 0 }}">
+    <template is="emptyOwnEventList" />
+  </view>
+  <view wx:else>
+    <view wx:for="{{ event }}" wx:key="eventId">
+      <template is="ownEvent" data="{{ ...item }}" />
+    </view>
+    <van-divider contentPosition="center" class="background-text">为班级贡献更多</van-divider>
+    <van-button
+      block
+      type="primary"
+      bind:click="createEvent"
+    >新建日程</van-button>
+  </view>
+</view>
+
+<!-- 其他用户的同步日程 -->
+<template name="event">
+  <view class="container">
+    <van-panel>
+      <view slot="header">
+        <van-cell
+          title="{{ eventTitle }}"
+          label="{{ eventBindCourse }}"
+          center
+        >
+          <view>
+            <view class="value">{{ eventEndDate }}</view>
+            <van-button
+              plain
+              type="primary"
+              size="small"
+              bind:click="addToEvent"
+              wx:if="{{ !inEvent }}"
+              data-eventId="{{ eventId }}"
+            >添加到日程</van-button>
+            <van-button
+              type="primary"
+              size="small"
+              bind:click="removeFromEvent"
+              wx:else
+              data-eventId="{{ eventId }}"
+            >已添加日程</van-button>
+          </view>
+        </van-cell>
+      </view>
+      <view class="content">
+        {{ eventDescription }}
+      </view>
+    </van-panel>
+  </view>
+</template>
+
+<!-- 此用户的同步日程 -->
+<template name="ownEvent">
+  <view class="container">
+    <van-panel>
+      <view slot="header">
+        <van-cell
+          title="{{ eventTitle }}"
+          label="{{ eventBindCourse }}"
+          center
+        >
+          <view>
+            <view class="value">{{ eventEndDate }}</view>
+            <van-button
+              plain
+              type="info"
+              size="small"
+              bind:click="modifyEvent"
+              data-eventId="{{ eventId }}"
+            >修改该日程</van-button>
+          </view>
+        </van-cell>
+      </view>
+      <view class="content">
+        {{ eventDescription }}
+      </view>
+    </van-panel>
+  </view>
+</template>
+
+<!-- 其他用户的同步日程为空时显示模板 -->
+<template name="emptyEventList">
+  <view class="container center-item">
+    <van-image
+      round
+      width="20rem"
+      height="20rem"
+      src="https://i1.fuimg.com/720339/8d4f0d07d52e2eb6.jpg"
+    />
+    <view
+      class="background-text"
+      style="display: inline-block;"
+    >{{ noteInfo }}</view>
+    <van-icon
+      name="question-o"
+      class="background-text-icon"
+      custom-style="top: 0.15rem;"
+      bind:click="switchNoteInfo"
+    />
+    <van-divider />
+  </view>
+</template>
+
+<!-- 该用户的同步日程为空时显示模板 -->
+<template name="emptyOwnEventList">
+  <view class="container center-item">
+    <view class="background-text">
+      <view>原谅不太认真的 Ta，</view>
+      <view>日程库的建设需要您，</view>
+      <view>现在就创建一个同步日程吧！</view>
+    </view>
+    <van-divider />
+    <van-button
+      round
+      type="primary"
+      bind:click="createEvent"
+    >新建日程</van-button>
+  </view>
+</template>

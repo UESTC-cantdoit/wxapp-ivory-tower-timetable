@@ -111,14 +111,9 @@
     type="primary"
     block
     disabled="{{ eventName==null || selectEndDateOnDisplay=='' }}"
-    bind:click="createEvent"
-    wx:if="{{ !onCreateEventProcess && !globalDisabled }}"
-  >确认修改日程</van-button>
-  <van-button
-    type="primary"
-    block
-    wx:if="{{ onCreateEventProcess }}"
-    loading
+    bind:click="modifyEvent"
+    wx:if="{{ !globalDisabled }}"
+    loading="{{ onModifyEventProcess }}"
     loading-text="修改日程中..."
-  />
+  >确认修改日程</van-button>
 </view>
