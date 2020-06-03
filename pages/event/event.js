@@ -1,4 +1,5 @@
 // pages/event/event.js
+const db = wx.cloud.database();
 // 滑动手势处理 https://www.jianshu.com/p/d4bb2f8eedc3
 let minOffset = 30; //最小偏移量，低于这个值不响应滑动处理
 let minTime = 40; // 最小时间，单位：毫秒，低于这个值不响应滑动处理
@@ -138,6 +139,15 @@ Page({
         for (let i=0; i<event.length; i++) {
           if (event[i].eventId == eventId) {
             event[i].eventStatus = '已完成';
+            //云数据库操作
+            db.collection('events').where({
+              _id:eventId
+            })
+            .update({
+              data:{
+                done: true
+              }
+            })
             break;
           }
         }
@@ -150,6 +160,14 @@ Page({
         for (let i=0; i<event.length; i++) {
           if (event[i].eventId == eventId) {
             event[i].eventStar = true;
+            db.collection('events').where({
+              _id:eventId
+            })
+            .update({
+              data:{
+                star: true
+              }
+            })
             break;
           }
         }
@@ -254,23 +272,21 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    this.getData();
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.getData();
   },
-
   /**
    * 生命周期函数--监听页面隐藏
    */
@@ -304,5 +320,174 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  getData: function () {
+    var eventArr = [];
+    //从云数据获取用户日程
+    db.collection('events')
+    // .aggregate().lookup({
+    //   from: 'courses',
+    //   localField: 'course_classId',
+    //   foreignField: 'classId',
+    //   as: 'courseName',
+    // })
+    // 以上联表查询无法使用 原因不明 
+    .where(db.command.or([
+      {
+        _openid: getApp().globalData.userInfo.openid
+      },
+      {
+        _openid: getApp().globalData.userInfo.openid,
+        course_classId: getApp().globalData.classId
+      }
+    ])
+    )
+    .orderBy('endDate', 'asc')
+    .get().then(res => {
+      console.log('events',res.data);
+      //格式化结果
+      for(let i=0;i<res.data.length;i++){
+        var event = res.data[i];
+        console.log('进入数组遍历',event);
+        //通过 course_id 获取 courseName 
+        //！BUG  推测为异步问题 应将异步操作同步化
+        if(event.course_id){
+          //查询云数据库 courses 集合
+          db.collection('courses')
+          .where({
+            _id: event.course_id
+          })
+          .field({courseName: true})
+          .get().then(res => {
+            console.log('获取到courseName',res);
+            event.eventBindCourse = res.data[0].courseName;
+          })
+        }
+        
+
+        var date = new Date();
+        //处理 eventStatus
+        if (!event.done) {
+          if (date > event.endDate) {
+            event.eventStatus = '已结束';
+          }else {
+            event.eventStatus = '进行中';
+          }
+        }else {
+          event.eventStatus = '已完成';
+        }
+        //处理 eventSync
+        if (event.course_classId) {
+          event.eventSync = true;
+        }else {
+          event.eventSync = false;
+        }
+          //处理 eventStar
+        if (event.star) {
+          event.eventStar = true;
+        }else {
+          event.eventStar = false;
+        }
+
+        const year = event.endDate.getFullYear();
+        const month = event.endDate.getMonth() + 1;
+        const day = event.endDate.getDate();
+        event.endDateOnDisplay = year + '-' + ((month > 10) ? month : ('0' + month)) + '-' + ((day > 10) ? day : ('0' + day));
+        
+        eventArr.push({
+          eventId: event._id,
+          eventTitle: event.eventName,
+          eventBindCourse: '临时课程',//event.eventBindCourse,//无法获取
+          eventStatus: event.eventStatus,
+          eventEndDate: event.endDateOnDisplay,
+          eventDescription: event.eventDescription,
+          eventSync: event.eventSync,
+          eventStar: event.eventStar
+        })
+      }
+      this.setData({
+        event: eventArr,
+      })
+      })
+  },
+  getDatabyCloud: function () {
+    console.log('进入事件');
+    var eventArr = [];
+    var that = this;
+    wx.cloud.callFunction({
+      name: 'get_event',
+      data: {
+        _openid: getApp().globalData.userInfo.openid,
+        course_classId: getApp().globalData.classId
+      },
+      success: (res) => {
+        console.log('events',res);
+      //格式化结果
+        for(let i=0;i<res.result.length;i++){
+          var event = res.result[i];
+          console.log('进入数组遍历',event);
+          //通过 course_id 获取 courseName 
+          var date = new Date();
+          //处理 eventStatus
+          if (!event.done) {
+            if (date > event.endDate) {
+              event.eventStatus = '已结束';
+            }else {
+              event.eventStatus = '进行中';
+            }
+          }else {
+            event.eventStatus = '已完成';
+          }
+          //处理 eventSync
+          if (event.course_classId) {
+            event.eventSync = true;
+          }else {
+            event.eventSync = false;
+          }
+            //处理 eventStar
+          if (event.star) {
+            event.eventStar = true;
+          }else {
+            event.eventStar = false;
+          }
+
+          event.endDateOnDisplay = event.endDate.substr(0,10);
+          
+          eventArr.push({
+            eventId: event._id,
+            eventTitle: event.eventName,
+            eventBindCourse: event.courseName,
+            eventStatus: event.eventStatus,
+            eventEndDate: event.endDateOnDisplay,
+            eventDescription: event.eventDescription,
+            eventSync: event.eventSync,
+            eventStar: event.eventStar
+          })
+        }
+        this.setData({
+          event: eventArr,
+        })
+
+      },
+      fail: err => {
+        console.log(err)
+      },
+    })
+
+    //从云数据获取用户日程
+    db.collection('events')
+    .where(db.command.or([
+      {
+        _openid: getApp().globalData.userInfo.openid
+      },
+      {
+        course_classId: getApp().globalData.classId
+      }
+    ])
+    )
+    .orderBy('endDate', 'asc')
+    .get().then(res => {
+      
+      })
   }
 })

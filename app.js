@@ -39,6 +39,7 @@ App({
     haveClass: false,
     applyClass: false,
     classId: '',
+    className: '',
     courses: [
       {courseName: '微积分', class: '互加二班'},
       {courseName: '概率论', class: '互加二班'},
@@ -50,22 +51,28 @@ App({
     const db = wx.cloud.database();
     //查询 user-class 集合，获取 haveClass 信息
     db.collection('users-class').where({
-      _openid:this.globalData.userInfo.openid,
+      _openid: this.globalData.userInfo.openid,
     }).get().then(res => {
       console.log("res",res);
       if (res.data.length !== 0) {
         if (res.data[0].classId) {
           this.globalData.haveClass = true;
           this.globalData.classId = res.data[0].classId;
+          db.collection('users-class').where({
+            _openid: this.globalData.userInfo.openid,
+            classId: res.data[0].classId
+          }).get().then( res1 => {
+            this.globalData.className = res1.data[0].className
+          })
           console.log("haveclass",this.globalData.haveClass);
-          console.log("classId",this.globalData.classId);
+          console.log("classId",this.globalData.classId)
         }
       }else {
         console.log("haveclass",this.globalData.haveClass)
         console.log("not found class")
       }
     })
-    //TODO 查询 courses 集合，获取 courses 信息
+    //查询 courses 集合，获取 courses 信息
     db.collection('courses')
     .where({
       _openid:this.globalData.userInfo.openid,

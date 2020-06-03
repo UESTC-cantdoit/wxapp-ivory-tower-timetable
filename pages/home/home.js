@@ -1,4 +1,5 @@
 // pages/home.js
+const db = wx.cloud.database();
 Page({
 
   /**
@@ -11,7 +12,8 @@ Page({
     activeCourseNum: 8,
     newCourseNum: 0,
     activeEventNum: 19,
-    newEventNum: 1
+    newEventNum: 1,
+    className: ''
   },
 
   onChangeCollapse(event) {
@@ -92,25 +94,21 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.getData();
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    this.getData();
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.setData({
-      haveClass: getApp().globalData.haveClass,
-      applyClass: getApp().globalData.applyClass,
-      openid: getApp().globalData.userInfo.openid
-    })
+    this.getData();
   },
 
   /**
@@ -146,5 +144,30 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  getData: function(){
+    //获取课程数量
+    db.collection('courses').where({
+      classId: getApp().globalData.classId
+    }).count().then( res => {
+      this.setData({
+        activeCourseNum: res.total
+      })
+    })
+    //获取日程数量
+    db.collection('events').where({
+      course_classId: getApp().globalData.classId,
+      pre_id: db.command.exists(false)
+    }).count().then( res => {
+      this.setData({
+        activeEventNum: res.total
+      })
+    })
+
+    this.setData({
+      haveClass: getApp().globalData.haveClass,
+      applyClass: getApp().globalData.applyClass,
+      openid: getApp().globalData.userInfo.openid
+    })
   }
 })

@@ -92,6 +92,9 @@ Page({
               })
             }
           })
+          this.setData({
+            onCreateCourseProcess: false
+          })
           console.log('Crate class successfully.');
         } else {
           console.log('Cancel.');

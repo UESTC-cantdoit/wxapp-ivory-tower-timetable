@@ -15,7 +15,7 @@ Page({
     selectCourse_index: null,
     selectCourseBelongToClass: false,
     eventName: null,
-    eventDescription: null,
+    eventDescription: '',
     selectEndDate: null,  // 标准 Date() 时间，为选择当天的零时零分零秒
     selectEndDateOnDisplay: '', // 显示在界面上的日期
     datePickerOnShow: false,
@@ -146,6 +146,9 @@ Page({
             })
           }
           //云数据库操作完成
+          this.setData({
+            onCreateEventProcess: false
+          })
           console.log('Create event successfully.');
         } else {
           console.log('Cancel.');

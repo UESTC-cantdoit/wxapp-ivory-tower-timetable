@@ -6,6 +6,13 @@ const db = cloud.database()
 // 云函数入口函数
 exports.main = async (event, context) => {
   try {
+    db.collection('users-class').add({
+      data: {
+        className: event.className,
+        _openid: event.openid,
+        classId: event.classId.toString(),
+      }
+    })
     return await db.collection('class').add({
       data: {
         className: event.className,

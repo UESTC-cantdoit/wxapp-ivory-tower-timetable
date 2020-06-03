@@ -159,6 +159,9 @@ Page({
             })
           }
           //数据库操作完成
+          this.setData({
+            onCreateCourseProcess: false
+          })
           console.log('Create course successfully.');
         } else {
           console.log('Cancel.');
