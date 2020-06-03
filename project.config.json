@@ -28,7 +28,7 @@
 		"userConfirmedUseCompilerModuleSwitch": false
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.11.0",
+	"libVersion": "2.11.1",
 	"appid": "wxf1ed36c4ecd942d7",
 	"projectname": "象牙塔课程表",
 	"debugOptions": {

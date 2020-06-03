@@ -4,8 +4,17 @@ Page({
   /**
    * 页面的初始数据
    */
-  data: {
+  data: { // 可以通过页面传值设置 data 中的任何数据，将渲染到页面上
+    titleDescription: '一点小小的',
+    accidentPlace: '尚未开拓的星球',
+    accidentInfo: '这可能是由于网络异常导致的',
+    buttonInfo: '返回主页'
+  },
 
+  nextStep() {
+    wx.switchTab({
+      url: '../home/home'
+    })
   },
 
   /**

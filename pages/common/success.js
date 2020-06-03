@@ -4,8 +4,17 @@ Page({
   /**
    * 页面的初始数据
    */
-  data: {
+  data: { // 可以通过页面传值设置 data 中的任何数据，将渲染到页面上
+    titleDescription: '巨大的',
+    actionName: '完成本次操作',
+    actionInfo: '',
+    buttonInfo: 'Got it!'
+  },
 
+  nextStep() {
+    wx.switchTab({
+      url: '../home/home'
+    })
   },
 
   /**

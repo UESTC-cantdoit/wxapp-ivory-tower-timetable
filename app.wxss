@@ -39,6 +39,11 @@ page {
   color: rgba(69,90,100,.6);
 }
 
+.center-item {
+  text-align: center;
+  margin: 0 auto;
+}
+
 .bottom-button {
   position: fixed;
   bottom: 0;
