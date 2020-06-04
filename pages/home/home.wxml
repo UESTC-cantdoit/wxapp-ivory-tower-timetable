@@ -32,7 +32,7 @@
   <van-cell-group>
     <van-cell
       title="我的班级"
-      value="互加二班"
+      value="{{ className }}"
       icon="friends-o"
       size="large"
       clickable

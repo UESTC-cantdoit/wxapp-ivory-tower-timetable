@@ -99,6 +99,7 @@ App({
         }
       })
       console.log("courses",this.globalData.courses);
+      
     })
   },
 })

@@ -86,6 +86,9 @@ Page({
       fail:res=>{
         console.log("云函数调用失败")
       }
+    })
+  },
+
   toSuccess() {
     wx.navigateTo({
       url: '../common/success'
@@ -104,12 +107,11 @@ Page({
   onLoad: function (options) {
     this.getData();
   },
-
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    this.getData();
+    // this.getData();
   },
 
   /**
@@ -154,6 +156,12 @@ Page({
 
   },
   getData: function(){
+    this.setData({
+      haveClass: getApp().globalData.haveClass,
+      applyClass: getApp().globalData.applyClass,
+      openid: getApp().globalData.userInfo.openid,
+      className: getApp().globalData.className,
+    })
     //获取课程数量
     db.collection('courses').where({
       classId: getApp().globalData.classId
@@ -171,11 +179,11 @@ Page({
         activeEventNum: res.total
       })
     })
+    //获取新增课程数
 
-    this.setData({
-      haveClass: getApp().globalData.haveClass,
-      applyClass: getApp().globalData.applyClass,
-      openid: getApp().globalData.userInfo.openid
-    })
+    //获取新增日程数
+
+    //获取需关注日程数
+    
   }
 })

@@ -171,114 +171,109 @@ Page({
   getData: function () {
     var eventArr = [];
     var pre_eventArr = [];
+    var that = this;
     //从云数据获取用户日程
-    db.collection('events')
-    // .aggregate().lookup({
-    //   from: 'courses',
-    //   localField: 'course_classId',
-    //   foreignField: 'classId',
-    //   as: 'courseName',
-    // })
-    // 以上联表查询无法使用 原因不明 
-    .where(
-      {
+    wx.cloud.callFunction({
+      name: 'get_event',
+      data: {
+        _openid: getApp().globalData.userInfo.openid,
         course_classId: getApp().globalData.classId
-      }
-    )
-    .orderBy('endDate', 'asc')
-    .get().then(res => {
-      console.log('events',res.data);
-      //格式化结果
-      for(let i=0;i<res.data.length;i++){
-        var event = res.data[i];
-        console.log('进入数组遍历',event);
-        //通过 course_id 获取 courseName 
-        //！BUG  推测为异步问题 应将异步操作同步化
-        if(event.course_id){
-          //查询云数据库 courses 集合
-          db.collection('courses')
-          .where({
-            _id: event.course_id
-          })
-          .field({courseName: true})
-          .get().then(res => {
-            console.log('获取到courseName',res);
-            event.eventBindCourse = res.data[0].courseName;
-          })
-        }
+      },
+      success: (res) => {
+        console.log('events',res);
+        //格式化结果
+        for(let i=0;i<res.result.list.length;i++){
+          var event = res.result.list[i];
         
-
-        var date = new Date();
-        //处理 eventStatus
-        if (!event.done) {
-          if (date > event.endDate) {
-            event.eventStatus = '已结束';
+          var date = new Date();
+          //处理 eventStatus
+          if (!event.done) {
+            if (date > event.endDate) {
+              event.eventStatus = '已结束';
+            }else {
+              event.eventStatus = '进行中';
+            }
           }else {
-            event.eventStatus = '进行中';
+            event.eventStatus = '已完成';
           }
-        }else {
-          event.eventStatus = '已完成';
-        }
-        //处理 eventSync
-        if (event.course_classId) {
-          event.eventSync = true;
-        }else {
-          event.eventSync = false;
-        }
-        //处理 eventStar
-        if (event.star) {
-          event.eventStar = true;
-        }else {
-          event.eventStar = false;
-        }
-        //处理 ownEvent 和 inEvent
-        if (event._openid == getApp().globalData.userInfo.openid ){
+          //处理 eventSync
+          if (event.course_classId) {
+            event.eventSync = true;
+          }else {
+            event.eventSync = false;
+          }
+          //处理 eventStar
+          if (event.star) {
+            event.eventStar = true;
+          }else {
+            event.eventStar = false;
+          }
+          //处理 ownEvent 和 inEvent
+          if (event._openid == getApp().globalData.userInfo.openid ){
+            if (event.pre_id) {
+              event.inEvent = true
+            }else{
+              event.ownEvent = true
+            } 
+          }
+          event.endDateOnDisplay = event.endDate.substr(0,10);
+
           if (event.pre_id) {
-            event.inEvent = true
-          }else{
-            event.ownEvent = true
-          } 
+            pre_eventArr.push({
+              pre_id: event.pre_id
+            })
+          }else {
+            if ( event.courseName.length !== 0 ) {
+              eventArr.push({
+                eventId: event._id,
+                eventTitle: event.eventName,
+                eventBindCourse: event.courseName[0].courseName,
+                eventStatus: event.eventStatus,
+                eventEndDate: event.endDateOnDisplay,
+                eventDescription: event.eventDescription,
+                eventSync: event.eventSync,
+                eventStar: event.eventStar,
+                eventCourseId: event.course_id,
+                eventClassId: event.course_classId,
+                eventOriEndDate: event.endDate,
+                ownEvent: event.ownEvent,
+                inEvent: event.inEvent,
+              })
+            }else{
+              eventArr.push({
+                eventId: event._id,
+                eventTitle: event.eventName,
+                eventBindCourse: '',
+                eventStatus: event.eventStatus,
+                eventEndDate: event.endDateOnDisplay,
+                eventDescription: event.eventDescription,
+                eventSync: event.eventSync,
+                eventStar: event.eventStar,
+                eventCourseId: event.course_id,
+                eventClassId: event.course_classId,
+                eventOriEndDate: event.endDate,
+                ownEvent: event.ownEvent,
+                inEvent: event.inEvent,
+              })
+            }
+            
+          }
+          
         }
-        const year = event.endDate.getFullYear();
-        const month = event.endDate.getMonth() + 1;
-        const day = event.endDate.getDate();
-        event.endDateOnDisplay = year + '-' + ((month > 10) ? month : ('0' + month)) + '-' + ((day > 10) ? day : ('0' + day));
-        if (event.pre_id) {
-          pre_eventArr.push({
-            pre_id: event.pre_id
-          })
-        }else {
-          eventArr.push({
-            eventId: event._id,
-            eventTitle: event.eventName,
-            eventBindCourse: '临时课程',//event.eventBindCourse,//无法获取
-            eventStatus: event.eventStatus,
-            eventEndDate: event.endDateOnDisplay,
-            eventDescription: event.eventDescription,
-            eventSync: event.eventSync,
-            eventStar: event.eventStar,
-            eventCourseId: event.course_id,
-            eventClassId: event.course_classId,
-            eventOriEndDate: event.endDate,
-            ownEvent: event.ownEvent,
-            inEvent: event.inEvent,
-          })
-        }
-        
-      }
-      //判断是否已添加到日程
-      for (let i = 0; i < pre_eventArr.length; i++) {
-        const pre_id = pre_eventArr[i].pre_id;
-        for (let j = 0; j < eventArr.length; j++) {
-          if (eventArr[j].eventId == pre_id) {
-            eventArr[j].inEvent = true;
+        //判断是否已添加到日程
+        for (let i = 0; i < pre_eventArr.length; i++) {
+          const pre_id = pre_eventArr[i].pre_id;
+          for (let j = 0; j < eventArr.length; j++) {
+            if (eventArr[j].eventId == pre_id) {
+              eventArr[j].inEvent = true;
+            }
           }
         }
+        console.log(eventArr);
+        this.setData({
+          event: eventArr,
+        })
       }
-      console.log(eventArr);
-      this.setData({
-        event: eventArr,
-      })
-      })
+    })
   },
 })
