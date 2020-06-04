@@ -179,11 +179,14 @@ Page({
         activeEventNum: res.total
       })
     })
-    //获取新增课程数
+    //TODO 获取新增课程数 newCourseNum
 
-    //获取新增日程数
+    //TODO 获取新增日程数 newEventNum 
 
-    //获取需关注日程数
-    
+    //TODO 获取需关注日程数 focusEventNum
+
+    //TODO 获取需关注日程 
+
+    //TODO 获取星标日程
   }
 })

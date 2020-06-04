@@ -59,7 +59,7 @@ Page({
     })
     .orderBy('courseName','asc')
     .get().then(res => {
-      console.log('course_res',res)
+      // console.log('course_res',res)
       //添加课程名称拼音
       var pinyinUtil = require('../../utils/pinyinUtil');
       res.data.forEach(function(course) {
@@ -78,7 +78,7 @@ Page({
         return 0;
         }  
       } 
-      console.log(res.data.sort(compare));
+      // console.log(res.data.sort(compare));
       
       var courseList = [];
       var anchorIndex = [];
@@ -123,7 +123,7 @@ Page({
             res.data.splice(i,1);
         }
       }
-      console.log(res.data);
+      // console.log(res.data);
       var other_coursesArr = [];
       if (res.data) {
         anchorIndex.push('#');

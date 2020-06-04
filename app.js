@@ -40,6 +40,7 @@ App({
     applyClass: false,
     classId: '',
     className: '',
+    classCreator: false,
     courses: [
       {courseName: '微积分', class: '互加二班'},
       {courseName: '概率论', class: '互加二班'},
@@ -53,22 +54,14 @@ App({
     db.collection('users-class').where({
       _openid: this.globalData.userInfo.openid,
     }).get().then(res => {
-      console.log("res",res);
+      // console.log("res",res);
       if (res.data.length !== 0) {
         if (res.data[0].classId) {
           this.globalData.haveClass = true;
           this.globalData.classId = res.data[0].classId;
-          db.collection('users-class').where({
-            _openid: this.globalData.userInfo.openid,
-            classId: res.data[0].classId
-          }).get().then( res1 => {
-            this.globalData.className = res1.data[0].className
-          })
-          console.log("haveclass",this.globalData.haveClass);
-          console.log("classId",this.globalData.classId)
+          this.globalData.className = res.data[0].className;
         }
       }else {
-        console.log("haveclass",this.globalData.haveClass)
         console.log("not found class")
       }
     })
@@ -80,7 +73,7 @@ App({
     .field({
       courseName: true,classId: true,
     }).get().then(res => {
-      console.log("res",res);
+      // console.log("res",res);
       this.globalData.courses = res.data;
       //处理数组中每个对象为指定格式
       this.globalData.courses.forEach(function(item){
@@ -98,7 +91,7 @@ App({
           item.class = 'null';
         }
       })
-      console.log("courses",this.globalData.courses);
+      // console.log("courses",this.globalData.courses);
       
     })
   },

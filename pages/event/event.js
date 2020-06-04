@@ -329,7 +329,6 @@ Page({
 
   },
   getDatabyCloud: function () {
-    console.log('进入事件');
     var eventArr = [];
     var that = this;
     wx.cloud.callFunction({
@@ -339,7 +338,7 @@ Page({
         course_classId: getApp().globalData.classId
       },
       success: (res) => {
-        console.log('events',res.result.list);
+        // console.log('events',res.result.list);
       //格式化结果
         for(let i=0;i<res.result.list.length;i++){
           var event = res.result.list[i];
@@ -367,7 +366,6 @@ Page({
           }else {
             event.eventStar = false;
           }
-          console.log(event.courseName)
           event.endDateOnDisplay = event.endDate.substr(0,10);
           if ( event.courseName.length !== 0 ) {
             eventArr.push({
