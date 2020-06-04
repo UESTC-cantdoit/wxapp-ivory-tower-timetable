@@ -1,2 +1,26 @@
-<!--pages/common/ops.wxml-->
-<text>pages/common/ops.wxml</text>
+<!-- 发生异常时，可选显示页面 -->
+<view class="container center-item">
+  <view class="body">
+    <van-image
+      round
+      width="20rem"
+      height="20rem"
+      src="https://i1.fuimg.com/720339/441869dc958d4dff.jpg"
+    />
+    <view class="background-title">
+      <view>{{ titleDescription }}意外</view>
+    </view>
+    <view class="background-text">
+      <view>您来到了{{ accidentPlace }}</view>
+      <view class="info">{{ accidentInfo }}</view>
+    </view>
+  </view>
+</view>
+
+<van-divider />
+
+<van-button
+  block
+  type="primary"
+  bind:click="nextStep"
+>{{ buttonInfo }}</van-button>

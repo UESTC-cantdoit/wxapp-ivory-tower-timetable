@@ -5,7 +5,101 @@ Page({
    * 页面的初始数据
    */
   data: {
+    className: '互加二班',
+    classId: 'hujia2ban',
+    enableSearch: true,
+    onUpdateClassProcess: false
+  },
 
+  inputClassName: function(e) {
+    this.setData({ className: e.detail });
+  },
+
+  copyClassId: function() { // 将班级编号添加到剪贴板
+    wx.setClipboardData({
+      data: this.data.classId,
+      success () {
+        wx.getClipboardData({
+          success (res) {
+            console.log('剪贴板：'+res.data) // data
+          }
+        })
+      }
+    })
+  },
+
+  enableSearchOnChange({ detail }) {
+    if (this.data.enableSearch === true) {
+      wx.showModal({
+        title: '提示',
+        content: '关闭后其它同学将不能使用班级号搜索并加入班级',
+        success: (res) => {
+          if (res.confirm) {
+            this.setData({ enableSearch: detail });
+          }
+        },
+      });
+    } else {
+      this.setData({ enableSearch: detail });
+    }
+  },
+
+  dismissClass() {  // 解散班级
+    wx.showModal({
+      title: '警告',
+      content: '班级解散后所有公有课程、公有日程都会消失，且每位同学都会回到未加入班级状态',
+      confirmColor: '#FF3333',
+      success: (res) => {
+        if (res.confirm) {
+          wx.showModal({
+            title: '如果您执意',
+            content: '点击解散班级按钮后就没有回头路了',
+            confirmText: '解散班级',
+            confirmColor: '#FF3333',
+            success: (res) => {
+              if (res.confirm) {
+                // todo
+              }
+            },
+          });
+        }
+      },
+    });
+  },
+
+  quitClass: function() { // 成员退出班级
+    wx.showModal({
+      title: '警告',
+      content: '退出班级后您添加的所有公有课程、公有日程都会消失',
+      confirmColor: '#FF3333',
+      success: (res) => {
+        if (res.confirm) {
+          wx.showModal({
+            title: '如果您执意',
+            content: '点击退出班级按钮离开当前班级',
+            confirmText: '退出班级',
+            confirmColor: '#FF3333',
+            success: (res) => {
+              if (res.confirm) {
+                // todo
+              }
+            },
+          });
+        }
+      },
+    });
+  },
+
+  updateClass() { // 更新班级信息
+    console.log('更新班级信息');
+    // todo
+    this.backToHome();
+  },
+
+  backToHome() {  // 回到首页
+    wx.switchTab({
+      url: '../home/home'
+    })
   },
 
   /**

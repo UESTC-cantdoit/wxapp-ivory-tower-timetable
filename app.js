@@ -36,7 +36,7 @@ App({
   },
   globalData:{
     userInfo: null,
-    haveClass: false,
+    haveClass: true,
     applyClass: false,
     classId: '',
     className: '',

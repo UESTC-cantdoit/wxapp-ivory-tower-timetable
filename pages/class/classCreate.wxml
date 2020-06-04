@@ -26,38 +26,16 @@
       同学只能通过二维码或邀请加入班级
     </view>
   </van-cell>
-  <van-cell title="启用公告" use-label-slot>
-    <view>
-      <van-switch
-        checked="{{ enableAnnouncement }}"
-        active-color="#07c160"
-        inactive-color="#ee0a24"
-        size="20px"
-        bind:change="enableAnnouncementOnChange"
-      />
-    </view>
-    <view slot="label" wx:if="{{ !enableAnnouncement }}">
-      您可以随时启用公告功能
-    </view>
-  </van-cell>
 </view>
 
 <view class="container">
   <view class="background-title">最后一步</view>
-  <!-- 确认创建班级过程时隐藏 -->
   <van-button
     type="primary"
     block
     disabled="{{ createClassDisabled }}"
     bind:click="createClass"
-    wx:if="{{ !onCreateClassProcess }}"
-  >创建班级</van-button>
-  <!-- 确认创建班级过程时显示 -->
-  <van-button
-    type="primary"
-    block
-    wx:if="{{ onCreateClassProcess }}"
-    loading
+    loading="{{ onCreateClassProcess }}"
     loading-text="创建班级中..."
-  />
+  >创建班级</van-button>
 </view>

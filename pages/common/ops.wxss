@@ -1,1 +1,8 @@
 /* pages/common/ops.wxss */
+.body {
+  padding-top: 20px;
+}
+
+.info {
+  padding-top: 5px;
+}

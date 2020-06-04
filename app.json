@@ -1,7 +1,6 @@
 {
   "pages": [
     "pages/home/home",
-    "pages/subject/subject",
     "pages/getSubject/getSubject",
     "pages/event/event",
     "pages/event/eventCreate",

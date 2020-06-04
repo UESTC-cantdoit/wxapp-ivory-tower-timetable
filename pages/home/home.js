@@ -7,7 +7,6 @@ Page({
    */
   data: {
     haveClass: getApp().globalData.haveClass,
-    applyClass: getApp().globalData.applyClass,
     activeCollapse: ['focusEvent'],
     activeCourseNum: 8,
     newCourseNum: 0,
@@ -87,6 +86,15 @@ Page({
       fail:res=>{
         console.log("云函数调用失败")
       }
+  toSuccess() {
+    wx.navigateTo({
+      url: '../common/success'
+    })
+  },
+
+  toOps() {
+    wx.navigateTo({
+      url: '../common/ops'
     })
   },
 
