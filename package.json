@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/UESTC-cantdoit/wxapp-ivory-tower-timetable#readme",
   "dependencies": {
-    "@vant/weapp": "^1.3.0"
+    "@vant/weapp": "^1.3.2"
   }
 }
