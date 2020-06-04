@@ -6,7 +6,6 @@ Page({
    */
   data: {
     haveClass: getApp().globalData.haveClass,
-    applyClass: getApp().globalData.applyClass,
     activeCollapse: ['focusEvent'],
     activeCourseNum: 8,
     newCourseNum: 0,

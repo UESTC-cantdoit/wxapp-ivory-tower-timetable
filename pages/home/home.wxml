@@ -1,10 +1,21 @@
 <!--pages/home.wxml-->
+<!-- 我的班级：尚未加入班级时 -->
 <view class="container" wx:if="{{ !haveClass }}">
-  <van-cell wx:if="{{ !applyClass }}" title="我的班级" label="您尚未加入班级哦" value="无" icon="friends-o" size="large" />
-  <van-cell wx:if="{{ applyClass }}" title="我的班级" label="申请加入班级 {{ applyClassName }}" value="无" icon="friends-o" size="large" />
+  <van-cell
+    title="我的班级"
+    label=""
+    value="无"
+    icon="friends-o"
+    size="large"
+    use-label-slot
+  >
+    <view slot="label">
+      <view>您尚未加入班级哦</view>
+    </view>
+  </van-cell>
   <van-panel use-footer-slot>
     <view slot="footer">
-      <van-row gutter="5" wx:if="{{ !applyClass }}">
+      <van-row gutter="5">
         <van-col span="12">
           <van-button type="info" block bind:click="createClass">创建班级</van-button>
         </van-col>
@@ -12,16 +23,12 @@
           <van-button type="primary" block bind:click="joinClass">加入班级</van-button>
         </van-col>
       </van-row>
-      <van-row wx:if="{{ applyClass }}">
-        <van-col span="24">
-          <van-button type="danger" plain block bind:click="cancelApply">取消加入班级申请</van-button>
-        </van-col>
-      </van-row>
     </view>
   </van-panel>
 </view>
 
-<view class="container" wx:if="{{ haveClass }}">
+<!-- 我的班级：已加入班级后 -->
+<view class="container" wx:else>
   <van-cell-group>
     <van-cell
       title="我的班级"
@@ -30,7 +37,13 @@
       size="large"
       clickable
       bind:click="toClassSetting"
-    />
+      use-label-slot
+    >
+      <!-- 当用户是班级创建者时，班级编号会显示在 label 处 -->
+      <view slot="label" wx:if="{{ isClassCreator }}">
+        班级编号：523543t
+      </view>
+    </van-cell>
     <!-- value 显示活动中的课程数 -->
     <van-cell
       title="课程库"
@@ -58,18 +71,19 @@
   </van-cell-group>
 </view>
 
+<!-- 我的日程 -->
 <view class="container">
   <van-cell title="我的日程" icon="underway-o" size="large">
     <van-icon slot="right-icon" name="plus" bind:click="createEvent" />
   </van-cell>
   <van-collapse value="{{ activeCollapse }}" bind:change="onChangeCollapse" border="false">
     <van-collapse-item title="关注日程" label="您有 {{ focusEventNum }} 项需要关注的日程" name="focusEvent">
-      <van-cell title="微积分作业" clickable value="12 小时" />
-      <van-cell title="数据库建模" clickable value="16 小时" />
-      <van-cell title="数学建模小组会议" clickable value="1 天 06 小时" />
+      <van-cell title="微积分作业" clickable value="今日截止" />
+      <van-cell title="数据库建模" clickable value="明日截止" />
+      <van-cell title="数学建模小组会议" clickable value="明日截止" />
     </van-collapse-item>
     <van-collapse-item title="星标日程" name="starEvent">
-      <van-cell title="微信小程序设计" clickable value="17 天 23 小时" />
+      <van-cell title="微信小程序设计" clickable value="17 天" />
     </van-collapse-item>
   </van-collapse>
 </view>

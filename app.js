@@ -26,8 +26,7 @@ App({
   },
   globalData:{
     userInfo: null,
-    haveClass: false,
-    applyClass: false,
+    haveClass: true,
     courses: [
       {courseName: '微积分', class: '互加二班'},
       {courseName: '概率论', class: '互加二班'},

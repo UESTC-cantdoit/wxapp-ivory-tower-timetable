@@ -54,6 +54,11 @@ Page({
       name: '修改日程信息',
       className: 'modifyEventInfo'
     },
+    eventOperationModifyEventInfoDisabled: {
+      name: '修改日程信息',
+      className: 'modifyEventInfo',
+      disabled: true
+    },
     eventOperationSetEventStar: {
       name: '设置日程星标',
       color: '#FF8533',
@@ -61,7 +66,7 @@ Page({
     },
     eventOperationCancelEventStar: {
       name: '取消日程星标',
-      color: '#FF3333',
+      color: '#FF8533',
       className: 'cancelEventStar'
     },
     eventOperationSetEventFinished: {
@@ -94,6 +99,8 @@ Page({
     let eventOperations = [];
     if (eventStatus == '进行中') { // 进行中的日程可修改信息
       eventOperations.push(this.data.eventOperationModifyEventInfo);
+    } else {
+      eventOperations.push(this.data.eventOperationModifyEventInfoDisabled);
     }
     if (eventStar) { // 拥有星标的日程可以取消星标
       eventOperations.push(this.data.eventOperationCancelEventStar);

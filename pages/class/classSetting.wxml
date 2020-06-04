@@ -1,2 +1,80 @@
 <!--pages/class/classSetting.wxml-->
-<text>pages/class/classSetting.wxml</text>
+<!-- 只有班级创建者可以修改信息或设置 -->
+<view class="container">
+  <view class="background-title">班级信息</view>
+  <van-field
+    disabled="{{ !isClassCreator }}"
+    label="班级名称"
+    placeholder="{{ className }}"
+    input-align="right"
+    maxlength="12"
+    clearable
+    bind:input="inputClassName"
+  />
+  <van-cell
+    title="班级编号"
+    label="搜索班级编号以加入班级"
+    value="{{ classId }}"
+    clickable
+    bind:click="copyClassId"
+  />
+</view>
+
+<view class="container">
+  <view class="background-title">班级设置</view>
+  <van-cell title="允许被搜索" use-label-slot>
+    <view>
+      <van-switch
+        disabled="{{ !isClassCreator }}"
+        checked="{{ enableSearch }}"
+        active-color="#07c160"
+        inactive-color="#ee0a24"
+        size="20px"
+        bind:change="enableSearchOnChange"
+      />
+    </view>
+    <view slot="label" wx:if="{{ !enableSearch }}">
+      同学只能通过二维码或邀请加入班级
+    </view>
+  </van-cell>
+</view>
+
+<view class="container" style="padding-top: 20px;">
+  <!-- 班级创建者 -->
+  <van-row wx:if="{{ isClassCreator }}" gutter="5">
+    <van-col span="8">
+      <van-button
+        type="danger"
+        block
+        bind:click="dismissClass"
+      >解散班级</van-button>
+    </van-col>
+    <van-col span="16">
+      <van-button
+        type="primary"
+        block
+        disabled="{{ className == '' }}"
+        bind:click="updateClass"
+        loading="{{ onUpdateClassProcess }}"
+        loading-text="更新班级信息中..."
+      >更新班级信息</van-button>
+    </van-col>
+  </van-row>
+  <!-- 班级成员 -->
+  <van-row wx:else gutter="5">
+    <van-col span="8">
+      <van-button
+        type="danger"
+        block
+        bind:click="quitClass"
+      >退出班级</van-button>
+    </van-col>
+    <van-col span="16">
+      <van-button
+        type="primary"
+        block
+        bind:click="backToHome"
+      >回到主页</van-button>
+    </van-col>
+  </van-row>
+</view>
