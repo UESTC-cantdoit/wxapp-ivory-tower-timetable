@@ -7,35 +7,40 @@
 </view>
 
 <scroll-view scroll-y="true" class="scroll">
-  <view style="height:1200rpx; width:730rpx; display:flex;">
+  <view style="height:100%; width:100%; display:flex;">
     <!-- 左侧上课节数 -->
     <view style="background-color:#D2E6B3; color:#7cba23;">
       <view
         wx:for="{{ displayCourse }}"
         class="left"
-      >
-        {{item}}
-      </view>
+      >{{item}}</view>
     </view>
 
     <!-- 时间分割线 -->
-    <view
-      wx:for="{{ displayCourse }}"
-    >
-      <view style="width:750rpx; margin-top:{{(index+1)*100}}rpx; position:absolute; border-bottom:1rpx solid {{index==3?'red':'lightgray'}};" />
+    <view wx:for="{{ displayCourse }}">
+      <view style="width:100%; margin-top:{{(index+1)*100}}rpx; position:absolute; border-bottom:1rpx solid {{index==3?'red':'lightgray'}};" />
     </view>
 
     <!-- 课表内容 -->
-    <view wx:for="{{ wlist }}">
+    <view wx:for="{{ course }}">
       <view
         class="flex-item kcb-item"
-        bindtap="showCardView"
-        data-statu="open"
-        data-index="{{index}}"
+        bindtap="showPopup"
+        data-courseId="courseId"
         style="margin-left:{{(item.xqj-1)*100}}rpx; margin-top:{{(item.skjc-1)*100+5}}rpx; height:{{item.skcd*100-5}}rpx; background-color:{{colorArrays[index%2]}}"
       >
-        <view class="smalltext" >{{item.kcmc}}</view>
+        <view class="smalltext" >
+          <view>{{ item.courseName }}</view>
+          <view>{{ item.coursePlace }}</view>
+        </view>
       </view>
     </view>
   </view>
 </scroll-view>
+
+<!-- 点击具体课程后显示嵌入课程信息和相关操作的遮盖层 -->
+<van-popup show="{{ showPopup }}" bind:close="hidePopup" z-index="9999">
+  <view class="popupContent">
+    内容
+  </view>
+</van-popup>

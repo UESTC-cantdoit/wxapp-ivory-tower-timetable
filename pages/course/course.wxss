@@ -35,7 +35,7 @@
 }
 
 .scroll {
-  height: 1170rpx;
+  height: 100%;
   z-index: 101;
   position: fixed;
 }
@@ -49,12 +49,7 @@
   align-items: center;
 }
 
-.bottom{
-  width: 750rpx;
-  margin: 0 auto;
-  text-align: center;
-  position:fixed;
-  bottom:0px;
-  z-index:99999;
-  font-size: 9pt;
+.popupContent {
+  font-size: 16px;
+  padding: 30px;
 }
