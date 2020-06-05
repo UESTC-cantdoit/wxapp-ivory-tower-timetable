@@ -32,7 +32,7 @@
   <van-cell-group>
     <van-cell
       title="我的班级"
-      value="{{ className }}"
+      value="互加二班"
       icon="friends-o"
       size="large"
       clickable
@@ -94,11 +94,6 @@
 
 <view class="container">
   <van-cell title="添加课程" label="临时进入按钮" icon="add-o" size="large" is-link bind:click="createCourse" />
-</view>
-
-<!-- 临时登录 -->
-<view wx:if="{{!openid}}">
-  <button open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="onGotUserInfo">登录</button>
 </view>
 
 <view class="container">
