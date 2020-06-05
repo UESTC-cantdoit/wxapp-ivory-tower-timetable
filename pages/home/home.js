@@ -6,10 +6,10 @@ Page({
    */
   data: {
     haveClass: getApp().globalData.haveClass,
-    activeCourseNum: 8,
-    newCourseNum: 0,
-    activeEventNum: 19,
-    newEventNum: 1,
+    activeCourseNum: 8, // 当前班级中的同步课程数
+    newCourseNum: 0,  // 自用户上次登录以来新增的课程数
+    activeEventNum: 19, // 仅显示用户添加的同步课程的同步日程数
+    newEventNum: 1, // 自用户上次登录以来新增的日程数
     focusEvent: [ // 应按照截止时间由早及晚排序
       {
         eventId: 1234,
@@ -27,7 +27,6 @@ Page({
         eventEndStatus: '2020-06-09'
       }
     ],
-    focusEventNum: 3, // 获取即将截止的日程数 focusEvent.length
     starEvent: [
       {
         eventId: 12,
@@ -39,8 +38,7 @@ Page({
         eventName: '微信小程序设计',
         eventEndStatus: '2020-06-15'
       }
-    ],
-    starEventNum: 1,  // 获取星标日程数 starEvent.length
+    ]
   },
 
   createClass() {

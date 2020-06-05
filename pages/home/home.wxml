@@ -85,7 +85,7 @@
           <van-tag type="primary" class="cellTag">进行中</van-tag>
         </view>
         <view slot="label">
-          <view wx:if="{{ focusEventNum != 0 }}">您有 {{ focusEventNum }} 项需要关注的日程</view>
+          <view wx:if="{{ focusEvent.length != 0 }}">您有 {{ focusEvent.length }} 项需要关注的日程</view>
           <view wx:else>干得好！没有即将截止的日程</view>
         </view>
       </van-cell>
@@ -105,7 +105,7 @@
           <van-tag plain color="#f2826a" class="cellTag">星标</van-tag>
         </view>
         <view slot="label">
-          <view wx:if="{{ starEventNum == 0 }}">为您喜爱的日程添加星标吧</view>
+          <view wx:if="{{ starEvent.length == 0 }}">为您喜爱的日程添加星标吧</view>
         </view>
       </van-cell>
     </view>
