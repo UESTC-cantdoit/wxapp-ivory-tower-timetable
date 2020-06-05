@@ -1,7 +1,6 @@
 {
   "pages": [
     "pages/home/home",
-    "pages/getSubject/getSubject",
     "pages/event/event",
     "pages/event/eventCreate",
     "pages/event/eventList",
@@ -14,7 +13,8 @@
     "pages/course/courseList",
     "pages/common/success",
     "pages/common/ops",
-    "pages/course/courseModify"
+    "pages/course/courseModify",
+    "pages/course/course"
   ],
   "window": {
     "navigationBarBackgroundColor": "#ffffff",
@@ -30,7 +30,7 @@
         "selectedIconPath": "icons/主页_selected.png"
       },
       {
-        "pagePath": "pages/getSubject/getSubject",
+        "pagePath": "pages/course/course",
         "text": "课表",
         "iconPath": "icons/课表.png",
         "selectedIconPath": "icons/课表_selected.png"
