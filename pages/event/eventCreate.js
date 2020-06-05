@@ -1,4 +1,5 @@
 // pages/event/eventCreate.js
+const db = wx.cloud.database();
 Page({
 
   /**
@@ -9,9 +10,12 @@ Page({
     coursePickerCourses: null,
     coursePickerOnShow: false,
     selectCourse: '不选择',
+    selectCourse_id: null,
+    selectCourse_classId: null,
+    selectCourse_index: null,
     selectCourseBelongToClass: false,
     eventName: null,
-    eventDescription: null,
+    eventDescription: '',
     selectEndDate: null,  // 标准 Date() 时间，为选择当天的零时零分零秒
     selectEndDateOnDisplay: '', // 显示在界面上的日期
     datePickerOnShow: false,
@@ -39,16 +43,18 @@ Page({
   coursePickerOnConfirm(value) {
     const courseName = value.detail.value.text;
     const courseClass = value.detail.value.class;
+    this.setData({
+      selectCourse_index: value.detail.index,
+    });
     if (courseName === '不选择') {
       this.setData({
         selectCourse: '不选择'
       });
     } else {
       this.setData({
-        selectCourse: courseName
+        selectCourse: courseName,
       });
     }
-
     if (courseClass === 'null') {
       this.setData({
         selectCourseBelongToClass: false
@@ -103,6 +109,46 @@ Page({
           this.setData({
             onCreateEventProcess: true
           })
+          //云数据库操作 添加记录至 events 集合
+          if (this.data.selectCourse == '不选择') {
+            db.collection('events').add({
+              data: {
+                eventName: this.data.eventName,
+                eventDescription: this.data.eventDescription,
+                endDate: this.data.selectEndDate,
+              }
+            })
+          }else if (this.data.syncToClass == false){
+            this.setData({
+              selectCourse_id: this.data.courses[this.data.selectCourse_index-1]._id,
+            })
+            db.collection('events').add({
+              data: {
+                eventName: this.data.eventName,
+                eventDescription: this.data.eventDescription,
+                endDate: this.data.selectEndDate,
+                course_id: this.data.selectCourse_id
+              }
+            })
+          }else if (this.data.syncToClass == true){
+            this.setData({
+              selectCourse_id: this.data.courses[this.data.selectCourse_index-1]._id,
+              selectCourse_classId: this.data.courses[this.data.selectCourse_index-1].classId
+            })
+            db.collection('events').add({
+              data: {
+                eventName: this.data.eventName,
+                eventDescription: this.data.eventDescription,
+                endDate: this.data.selectEndDate,
+                course_id: this.data.selectCourse_id,
+                course_classId: this.data.selectCourse_classId,
+              }
+            })
+          }
+          //云数据库操作完成
+          this.setData({
+            onCreateEventProcess: false
+          })
           console.log('Create event successfully.');
         } else {
           console.log('Cancel.');
@@ -122,23 +168,36 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    var coursesArr = [];
-    coursesArr.push({ text: '不选择', class: 'null' });
-    this.data.courses.forEach(function(course) {
-      coursesArr.push({ text: course.courseName, class: course.class });
-    });
-    this.setData({ coursePickerCourses: coursesArr });
+    // var coursesArr = [];
+    // coursesArr.push({ text: '不选择', class: 'null' });
+    // this.data.courses.forEach(function(course) {
+    //   coursesArr.push({ text: course.courseName, class: course.class });
+    // });
+    // this.setData({ coursePickerCourses: coursesArr });
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    this.setData({
+      courses: getApp().globalData.courses
+    })
+    var coursesArr = [];
+    coursesArr.push({ text: '不选择', class: 'null' });
+    this.data.courses.forEach(function(course) {
+      coursesArr.push({
+        text: course.courseName,
+        class: course.class,
+      });
+    });
+    this.setData({ coursePickerCourses: coursesArr });
 
   },
 
   /**
    * 生命周期函数--监听页面隐藏
+   *  
    */
   onHide: function () {
 

@@ -1,6 +1,8 @@
 // pages/course/courseCreate.js
 import Notify from '../../miniprogram_npm/@vant/weapp/notify/notify';
 
+const db = wx.cloud.database();
+
 Page({
 
   /**
@@ -137,6 +139,29 @@ Page({
           this.setData({
             onCreateCourseProcess: true
           })
+          //云数据库操作：添加记录至 courses 集合
+          if (this.data.syncToClass == true) {
+            db.collection('courses').add({
+              data: {
+                courseName: this.data.courseName,
+                courseTeacher: this.data.courseTeacher,
+                courseTime: this.data.selectCourseTime,
+                classId: getApp().globalData.classId
+              }
+            })
+          }else {
+            db.collection('courses').add({
+              data: {
+                courseName:this.data.courseName,
+                courseTeacher:this.data.courseTeacher,
+                courseTime:this.data.selectCourseTime
+              }
+            })
+          }
+          //数据库操作完成
+          this.setData({
+            onCreateCourseProcess: false
+          })
           console.log('Create course successfully.');
         } else {
           console.log('Cancel.');
@@ -163,7 +188,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.setData({
+      haveClass: getApp().globalData.haveClass,
+    })
   },
 
   /**

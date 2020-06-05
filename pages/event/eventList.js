@@ -1,4 +1,5 @@
 // pages/event/eventList.js
+const db = wx.cloud.database();
 Page({
 
   /**
@@ -65,12 +66,44 @@ Page({
     console.log(e);
     const eventId = e.currentTarget.dataset.eventid;
     // to do: 将目标日程添加到日程中
+    let index = this.data.event.findIndex(function(event){
+      return event.eventId == eventId;
+    })
+    console
+    db.collection('events').add({
+      data: {
+        eventName: this.data.event[index].eventTitle,
+        eventDescription: this.data.event[index].eventDescription,
+        endDate: this.data.event[index].eventOriEndDate,
+        course_id: this.data.event[index].eventCourseId,
+        course_classId: this.data.event[index].eventClassId,
+        pre_id: eventId,
+      }
+    })
+    this.setData({
+      [`event[${index}].inEvent`]: true
+    })
+    
   },
 
   removeFromEvent(e) {
     console.log(e);
     const eventId = e.currentTarget.dataset.eventid;
     // to do: 将目标日程从日程中移除
+    try {
+      db.collection('events').where({
+        _openid: getApp().globalData.userInfo.openid,
+        pre_id: eventId
+      }).remove()
+    } catch(e) {
+      console.error(e)
+    }
+    let index = this.data.event.findIndex(function(event){
+      return event.eventId == eventId;
+    })
+    this.setData({
+      [`event[${index}].inEvent`]: false
+    })
   },
 
   modifyEvent(e) {
@@ -91,7 +124,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    this.getData();
   },
 
   /**
@@ -134,5 +167,113 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
+  },
+  getData: function () {
+    var eventArr = [];
+    var pre_eventArr = [];
+    var that = this;
+    //从云数据获取用户日程
+    wx.cloud.callFunction({
+      name: 'get_event',
+      data: {
+        _openid: getApp().globalData.userInfo.openid,
+        course_classId: getApp().globalData.classId
+      },
+      success: (res) => {
+        // console.log('events',res);
+        //格式化结果
+        for(let i=0;i<res.result.list.length;i++){
+          var event = res.result.list[i];
+        
+          var date = new Date();
+          //处理 eventStatus
+          if (!event.done) {
+            if (date > event.endDate) {
+              event.eventStatus = '已结束';
+            }else {
+              event.eventStatus = '进行中';
+            }
+          }else {
+            event.eventStatus = '已完成';
+          }
+          //处理 eventSync
+          if (event.course_classId) {
+            event.eventSync = true;
+          }else {
+            event.eventSync = false;
+          }
+          //处理 eventStar
+          if (event.star) {
+            event.eventStar = true;
+          }else {
+            event.eventStar = false;
+          }
+          //处理 ownEvent 和 inEvent
+          if (event._openid == getApp().globalData.userInfo.openid ){
+            if (event.pre_id) {
+              event.inEvent = true
+            }else{
+              event.ownEvent = true
+            } 
+          }
+          event.endDateOnDisplay = event.endDate.substr(0,10);
+
+          if (event.pre_id) {
+            pre_eventArr.push({
+              pre_id: event.pre_id
+            })
+          }else {
+            if ( event.courseName.length !== 0 ) {
+              eventArr.push({
+                eventId: event._id,
+                eventTitle: event.eventName,
+                eventBindCourse: event.courseName[0].courseName,
+                eventStatus: event.eventStatus,
+                eventEndDate: event.endDateOnDisplay,
+                eventDescription: event.eventDescription,
+                eventSync: event.eventSync,
+                eventStar: event.eventStar,
+                eventCourseId: event.course_id,
+                eventClassId: event.course_classId,
+                eventOriEndDate: event.endDate,
+                ownEvent: event.ownEvent,
+                inEvent: event.inEvent,
+              })
+            }else{
+              eventArr.push({
+                eventId: event._id,
+                eventTitle: event.eventName,
+                eventBindCourse: '',
+                eventStatus: event.eventStatus,
+                eventEndDate: event.endDateOnDisplay,
+                eventDescription: event.eventDescription,
+                eventSync: event.eventSync,
+                eventStar: event.eventStar,
+                eventCourseId: event.course_id,
+                eventClassId: event.course_classId,
+                eventOriEndDate: event.endDate,
+                ownEvent: event.ownEvent,
+                inEvent: event.inEvent,
+              })
+            }
+            
+          }
+          
+        }
+        //判断是否已添加到日程
+        for (let i = 0; i < pre_eventArr.length; i++) {
+          const pre_id = pre_eventArr[i].pre_id;
+          for (let j = 0; j < eventArr.length; j++) {
+            if (eventArr[j].eventId == pre_id) {
+              eventArr[j].inEvent = true;
+            }
+          }
+        }
+        // console.log(eventArr);
+        this.setData({
+          event: eventArr,
+        })
+      }
+    })
+  },
 })

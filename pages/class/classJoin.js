@@ -1,4 +1,5 @@
 // pages/class/classJoin.js
+const db = wx.cloud.database();
 Page({
 
   /**
@@ -17,18 +18,27 @@ Page({
   },
 
   searchClass: function(e) {
-    if (this.data.classId !== '') {
-      this.setData({
-        searchedClassId: this.data.classId,
-        haveSearchedClass: true,
-        classExist: false
-      });
-      if (this.data.searchedClassId === 'test') {
-        this.setData({
-          searchedClassName: '互加二班',
-          classExist: true
-        });
-      }
+    if (this.data.classId !== undefined) { 
+      console.log(this.data.classId);
+      const that = this ;
+      wx.cloud.callFunction({
+        name: 'search_classId',
+        data:{
+          classId:that.data.classId
+        },
+        success:res=>{
+          console.log("res",res.result);
+          console.log("classid",that.data.classId)
+          if (res.result.data.length !== 0) {
+            that.setData({
+              searchedClassId: that.data.classId,
+              haveSearchedClass: true,
+              searchedClassName: res.result.data[0].className,
+              classExist: true
+            });
+          }
+        }
+      })
     }
   },
 
@@ -38,6 +48,13 @@ Page({
       content: '您将加入班级：' + this.data.searchedClassName,
       success: (res) => {
         if (res.confirm) {
+          //云数据库操作：添加记录
+          db.collection('users-class').add({
+            data: {
+              classId:this.data.searchedClassId
+            }
+          })
+          //云数据库操作结束
           console.log('Join class successfully.');
         } else {
           console.log('Cancel.');

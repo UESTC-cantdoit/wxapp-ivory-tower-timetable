@@ -1,4 +1,5 @@
 // pages/event/event.js
+const db = wx.cloud.database();
 // 滑动手势处理 https://www.jianshu.com/p/d4bb2f8eedc3
 let minOffset = 30; //最小偏移量，低于这个值不响应滑动处理
 let minTime = 40; // 最小时间，单位：毫秒，低于这个值不响应滑动处理
@@ -145,6 +146,15 @@ Page({
         for (let i=0; i<event.length; i++) {
           if (event[i].eventId == eventId) {
             event[i].eventStatus = '已完成';
+            //云数据库操作
+            db.collection('events').where({
+              _id:eventId
+            })
+            .update({
+              data:{
+                done: true
+              }
+            })
             break;
           }
         }
@@ -157,6 +167,14 @@ Page({
         for (let i=0; i<event.length; i++) {
           if (event[i].eventId == eventId) {
             event[i].eventStar = true;
+            db.collection('events').where({
+              _id:eventId
+            })
+            .update({
+              data:{
+                star: true
+              }
+            })
             break;
           }
         }
@@ -261,23 +279,21 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    this.getDatabyCloud();
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.getDatabyCloud();
   },
-
   /**
    * 生命周期函数--监听页面隐藏
    */
@@ -311,5 +327,80 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  getDatabyCloud: function () {
+    var eventArr = [];
+    var that = this;
+    wx.cloud.callFunction({
+      name: 'get_event',
+      data: {
+        _openid: getApp().globalData.userInfo.openid,
+        course_classId: getApp().globalData.classId
+      },
+      success: (res) => {
+        // console.log('events',res.result.list);
+      //格式化结果
+        for(let i=0;i<res.result.list.length;i++){
+          var event = res.result.list[i];
+  
+          var date = new Date();
+          //处理 eventStatus
+          if (!event.done) {
+            if (date > event.endDate) {
+              event.eventStatus = '已结束';
+            }else {
+              event.eventStatus = '进行中';
+            }
+          }else {
+            event.eventStatus = '已完成';
+          }
+          //处理 eventSync
+          if (event.course_classId) {
+            event.eventSync = true;
+          }else {
+            event.eventSync = false;
+          }
+            //处理 eventStar
+          if (event.star) {
+            event.eventStar = true;
+          }else {
+            event.eventStar = false;
+          }
+          event.endDateOnDisplay = event.endDate.substr(0,10);
+          if ( event.courseName.length !== 0 ) {
+            eventArr.push({
+              eventId: event._id,
+              eventTitle: event.eventName,
+              eventBindCourse: event.courseName[0].courseName,
+              eventStatus: event.eventStatus,
+              eventEndDate: event.endDateOnDisplay,
+              eventDescription: event.eventDescription,
+              eventSync: event.eventSync,
+              eventStar: event.eventStar
+            })
+          }else {
+            eventArr.push({
+              eventId: event._id,
+              eventTitle: event.eventName,
+              eventBindCourse: '',
+              eventStatus: event.eventStatus,
+              eventEndDate: event.endDateOnDisplay,
+              eventDescription: event.eventDescription,
+              eventSync: event.eventSync,
+              eventStar: event.eventStar
+            })
+          }
+          
+          
+        }
+        that.setData({
+          event: eventArr,
+        })
+
+      },
+      fail: err => {
+        console.log(err)
+      },
+    })
   }
 })

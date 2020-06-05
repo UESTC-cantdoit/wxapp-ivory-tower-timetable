@@ -1,4 +1,5 @@
 // pages/course/courseList.js
+const db = wx.cloud.database();
 Page({
 
   /**
@@ -10,57 +11,13 @@ Page({
      * todo: 生成 courseAnchorIndexList 后生成；
      *       每一项应按英文字符顺序排序
      */
-    anchorIndexList: ['X', 'W', 'S'],
+    anchorIndexList: [],
     /**
      * courseAnchorIndexList 用于渲染页面
      * todo: 'onReady: function()' 函数体内读取公用课程信息后生成；
      *       每一项应按 anchorIndex 英文字符顺序排序
      */
-    courseAnchorIndexList: [
-      {
-        anchorIndex: 'X',
-        course: [
-          {
-            courseId: '123',
-            courseName: '学术英语',
-            courseTeacher: '某老师',
-            haveAddedToCourse: false, // 是否已经添加到此用户的课程表
-            ownCourse: false  // 用户是否为该课程的所有者（courseOwnerId == userId）
-          }
-        ]
-      },
-      {
-        anchorIndex: 'W',
-        course: [
-          {
-            courseId: '22917',
-            courseName: '微积分',
-            courseTeacher: '黄某某',
-            haveAddedToCourse: false,
-            ownCourse: false
-          }
-        ]
-      },
-      {
-        anchorIndex: 'S',
-        course: [
-          {
-            courseId: '229247',
-            courseName: '数据库原理及运用',
-            courseTeacher: '文某',
-            haveAddedToCourse: false,
-            ownCourse: false
-          },
-          {
-            courseId: '229249',
-            courseName: '数据库原理及运用',
-            courseTeacher: '张xx',
-            haveAddedToCourse: false,
-            ownCourse: false
-          }
-        ]
-      }
-    ]
+    courseAnchorIndexList: []
   },
 
   createCourse() {
@@ -96,7 +53,113 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
+    db.collection('courses')
+    .where({
+      classId: getApp().globalData.classId
+    })
+    .orderBy('courseName','asc')
+    .get().then(res => {
+      // console.log('course_res',res)
+      //添加课程名称拼音
+      var pinyinUtil = require('../../utils/pinyinUtil');
+      res.data.forEach(function(course) {
+        course.pinyin = pinyinUtil.getFirstLetter(course.courseName);
+        course.first_pinyin = pinyinUtil.getFirstLetter(course.courseName).substr(0,1).toUpperCase();
+      })
+      //按照拼音排序
+      var compare = function (course1, course2) {
+        var val1 = course1.pinyin;
+        var val2 = course2.pinyin;
+        if (val1 < val2) {
+        return -1;
+        } else if (val1 > val2) {
+        return 1;
+        } else {
+        return 0;
+        }  
+      } 
+      // console.log(res.data.sort(compare));
+      
+      var courseList = [];
+      var anchorIndex = [];
+      
+      for(var i=0;i<26;i++){
+        var coursesArr = []; //暂存某一索引下的课程
+        var courseExist = false;
+        res.data.forEach(function(course) {
+          if (course.first_pinyin == String.fromCharCode(65+i)) {
+            anchorIndex.push(String.fromCharCode(65+i));
+            courseExist = true;
+            course.normalAnchor = true;
+            course.haveAddedToCourse = false;
+            if (0) {
+              //TODO 判断是否已经添加到此用户的课程表
+            }
+            course.ownCourse = false;
+            if (course._openid == getApp().globalData.userInfo.openid) {
+              course.ownCourse = true;
+            }
 
+            coursesArr.push({
+                  courseId: course._id,
+                  courseName: course.courseName,
+                  courseTeacher: course.courseTeacher,
+                  haveAddedToCourse: course.haveAddedToCourse,
+                  ownCourse: course.ownCourse,
+            })
+          }
+        })
+        
+        if (courseExist) {
+          courseList.push({
+            anchorIndex: String.fromCharCode(65+i),
+            course: coursesArr
+          });
+        }
+      }
+      //处理特殊首字母
+      for(let i=res.data.length-1; i>=0; i--){
+        if(res.data[i].normalAnchor == true){
+            res.data.splice(i,1);
+        }
+      }
+      // console.log(res.data);
+      var other_coursesArr = [];
+      if (res.data) {
+        anchorIndex.push('#');
+        res.data.forEach(function(course) {
+          course.haveAddedToCourse = false;
+          if (0) {
+            //TODO 判断是否已经添加到此用户的课程表
+          }
+          course.ownCourse = false;
+          if (course._openid == getApp().globalData.userInfo.openid) {
+            course.ownCourse = true;
+          }
+          other_coursesArr.push({
+                  courseId: course._id,
+                  courseName: course.courseName,
+                  courseTeacher: course.courseTeacher,
+                  haveAddedToCourse: course.haveAddedToCourse,
+                  ownCourse: course.ownCourse,
+            })
+        })
+        courseList.push({
+          anchorIndex: '#',
+          course: other_coursesArr
+        });
+      }
+      //索引去重
+      function distinct(arr) {
+        return Array.from(new Set(arr))
+      }
+      anchorIndex = distinct(anchorIndex);
+      //返回数据
+      this.setData({
+        anchorIndexList: anchorIndex,
+        courseAnchorIndexList: courseList
+      })
+    })
   },
 
   /**

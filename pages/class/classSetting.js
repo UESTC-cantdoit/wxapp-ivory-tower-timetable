@@ -1,4 +1,5 @@
 // pages/class/classSetting.js
+const db = wx.cloud.database();
 Page({
 
   /**
@@ -7,8 +8,9 @@ Page({
   data: {
     className: '互加二班',
     classId: 'hujia2ban',
-    enableSearch: true,
-    onUpdateClassProcess: false
+    enableSearch: false,
+    onUpdateClassProcess: false,
+    isClassCreator: false
   },
 
   inputClassName: function(e) {
@@ -36,12 +38,30 @@ Page({
         success: (res) => {
           if (res.confirm) {
             this.setData({ enableSearch: detail });
+            db.collection('class').where({
+              _openid: getApp().globalData.userInfo.openid,
+              classId: getApp().globalData.classId
+            }).update({
+              data: {
+                enableSearch: detail
+              }
+            })
           }
         },
       });
     } else {
       this.setData({ enableSearch: detail });
+      db.collection('class').where({
+        _openid: getApp().globalData.userInfo.openid,
+        classId: getApp().globalData.classId
+      }).update({
+        data: {
+          enableSearch: detail
+        }
+      })
     }
+    console.log(this.data.enableSearch)
+    console.log(detail)
   },
 
   dismissClass() {  // 解散班级
@@ -106,7 +126,31 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.setData({
+      className: getApp().globalData.className,
+      classId: getApp().globalData.classId,
+    })
+    db.collection('class').where({
+      _openid: getApp().globalData.userInfo.openid,
+      classId: getApp().globalData.classId
+    }).get().then( res => {
+      // console.log(res)
+      if (res.data.length !== 0) {
+        this.setData({
+          isClassCreator: true,
+          enableSearch: res.data[0].enableSearch,
+        })
+      }
+    })
+    db.collection('class').where({
+      classId: getApp().globalData.classId
+    }).get().then( res => {
+      if (res.data.length !== 0) {
+        this.setData({
+          enableSearch: res.data[0].enableSearch,
+        })
+      }
+    })
   },
 
   /**
@@ -127,7 +171,6 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
   },
 
   /**
