@@ -1,6 +1,6 @@
 {
   "name": "wxapp-ivory-tower-timetable",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "一款基于微信小程序开发的由课程驱动的大学生专用待办事项工具。",
   "main": "app.js",
   "scripts": {

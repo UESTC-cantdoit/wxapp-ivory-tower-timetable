@@ -1,4 +1,14 @@
 <!--pages/home.wxml-->
+<view class="container">
+  <van-notice-bar
+    wrapable
+    scrollable="false"
+    left-icon="info-o"
+    color="#FF3333"
+    text="当前小程序仅展示已完成的页面交互和部分页面逻辑，未连接云服务器，非最终完成版本，请留意！"
+  />
+</view>
+
 <!-- 我的班级：尚未加入班级时 -->
 <view class="container" wx:if="{{ !haveClass }}">
   <van-cell

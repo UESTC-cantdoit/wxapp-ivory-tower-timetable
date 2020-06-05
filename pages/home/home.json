@@ -1,6 +1,6 @@
 {
   "usingComponents": {
-
+    "van-notice-bar": "@vant/weapp/notice-bar/index"
   },
   "navigationBarTitleText": "象牙塔课程表"
 }
