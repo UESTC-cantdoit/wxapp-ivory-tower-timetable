@@ -15,10 +15,17 @@ exports.main = async (event, context) => {
     foreignField: '_id',
     as: 'courseName',
   })
-  .match(
+  .match(db.command.or([
     {
-      _openid: event.openid
+      course_classId: event.classId,
+      pre_id: db.command.exists(false)
+    },
+    {
+      _openid: event.openid,
+      course_classId: event.classId,
+      pre_id: db.command.exists(true)
     }
+  ])
   )
   .sort({endDate: 1})
   .end()

@@ -117,7 +117,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    
   },
 
   /**
@@ -131,7 +131,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.getData();
   },
 
   /**
@@ -174,10 +174,10 @@ Page({
     var that = this;
     //从云数据获取用户日程
     wx.cloud.callFunction({
-      name: 'get_event',
+      name: 'get_class_event',
       data: {
         _openid: getApp().globalData.userInfo.openid,
-        course_classId: getApp().globalData.classId
+        classId: getApp().globalData.classId
       },
       success: (res) => {
         // console.log('events',res);
