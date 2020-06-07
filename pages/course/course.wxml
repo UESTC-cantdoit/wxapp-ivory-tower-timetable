@@ -1,42 +1,46 @@
-<!-- 顶部周内日期 -->
-<view class="top">
-  <view
-    wx:for="{{ displayDay }}"
-    class="top-text"
-  >周{{item}}</view>
-</view>
-
-<scroll-view scroll-y="true" class="scroll">
-  <view style="height:100%; width:100%; display:flex;">
-    <!-- 左侧上课节数 -->
-    <view style="background-color:#D2E6B3; color:#7cba23;">
-      <view
-        wx:for="{{ displayCourse }}"
-        class="left"
-      >{{item}}</view>
-    </view>
-
-    <!-- 时间分割线 -->
-    <view wx:for="{{ displayCourse }}">
-      <view style="width:100%; margin-top:{{(index+1)*100}}rpx; position:absolute; border-bottom:1rpx solid {{index==3?'red':'lightgray'}};" />
-    </view>
-
-    <!-- 课表内容 -->
-    <view wx:for="{{ course }}">
-      <view
-        class="flex-item kcb-item"
-        bindtap="showPopup"
-        data-courseId="courseId"
-        style="margin-left:{{(item.xqj-1)*100}}rpx; margin-top:{{(item.skjc-1)*100+5}}rpx; height:{{item.skcd*100-5}}rpx; background-color:{{colorArrays[index%2]}}"
-      >
-        <view class="smalltext" >
-          <view>{{ item.courseName }}</view>
-          <view>{{ item.coursePlace }}</view>
-        </view>
+<!-- 顶部日期栏 -->
+<van-sticky>
+  <van-grid column-num="{{ displayDayNum + 1 }}">
+    <van-grid-item use-slot custom-class="top-left-grid-item">
+      <view class="top-left-item">
+        <view wx:if="{{ displayDayNum == 7 }}">周</view>
+        <view wx:else>课表</view>
       </view>
+    </van-grid-item>
+    <view wx:for="{{ displayDay }}" wx:key="*this">
+      <van-grid-item use-slot custom-class="top-grid-item">
+        <view class="top-item">
+          <view wx:if="{{ displayDayNum == 7 }}">{{ item }}</view>
+          <view wx:else>周{{ item }}</view>
+        </view>
+      </van-grid-item>
     </view>
+  </van-grid>
+</van-sticky>
+
+
+<!-- 课程表：先渲染生成 grid 块，再绑定数据 -->
+<van-grid column-num="{{ displayDayNum + 1 }}">
+  <view wx:for="{{ courseTimetable }}" wx:key="gridId">
+    <template is="course" data="{{ ...item }}" />
   </view>
-</scroll-view>
+</van-grid>
+
+<!-- 课程 template -->
+<template name="course">
+  <van-grid-item
+    use-slot
+    custom-class="course-grid-item"
+    bind:click="showCourseDetails"
+    data-courseId="{{ courseId }}"
+  >
+    <!-- 左侧：课程节数 -->
+    <view class="courseNum">{{ courseNum }}</view>
+    <!-- 中间：课程信息 -->
+    <view class="courseName">{{ courseName }}</view>
+    <view class="coursePlace">{{ coursePlace }}</view>
+  </van-grid-item>
+</template>
 
 <!-- 点击具体课程后显示嵌入课程信息和相关操作的遮盖层 -->
 <van-popup show="{{ showPopup }}" bind:close="hidePopup" z-index="9999">

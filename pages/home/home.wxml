@@ -119,7 +119,7 @@
 
 <template name="focusEventItem">
   <van-cell
-    title="| {{ eventName }}"
+    title="{{ eventName }}"
     value="{{ eventEndStatus }}"
     clickable
     data-eventId="{{ eventId }}"
@@ -129,7 +129,7 @@
 
 <template name="starEventItem">
   <van-cell
-    title="| {{ eventName }}"
+    title="{{ eventName }}"
     value="{{ eventEndStatus }}"
     clickable
     data-eventId="{{ eventId }}"

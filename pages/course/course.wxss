@@ -1,55 +1,57 @@
-.flex-item {
-  width: 95rpx;
-  height: 100px;
-}
-
-.kcb-item {
-  position: absolute;
-  justify-content: center;
-  display: flex;
-  align-items: center;
-  border-radius: 5px;
-}
-
-.smalltext {
-  font-size: 8pt;
-  color: #fff;
-  padding-left: 2px;
-}
-
-.top {
-  display: flex;
-  flex-direction: row;
-  margin-left: 35rpx;
-  background-color: #d2e6b3;
-  color: #7cba23;
-}
-
-.top-text {
-  width: 100rpx;
-  height: 35rpx;
-  font-size: 9pt;
-  justify-content: center;
-  display: flex;
-  align-items: center;
-}
-
-.scroll {
-  height: 100%;
-  z-index: 101;
-  position: fixed;
-}
-
-.left {
-  width: 35rpx;
-  height: 100rpx;
-  font-size: 9pt;
-  justify-content: center;
-  display: flex;
-  align-items: center;
+.topDayLine {
+  word-wrap:break-word;
+  word-break:normal; 
 }
 
 .popupContent {
   font-size: 16px;
   padding: 30px;
+}
+
+/* 左上角单元格 */
+.top-left-grid-item {
+  height: 2rem;
+
+}
+
+/* 左上角单元格文字内容 */
+.top-left-item {
+  font-size: 16px;
+
+}
+
+/* 上方单元格 */
+.top-grid-item {
+  height: 2rem;
+
+}
+
+/* 上方单元格文字内容 */
+.top-item {
+  font-size: 16px;
+
+}
+
+/* 课程表单元格 */
+.course-grid-item {
+  height: 4rem;
+}
+
+/* 课程表单元格左侧课程节数文字内容 */
+.courseNum {
+
+}
+
+/* 课程表单元格课程名文字内容 */
+.courseName {
+  font-size: 10px;
+}
+
+/* 课程表单元格课程上课地点文字内容 */
+.coursePlace {
+  font-size: 10px;
+}
+
+.popupContent {
+
 }
