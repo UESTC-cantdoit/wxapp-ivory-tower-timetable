@@ -4,7 +4,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    displayDayNum: 5, // 由偏好设置获取；显示的天数，可选值为“5”和“7”
+    displayDayNum: 7, // 由偏好设置获取；显示的天数，可选值为“5”和“7”
     displayDay: ['一', '二', '三', '四', '五', '六', '日'], // 根据 displayDayNum 生成
     displayCourseNum: 14, // 由偏好设置获取；显示的每天课程数，可选值为“11”至“14”
     displayCourse: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], // 根据 displayCourseNum 生成
@@ -48,12 +48,39 @@ Page({
     ],
     showPopup: false,
     courseTimetable: [], // onLoad 中加载生成，处理 course 信息并添加到此处
+    selectCourseInfo: {
+      courseId: null,
+      courseName: '',
+      courseTeacher: '',
+      coursePlace: ''
+    }
   },
 
-  showCardView: function (e) {
-    wx.navigateTo({
-      url: 'courseModify?courseId=' + e.currentTarget.courseId
-    });
+  showCourseDetails(e) {
+    const courseId = e.currentTarget.dataset.courseid;
+    if (courseId != null) { // 点击课程项时
+      const courseName = e.currentTarget.dataset.coursename;
+      const courseTeacher = e.currentTarget.dataset.courseteacher;
+      const coursePlace = e.currentTarget.dataset.courseplace;
+      this.setData({
+        selectCourseInfo: {
+          courseId: courseId,
+          courseName: courseName,
+          courseTeacher: courseTeacher,
+          coursePlace: coursePlace
+        }
+      });
+    } else {  // 点击非课程项时
+      this.setData({
+        selectCourseInfo: {
+          courseId: null,
+          courseName: '',
+          courseTeacher: '',
+          coursePlace: ''
+        }
+      });
+    }
+    this.showPopup();
   },
 
   showPopup() {
@@ -65,6 +92,29 @@ Page({
   hidePopup() {
     this.setData({
       showPopup: false
+    });
+  },
+
+  modifyCourse() {
+    const courseId = this.data.selectCourseInfo.courseId;
+    this.hidePopup();
+    wx.navigateTo({
+      url: 'courseModify?courseId=' + courseId
+    });
+  },
+
+  addEvent() {
+    const courseId = this.data.selectCourseInfo.courseId;
+    this.hidePopup();
+    wx.navigateTo({
+      url: '../event/eventCreate?courseId=' + courseId
+    });
+  },
+
+  addCourse() {
+    this.hidePopup();
+    wx.navigateTo({
+      url: 'courseCreate'
     });
   },
 
@@ -107,6 +157,7 @@ Page({
           gridId: i,
           courseId: null,
           courseName: '',
+          courseTeacher: '',
           coursePlace: ''
         });
       }
@@ -115,6 +166,7 @@ Page({
     for (let i = 0; i < course.length; i++) { // 依次获取课程信息
       const courseId = course[i].courseId;
       const courseName = course[i].courseName;
+      const courseTeacher = course[i].courseTeacher;
       const coursePlace = course[i].coursePlace;
       const courseTime = course[i].courseTime;
       for (let n = 0; n < courseTime.length; n++) { // 依次获取该课程的上课时间信息
@@ -125,6 +177,7 @@ Page({
           courseTimetable[(t - 1) * (displayDayNum + 1) + day] = ({
             courseId: courseId,
             courseName: courseName,
+            courseTeacher: courseTeacher,
             coursePlace: coursePlace
           })
         };

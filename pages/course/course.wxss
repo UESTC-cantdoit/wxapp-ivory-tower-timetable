@@ -1,57 +1,63 @@
-.topDayLine {
-  word-wrap:break-word;
-  word-break:normal; 
-}
-
+/* 弹出层 */
 .popupContent {
   font-size: 16px;
-  padding: 30px;
+  text-align:center;
+}
+
+.popupCourseName {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.popupCourseTeacher {
+  margin-top: 15px;
+}
+
+.popupCoursePlace {
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 /* 左上角单元格 */
 .top-left-grid-item {
-  height: 2rem;
-
+  height: 3rem;
 }
 
 /* 左上角单元格文字内容 */
 .top-left-item {
   font-size: 16px;
-
+  color: rgba(69,90,100,.8);
 }
 
 /* 上方单元格 */
 .top-grid-item {
-  height: 2rem;
-
+  height: 3rem;
 }
 
 /* 上方单元格文字内容 */
 .top-item {
   font-size: 16px;
-
+  color: rgba(69,90,100,.8);
 }
 
 /* 课程表单元格 */
 .course-grid-item {
-  height: 4rem;
+  height: 220rpx;
 }
 
 /* 课程表单元格左侧课程节数文字内容 */
 .courseNum {
-
+  color: rgba(69,90,100,.8);
 }
 
 /* 课程表单元格课程名文字内容 */
 .courseName {
+  font-weight: bold;
   font-size: 10px;
 }
 
 /* 课程表单元格课程上课地点文字内容 */
 .coursePlace {
   font-size: 10px;
-}
-
-.popupContent {
-
 }

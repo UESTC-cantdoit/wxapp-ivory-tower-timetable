@@ -20,7 +20,7 @@
 
 
 <!-- 课程表：先渲染生成 grid 块，再绑定数据 -->
-<van-grid column-num="{{ displayDayNum + 1 }}">
+<van-grid column-num="{{ displayDayNum + 1 }}" clickable>
   <view wx:for="{{ courseTimetable }}" wx:key="gridId">
     <template is="course" data="{{ ...item }}" />
   </view>
@@ -33,6 +33,9 @@
     custom-class="course-grid-item"
     bind:click="showCourseDetails"
     data-courseId="{{ courseId }}"
+    data-courseName="{{ courseName }}"
+    data-courseTeacher="{{ courseTeacher }}"
+    data-coursePlace="{{ coursePlace }}"
   >
     <!-- 左侧：课程节数 -->
     <view class="courseNum">{{ courseNum }}</view>
@@ -42,9 +45,32 @@
   </van-grid-item>
 </template>
 
-<!-- 点击具体课程后显示嵌入课程信息和相关操作的遮盖层 -->
-<van-popup show="{{ showPopup }}" bind:close="hidePopup" z-index="9999">
+<!-- 底部遮盖层 -->
+<van-popup
+  show="{{ showPopup }}"
+  position="bottom"
+  bind:close="hidePopup" 
+  z-index="9999"
+  round
+>
   <view class="popupContent">
-    内容
+    <!-- 点击具体课程后显示嵌入课程信息和相关操作的遮盖层 -->
+    <view wx:if="{{ selectCourseInfo.courseId != null }}">
+      <view class="popupCourseName">{{ selectCourseInfo.courseName }}</view>
+      <view class="popupCourseTeacher">{{ selectCourseInfo.courseTeacher }}</view>
+      <view class="popupCoursePlace">{{ selectCourseInfo.coursePlace }}</view>
+      <van-row gutter="0">
+        <van-col span="12">
+          <van-button type="info" bind:click="modifyCourse" block>修改课程信息</van-button>
+        </van-col>
+        <van-col span="12">
+          <van-button type="primary" bind:click="addEvent" block>添加新的日程</van-button>
+        </van-col>
+      </van-row>
+    </view>
+    <!-- 点击空白填充后显示添加课程操作的遮盖层 -->
+    <view wx:else>
+      <van-button color="linear-gradient(to right, #4bb0ff, #6149f6)" bind:click="addCourse" block>添加新的课程</van-button>
+    </view>
   </view>
 </van-popup>
