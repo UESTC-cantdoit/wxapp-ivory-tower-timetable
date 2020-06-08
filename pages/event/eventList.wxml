@@ -33,7 +33,7 @@
 
 <!-- 其他用户的同步日程 -->
 <template name="event">
-  <view class="container">
+  <view class="container" wx:if="{{ !ownEvent }}">
     <van-panel>
       <view slot="header">
         <van-cell
@@ -70,7 +70,7 @@
 
 <!-- 此用户的同步日程 -->
 <template name="ownEvent">
-  <view class="container">
+  <view class="container" wx:if="{{ ownEvent }}">
     <van-panel>
       <view slot="header">
         <van-cell

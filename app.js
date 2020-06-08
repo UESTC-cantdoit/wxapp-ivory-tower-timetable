@@ -1,18 +1,23 @@
 //app.js
 App({
   onLaunch: function () {
+     //指定云开发环境
+     wx.cloud.init({
+      env:'timetable-81f1c',
+      traceUser:true
+    })
     //从缓存中获取用户信息
-    const ui = wx.getStorageSync('userinfo')
-    this.globalData.userInfo = ui;
+    //temp code
+    // const ui = wx.getStorageSync('openid');
+    // this.globalData.userInfo.openid = ui;
+    // const ui = wx.getStorageSync('userinfo')
+    // this.globalData.userInfo = ui;
+    this.getOpenid();
     //调用API从本地缓存中获取数据
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
-    //指定云开发环境
-    wx.cloud.init({
-      env:'timetable-81f1c',
-      traceUser:true
-    })
+
     this.get_globalData();
   },
   getUserInfo:function(cb){
@@ -35,9 +40,8 @@ App({
     }
   },
   globalData:{
-    userInfo: null,
+    userInfo: {},
     haveClass: true,
-    applyClass: false,
     classId: '',
     className: '',
     classCreator: false,
@@ -60,6 +64,9 @@ App({
           this.globalData.haveClass = true;
           this.globalData.classId = res.data[0].classId;
           this.globalData.className = res.data[0].className;
+          if(res.data[0]._openid == this.globalData.userInfo.openid){
+            this.globalData.classCreator = true;
+          }
         }
       }else {
         console.log("not found class")
@@ -93,6 +100,19 @@ App({
       })
       // console.log("courses",this.globalData.courses);
       
+    })
+  },
+  getOpenid:function(){
+    const that = this;
+    wx.cloud.callFunction({
+      name:"get_openid",
+      success:res=>{
+        console.log(res.result.openid)
+        that.globalData.userInfo.openid = res.result.openid
+      },
+      fail:res=>{
+        console.log("云函数调用失败")
+      }
     })
   },
 })

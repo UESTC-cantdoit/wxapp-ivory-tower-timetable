@@ -168,31 +168,13 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    // var coursesArr = [];
-    // coursesArr.push({ text: '不选择', class: 'null' });
-    // this.data.courses.forEach(function(course) {
-    //   coursesArr.push({ text: course.courseName, class: course.class });
-    // });
-    // this.setData({ coursePickerCourses: coursesArr });
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.setData({
-      courses: getApp().globalData.courses
-    })
-    var coursesArr = [];
-    coursesArr.push({ text: '不选择', class: 'null' });
-    this.data.courses.forEach(function(course) {
-      coursesArr.push({
-        text: course.courseName,
-        class: course.class,
-      });
-    });
-    this.setData({ coursePickerCourses: coursesArr });
-
+    this.getData();
   },
 
   /**
@@ -229,5 +211,30 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  getData: function (){
+    //获取课程信息
+    db.collection('courses')
+    .where({
+      _openid: getApp().globalData.userInfo.openid
+    })
+    .field({
+      courseName: true,
+      classId: true,
+    }).get().then( res => {
+      // console.log(res.data);
+      this.setData({
+        courses: res.data
+      })
+      var coursesArr = [];
+      coursesArr.push({ text: '不选择', class: 'null' });
+      this.data.courses.forEach(function(course) {
+        coursesArr.push({
+          text: course.courseName,
+          class: '',
+        });
+      });
+      this.setData({ coursePickerCourses: coursesArr });
+    })
   }
 })

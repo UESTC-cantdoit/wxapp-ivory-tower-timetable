@@ -150,6 +150,7 @@ Page({
               data: {
                 courseName: this.data.courseName,
                 courseTeacher: this.data.courseTeacher,
+                coursePlace: this.data.coursePlace,
                 courseTime: this.data.selectCourseTime,
                 classId: getApp().globalData.classId
               }
@@ -159,6 +160,7 @@ Page({
               data: {
                 courseName:this.data.courseName,
                 courseTeacher:this.data.courseTeacher,
+                coursePlace: this.data.coursePlace,
                 courseTime:this.data.selectCourseTime
               }
             })

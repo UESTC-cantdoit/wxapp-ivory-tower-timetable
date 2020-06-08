@@ -41,7 +41,7 @@
     >
       <!-- 当用户是班级创建者时，班级编号会显示在 label 处 -->
       <view slot="label" wx:if="{{ isClassCreator }}">
-        班级编号：523543t
+        班级编号：{{ classId }}
       </view>
     </van-cell>
     <!-- value 显示活动中的课程数 -->

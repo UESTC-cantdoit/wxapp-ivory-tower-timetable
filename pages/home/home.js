@@ -6,12 +6,15 @@ Page({
    * 页面的初始数据
    */
   data: {
-    haveClass: getApp().globalData.haveClass,
+    haveClass: false, // getApp().globalData.haveClass,
     activeCourseNum: 8, // 当前班级中的同步课程数
     newCourseNum: 0,  // 自用户上次登录以来新增的课程数
     activeEventNum: 19, // 仅显示用户添加的同步课程的同步日程数
     newEventNum: 1, // 自用户上次登录以来新增的日程数
     className: '',
+    classId: '',
+    openid: '',
+    isClassCreator: false,
     focusEvent: [ // 应按照截止时间由早及晚排序
       {
         eventId: 1234,
@@ -98,26 +101,6 @@ Page({
     })
   },
 
-  onGotUserInfo:function(e){
-    const that = this
-    wx.cloud.callFunction({
-      name:"get_openid",
-      success:res=>{
-        console.log("云函数调用成功")
-        that.setData({
-          openid:res.result.openid,
-          userinfo: e.detail.userInfo
-        })
-        that.data.userinfo.openid = that.data.openid
-        console.log("userinfo", that.data.userinfo)
-        wx.setStorageSync("userinfo", that.data.userinfo)
-      },
-      fail:res=>{
-        console.log("云函数调用失败")
-      }
-    })
-  },
-
   toSuccess() {
     wx.navigateTo({
       url: '../common/success'
@@ -134,7 +117,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.getData();
+    this.getOpenid();
+    // this.getData();
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -147,7 +131,8 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.getData();
+    // this.getData();
+    this.data.openid && this.getDataOnPage();
   },
 
   /**
@@ -184,12 +169,32 @@ Page({
   onShareAppMessage: function () {
 
   },
+  //获取 openid
+  getOpenid:function(){
+    const that = this;
+    wx.cloud.callFunction({
+      name:"get_openid",
+      success:res=>{
+        console.log(res.result.openid)
+        that.setData({
+          openid:res.result.openid,
+        })
+        getApp().globalData.userInfo.openid = res.result.openid;
+        that.getDataOnPage();
+      },
+      fail:res=>{
+        console.log("云函数调用失败")
+      }
+    })
+  },
+  //获取用户信息
   getData: function(){
     this.setData({
       haveClass: getApp().globalData.haveClass,
-      applyClass: getApp().globalData.applyClass,
       openid: getApp().globalData.userInfo.openid,
       className: getApp().globalData.className,
+      classId: getApp().globalData.classId,
+      isClassCreator: getApp().globalData.classCreator,
     })
     //获取课程数量
     db.collection('courses').where({
@@ -217,5 +222,78 @@ Page({
     //TODO 获取需关注日程 
 
     //TODO 获取星标日程
-  }
+  },
+  //不调用 globalData 获取用户信息
+  getDataOnPage: function(){
+    //获取班级信息
+    db.collection('users-class').where({
+      _openid: this.data.openid,
+    }).get().then(res => {
+      console.log("res",res);
+      if (res.data.length !== 0) {
+        if (res.data[0].classId) {
+          this.setData({
+              haveClass: true,
+              className: res.data[0].className,
+              classId: res.data[0].classId,
+          })
+          if(res.data[0]._openid == this.data.openid){
+            this.setData({
+              isClassCreator: true
+            })
+          }
+        }
+      }else {
+        console.log("not found class")
+      }
+      //获取课程数量
+      db.collection('courses').where({
+        classId: this.data.classId
+      }).count().then( res => {
+        this.setData({
+          activeCourseNum: res.total
+        })
+      })
+      //获取日程数量
+      db.collection('events').where({
+        course_classId: this.data.classId,
+        pre_id: db.command.exists(false)
+      }).count().then( res => {
+        this.setData({
+          activeEventNum: res.total
+        })
+      })
+    })
+  
+    //TODO 获取新增课程数 newCourseNum
+
+    //TODO 获取新增日程数 newEventNum 
+
+    //TODO 获取需关注日程数 focusEventNum
+
+    //TODO 获取需关注日程 
+
+    //TODO 获取星标日程
+  },
+  //测试用登录按钮触发 暂时不触发
+  onGotUserInfo:function(e){
+    const that = this
+    wx.cloud.callFunction({
+      name:"get_openid",
+      success:res=>{
+        console.log("云函数调用成功")
+        that.setData({
+          openid:res.result.openid,
+          userinfo: e.detail.userInfo
+        })
+        that.data.userinfo.openid = that.data.openid
+        console.log("userinfo", that.data.userinfo)
+        wx.setStorageSync("userinfo", that.data.userinfo)
+      },
+      fail:res=>{
+        console.log("云函数调用失败")
+      }
+    })
+  },
+
 })
