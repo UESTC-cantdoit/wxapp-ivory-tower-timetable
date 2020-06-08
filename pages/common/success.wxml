@@ -5,7 +5,7 @@
       round
       width="20rem"
       height="20rem"
-      src="https://i1.fuimg.com/720339/a587119d5ac19d17.jpg"
+      src="cloud://timetable-81f1c.7469-timetable-81f1c-1302120168/images/astronaut-star.jpg"
     />
     <view class="background-title">
       <view>{{ titleDescription }}成功</view>
