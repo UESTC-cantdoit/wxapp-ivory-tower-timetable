@@ -7,18 +7,40 @@ Page({
    */
   data: {
     haveClass: getApp().globalData.haveClass,
-    activeCollapse: ['focusEvent'],
-    activeCourseNum: 8,
-    newCourseNum: 0,
-    activeEventNum: 19,
-    newEventNum: 1,
-    className: ''
-  },
-
-  onChangeCollapse(event) {
-    this.setData({
-      activeCollapse: event.detail,
-    });
+    activeCourseNum: 8, // 当前班级中的同步课程数
+    newCourseNum: 0,  // 自用户上次登录以来新增的课程数
+    activeEventNum: 19, // 仅显示用户添加的同步课程的同步日程数
+    newEventNum: 1, // 自用户上次登录以来新增的日程数
+    className: '',
+    focusEvent: [ // 应按照截止时间由早及晚排序
+      {
+        eventId: 1234,
+        eventName: '微积分作业',
+        eventEndStatus: '今日截止'  // 根据获取的日程截止时间计算得出
+      },
+      {
+        eventId: 1235,
+        eventName: '做做梦',
+        eventEndStatus: '明日截止'
+      },
+      {
+        eventId: 1236,
+        eventName: '出来吧皮卡丘',
+        eventEndStatus: '2020-06-09'
+      }
+    ],
+    starEvent: [
+      {
+        eventId: 12,
+        eventName: '微信小程序设计校赛',
+        eventEndStatus: '已截止'
+      },
+      {
+        eventId: 22425,
+        eventName: '微信小程序设计',
+        eventEndStatus: '2020-06-15'
+      }
+    ]
   },
 
   createClass() {
@@ -30,6 +52,13 @@ Page({
   joinClass() {
     wx.navigateTo({
       url: '../class/classJoin'
+    })
+  },
+
+  toEventPage(e) { // 点击关注日程下的日程跳转到日程页面
+    const eventId = e.currentTarget.dataset.eventid;  // 获取点击日程的 eventId
+    wx.switchTab({  // 无法添加参数，似乎无法实现跳转到指定位置
+      url: '../event/event'
     })
   },
 

@@ -11,9 +11,16 @@
   <van-field
     label="任课教师"
     placeholder="请输入任课教师姓名"
-    maxlength="12"
+    maxlength="20"
     clearable
     bind:input="inputCourseTeacher"
+  />
+  <van-field
+    label="上课地点"
+    placeholder="请输入课程教学地点"
+    maxlength="20"
+    clearable
+    bind:input="inputCoursePlace"
   />
 </view>
 

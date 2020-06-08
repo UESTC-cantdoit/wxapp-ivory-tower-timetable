@@ -11,6 +11,7 @@ Page({
   data: {
     courseName: '',
     courseTeacher: '',
+    coursePlace: '',  // 非必要
     timeSelectColumns: [
       {
         values: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
@@ -46,6 +47,10 @@ Page({
 
   inputCourseTeacher(value) {
     this.setData({ courseTeacher: value.detail });
+  },
+
+  inputCoursePlace(value) {
+    this.setData({ coursePlace: value.detail });
   },
 
   showTimePicker() { // 显示添加上课时间界面

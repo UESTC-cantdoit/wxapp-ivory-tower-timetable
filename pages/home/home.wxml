@@ -76,18 +76,68 @@
   <van-cell title="我的日程" icon="underway-o" size="large">
     <van-icon slot="right-icon" name="plus" bind:click="createEvent" />
   </van-cell>
-  <van-collapse value="{{ activeCollapse }}" bind:change="onChangeCollapse" border="false">
-    <van-collapse-item title="关注日程" label="您有 {{ focusEventNum }} 项需要关注的日程" name="focusEvent">
-      <van-cell title="微积分作业" clickable value="今日截止" />
-      <van-cell title="数据库建模" clickable value="明日截止" />
-      <van-cell title="数学建模小组会议" clickable value="明日截止" />
-    </van-collapse-item>
-    <van-collapse-item title="星标日程" name="starEvent">
-      <van-cell title="微信小程序设计" clickable value="17 天" />
-    </van-collapse-item>
-  </van-collapse>
+  <!-- 关注日程：即将截止的日程；阈值可以在偏好设置中设置 -->
+  <van-panel>
+    <view slot="header">
+      <van-cell use-label-slot>
+        <view slot="title">
+          <view class="cellTitle">关注日程</view>
+          <van-tag type="primary" class="cellTag">进行中</van-tag>
+        </view>
+        <view slot="label">
+          <view wx:if="{{ focusEvent.length != 0 }}">您有 {{ focusEvent.length }} 项需要关注的日程</view>
+          <view wx:else>干得好！没有即将截止的日程</view>
+        </view>
+      </van-cell>
+    </view>
+    <view>
+      <view wx:for="{{ focusEvent }}" wx:key="eventId">
+        <template is="focusEventItem" data="{{ ...item }}" />
+      </view>
+    </view>
+  </van-panel>
+  <!-- 星标日程：加了星标的日程 -->
+  <van-panel>
+    <view slot="header">
+      <van-cell use-label-slot>
+        <view slot="title">
+          <view class="cellTitle">星标日程</view>
+          <van-tag plain color="#f2826a" class="cellTag">星标</van-tag>
+        </view>
+        <view slot="label">
+          <view wx:if="{{ starEvent.length == 0 }}">为您喜爱的日程添加星标吧</view>
+        </view>
+      </van-cell>
+    </view>
+    <view>
+      <view wx:for="{{ starEvent }}" wx:key="eventId">
+        <template is="starEventItem" data="{{ ...item }}" />
+      </view>
+    </view>
+  </van-panel>
 </view>
 
+<template name="focusEventItem">
+  <van-cell
+    title="{{ eventName }}"
+    value="{{ eventEndStatus }}"
+    clickable
+    data-eventId="{{ eventId }}"
+    bind:click="toEventPage"
+  />
+</template>
+
+<template name="starEventItem">
+  <van-cell
+    title="{{ eventName }}"
+    value="{{ eventEndStatus }}"
+    clickable
+    data-eventId="{{ eventId }}"
+    bind:click="toEventPage"
+  />
+</template>
+
+<!-- 快捷按钮 -->
 <view class="container">
   <van-cell title="偏好设置" icon="setting-o" size="large" is-link bind:click="toAppSetting" />
 </view>

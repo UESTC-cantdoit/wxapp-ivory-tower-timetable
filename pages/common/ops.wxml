@@ -5,7 +5,7 @@
       round
       width="20rem"
       height="20rem"
-      src="https://i1.fuimg.com/720339/441869dc958d4dff.jpg"
+      src="cloud://timetable-81f1c.7469-timetable-81f1c-1302120168/images/astronaut-flag.jpg"
     />
     <view class="background-title">
       <view>{{ titleDescription }}意外</view>
