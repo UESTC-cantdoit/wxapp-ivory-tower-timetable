@@ -107,7 +107,7 @@ App({
     wx.cloud.callFunction({
       name:"get_openid",
       success:res=>{
-        console.log(res.result.openid)
+        // console.log(res.result.openid)
         that.globalData.userInfo.openid = res.result.openid
       },
       fail:res=>{

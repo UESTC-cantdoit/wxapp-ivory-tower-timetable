@@ -229,7 +229,7 @@ Page({
     db.collection('users-class').where({
       _openid: this.data.openid,
     }).get().then(res => {
-      console.log("res",res);
+      // console.log("res",res);
       if (res.data.length !== 0) {
         if (res.data[0].classId) {
           this.setData({
@@ -270,10 +270,50 @@ Page({
     //TODO 获取新增日程数 newEventNum 
 
     //TODO 获取需关注日程数 focusEventNum
-
+    
+    function formatEvents(events) {
+      var eventsArr = [];
+      const today = new Date();
+      const tomorrow = new Date(today.getTime()+ 1000 * 60 * 60 * 24);
+      events.map( event =>{
+        if (event.endDate < today){
+          event.eventEndStatus = '已截止'
+        }else if (event.endDate.toDateString() == today.toDateString()) {
+            event.eventEndStatus = '今日截止';
+        }else if (event.endDate.toDateString() == tomorrow.toDateString()) {
+          event.eventEndStatus = '明日截止';
+        }else {
+          function formatDate(date) {
+            var y = date.getFullYear();
+            var m = date.getMonth() + 1;
+            m = m < 10 ? '0' + m : m;
+            var d = date.getDate();
+            d = d < 10 ? ('0' + d) : d;
+            return y + '-' + m + '-' + d;
+          }
+          event.eventEndStatus = formatDate(event.endDate);
+        }
+        eventsArr.push({ 
+          eventId: event._id,
+          eventName: event.eventName,
+          eventEndStatus:  event.eventEndStatus,
+        })
+      })
+      return eventsArr
+    }
     //TODO 获取需关注日程 
 
     //TODO 获取星标日程
+    db.collection('events').where({
+      star: true,
+      _openid: this.data.openid
+    }).get().then( res => {
+      // console.log(res.data);
+      var starEvents = formatEvents(res.data)
+      this.setData({
+        starEvent:starEvents
+      })
+    })
   },
   //测试用登录按钮触发 暂时不触发
   onGotUserInfo:function(e){

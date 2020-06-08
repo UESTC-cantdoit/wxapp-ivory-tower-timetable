@@ -342,11 +342,10 @@ Page({
       //格式化结果
         for(let i=0;i<res.result.list.length;i++){
           var event = res.result.list[i];
-  
           var date = new Date();
           //处理 eventStatus
           if (!event.done) {
-            if (date > event.endDate) {
+            if (date.getTime() > Date.parse(event.endDate)) {
               event.eventStatus = '已结束';
             }else {
               event.eventStatus = '进行中';

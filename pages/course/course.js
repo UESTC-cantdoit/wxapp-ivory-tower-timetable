@@ -1,3 +1,4 @@
+const db = wx.cloud.database();
 Page({
 
   /**
@@ -122,6 +123,90 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.getData();
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () { // 若修改过每周显示天数或每天显示课程数，则重新加载本页面
+    this.getData();
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+
+  },
+  getData: function () {
+    db.collection('courses').where({
+      _openid: getApp().globalData.userInfo.openid
+    }).get().then( res => {
+      var coursesArr = [];
+      res.data.forEach( course => {
+        var courseTimeArr = [];
+        //替换 courseTime 属性名
+        course.courseTime.map( time =>{
+          courseTimeArr.push({ 
+            'day': time.weekDay,
+            'startTime': time.startTime,
+            'endTime': time.endTime
+          })
+        })
+        // 替换属性名其它方法
+        // JSON.parse(JSON.stringify(course.courseTime).replace(/weekDay/g, 'day'))   
+        coursesArr.push({
+          courseId: course._id,
+          courseName: course.courseName,
+          courseTeacher: course.courseTeacher,
+          coursePlace: course.coursePlace,
+          courseTime: courseTimeArr,
+        })
+      });
+      this.setData({
+        course: coursesArr
+      });
+      this.setCourseTimetable();
+    })
+  },
+
+  setCourseTimetable: function (options) {
     const displayDayNum = this.data.displayDayNum;
     const displayCourseNum = this.data.displayCourseNum;
 
@@ -187,53 +272,4 @@ Page({
       courseTimetable: courseTimetable
     });
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () { // 若修改过每周显示天数或每天显示课程数，则重新加载本页面
-   
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
 })
