@@ -126,31 +126,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.setData({
-      className: getApp().globalData.className,
-      classId: getApp().globalData.classId,
-    })
-    db.collection('class').where({
-      _openid: getApp().globalData.userInfo.openid,
-      classId: getApp().globalData.classId
-    }).get().then( res => {
-      // console.log(res)
-      if (res.data.length !== 0) {
-        this.setData({
-          isClassCreator: true,
-          enableSearch: res.data[0].enableSearch,
-        })
-      }
-    })
-    db.collection('class').where({
-      classId: getApp().globalData.classId
-    }).get().then( res => {
-      if (res.data.length !== 0) {
-        this.setData({
-          enableSearch: res.data[0].enableSearch,
-        })
-      }
-    })
+    this.getData();
   },
 
   /**
@@ -164,7 +140,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.getData();
   },
 
   /**
@@ -199,5 +175,32 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
+  },
+  getData: function (options) {
+    this.setData({
+      className: getApp().globalData.className,
+      classId: getApp().globalData.classId,
+    })
+    db.collection('class').where({
+      _openid: getApp().globalData.userInfo.openid,
+      classId: getApp().globalData.classId
+    }).get().then( res => {
+      // console.log(res)
+      if (res.data.length !== 0) {
+        this.setData({
+          isClassCreator: true,
+          enableSearch: res.data[0].enableSearch,
+        })
+      }
+    })
+    db.collection('class').where({
+      classId: getApp().globalData.classId
+    }).get().then( res => {
+      if (res.data.length !== 0) {
+        this.setData({
+          enableSearch: res.data[0].enableSearch,
+        })
+      }
+    })
+  },
 })

@@ -331,6 +331,7 @@ Page({
   getDatabyCloud: function () {
     var eventArr = [];
     var that = this;
+    // console.log('event',getApp().globalData.userInfo.openid)
     wx.cloud.callFunction({
       name: 'get_event',
       data: {

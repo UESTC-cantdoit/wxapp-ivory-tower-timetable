@@ -8,17 +8,16 @@ App({
     })
     //从缓存中获取用户信息
     //temp code
-    // const ui = wx.getStorageSync('openid');
-    // this.globalData.userInfo.openid = ui;
+    const ui = wx.getStorageSync('openid');
+    this.globalData.userInfo.openid = ui;
     // const ui = wx.getStorageSync('userinfo')
     // this.globalData.userInfo = ui;
+    //获取全局变量（命名待规范）
     this.getOpenid();
     //调用API从本地缓存中获取数据
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
-
-    this.get_globalData();
   },
   getUserInfo:function(cb){
     var that = this
@@ -109,6 +108,7 @@ App({
       success:res=>{
         // console.log(res.result.openid)
         that.globalData.userInfo.openid = res.result.openid
+        this.get_globalData();
       },
       fail:res=>{
         console.log("云函数调用失败")

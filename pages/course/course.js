@@ -175,6 +175,7 @@ Page({
 
   },
   getData: function () {
+    // console.log('course',getApp().globalData.userInfo.openid)
     db.collection('courses').where({
       _openid: getApp().globalData.userInfo.openid
     }).get().then( res => {

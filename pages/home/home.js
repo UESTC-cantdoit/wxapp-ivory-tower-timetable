@@ -180,6 +180,7 @@ Page({
           openid:res.result.openid,
         })
         getApp().globalData.userInfo.openid = res.result.openid;
+        wx.setStorageSync("openid", that.data.userinfo)
         that.getDataOnPage();
       },
       fail:res=>{
@@ -303,7 +304,7 @@ Page({
     }
     //TODO 获取需关注日程 
 
-    //TODO 获取星标日程
+    //获取星标日程
     db.collection('events').where({
       star: true,
       _openid: this.data.openid
