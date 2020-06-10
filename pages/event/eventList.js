@@ -65,11 +65,10 @@ Page({
   addToEvent(e) {
     console.log(e);
     const eventId = e.currentTarget.dataset.eventid;
-    // to do: 将目标日程添加到日程中
+    // 将目标日程添加到日程中
     let index = this.data.event.findIndex(function(event){
       return event.eventId == eventId;
     })
-    console
     db.collection('events').add({
       data: {
         eventName: this.data.event[index].eventTitle,
@@ -89,7 +88,7 @@ Page({
   removeFromEvent(e) {
     console.log(e);
     const eventId = e.currentTarget.dataset.eventid;
-    // to do: 将目标日程从日程中移除
+    // 将目标日程从日程中移除
     try {
       db.collection('events').where({
         _openid: getApp().globalData.userInfo.openid,

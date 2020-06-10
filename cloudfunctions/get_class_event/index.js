@@ -21,7 +21,7 @@ exports.main = async (event, context) => {
       pre_id: db.command.exists(false)
     },
     {
-      _openid: event.openid,
+      _openid: event._openid,
       course_classId: event.classId,
       pre_id: db.command.exists(true)
     }

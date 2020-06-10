@@ -17,7 +17,7 @@ exports.main = async (event, context) => {
   })
   .match(
     {
-      _openid: event.openid
+      _openid: event._openid
     }
   )
   .sort({endDate: 1})
