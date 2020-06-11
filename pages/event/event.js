@@ -98,7 +98,7 @@ Page({
     const eventStar = event.currentTarget.dataset.eventstar;
     const eventStatus = event.currentTarget.dataset.eventstatus;
     let eventOperations = [];
-    if (eventStatus == '进行中') { // 进行中的日程可修改信息
+    if (eventStatus == '进行中' || eventStatus == '已结束') { // 进行中或已结束的日程可修改信息
       eventOperations.push(this.data.eventOperationModifyEventInfo);
     } else {
       eventOperations.push(this.data.eventOperationModifyEventInfoDisabled);

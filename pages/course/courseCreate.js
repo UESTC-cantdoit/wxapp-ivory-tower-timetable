@@ -30,12 +30,7 @@ Page({
     selectTimeOne: '5',
     selectTimeTwo: '6',
     timePickerOnShow: false,
-    selectCourseTime: [{
-      id: new Date().getTime(),
-      weekDay: '4',
-      startTime: '7',
-      endTime: '8'
-    }],
+    selectCourseTime: [],
     haveClass: getApp().globalData.haveClass,
     syncToClass: false,
     onCreateCourseProcess: false

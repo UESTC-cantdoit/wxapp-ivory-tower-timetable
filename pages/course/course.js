@@ -9,6 +9,7 @@ Page({
     displayDay: ['一', '二', '三', '四', '五', '六', '日'], // 根据 displayDayNum 生成
     displayCourseNum: 14, // 由偏好设置获取；显示的每天课程数，可选值为“11”至“14”
     displayCourse: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], // 根据 displayCourseNum 生成
+    haveClass: getApp().globalData.haveClass,
     course: [ // 由数据库获取
       {
         courseId: 1,
@@ -116,6 +117,13 @@ Page({
     this.hidePopup();
     wx.navigateTo({
       url: 'courseCreate'
+    });
+  },
+
+  addCourseFromCourseList() {
+    this.hidePopup();
+    wx.navigateTo({
+      url: 'courseList'
     });
   },
 

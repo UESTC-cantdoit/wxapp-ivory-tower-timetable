@@ -142,19 +142,7 @@
   <van-cell title="偏好设置" icon="setting-o" size="large" is-link bind:click="toAppSetting" />
 </view>
 
-<view class="container">
-  <van-cell title="添加课程" label="临时进入按钮" icon="add-o" size="large" is-link bind:click="createCourse" />
-</view>
-
 <!-- 临时登录 -->
 <view wx:if="{{!openid}}">
   <button open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="onGotUserInfo">登录</button>
-</view>
-
-<view class="container">
-  <van-cell title="Success" label="临时进入按钮" size="large" is-link bind:click="toSuccess" />
-</view>
-
-<view class="container">
-  <van-cell title="Ops" label="临时进入按钮" size="large" is-link bind:click="toOps" />
 </view>
