@@ -1,5 +1,7 @@
 import Notify from '../../miniprogram_npm/@vant/weapp/notify/notify';
 
+const db = wx.cloud.database();
+
 Page({
 
   /**
@@ -139,6 +141,33 @@ Page({
           this.setData({
             onModifyCourseProcess: true
           })
+          //云数据库操作：更新记录
+          if (this.data.syncToClass == true) {
+            db.collection('courses').doc(this.data.courseId).update({
+              data: {
+                courseName: this.data.courseName,
+                courseTeacher: this.data.courseTeacher,
+                coursePlace: this.data.coursePlace,
+                courseTime: this.data.selectCourseTime,
+                classId: getApp().globalData.classId,
+                haveChanged: true,
+                //TODO 深度判断是否 changed
+              }
+            })
+          }else {
+            db.collection('courses').doc(this.data.courseId).update({
+              data: {
+                courseName:this.data.courseName,
+                courseTeacher:this.data.courseTeacher,
+                coursePlace: this.data.coursePlace,
+                courseTime:this.data.selectCourseTime
+              }
+            })
+          }
+          //数据库操作完成
+          this.setData({
+            onModifyCourseProcess: false
+          })
           console.log('Modify course successfully.');
         } else {
           console.log('Cancel.');
@@ -159,6 +188,14 @@ Page({
               content: '删除此课程可能会影响到所有选择本课程的同学，真的要删除吗',
               success: (res) => {
                 if (res.confirm) {
+                  db.collection('courses').doc(this.data.courseId).remove();
+                  db.collection('courses').where({
+                    pre_id: this.data.courseId
+                  }).update({
+                    data: {
+                      pre_id: db.command.remove()
+                    }
+                  })
                   console.log('Delete course successfully.');
                 } else {
                   console.log('Cancel.');
@@ -179,7 +216,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.setData({
+      courseId: options.courseId
+    });
+    console.log('courseId',this.data.courseId);
+    this.getData();
   },
 
   /**
@@ -193,7 +234,6 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
   },
 
   /**
@@ -229,5 +269,38 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
+  },
+  getData: function () {
+    db.collection('courses').doc(this.data.courseId)
+    .get().then( res => {
+      let course = res.data;
+      console.log('course',course);
+
+      course.isOwner = false; 
+      course.syncToClass = false;
+      course.defaultSyncToClass = false;
+
+      //判断是否为课程所有者
+      if ( course._openid == getApp().globalData.userInfo.openid 
+           && !('pre_id' in course)) {
+        course.isOwner = true; 
+      }
+      //判断是否已同步到班级
+      if ( 'classId' in course) {
+        course.defaultSyncToClass = true;
+        course.syncToClass = true;
+      }
+
+      this.setData({
+        courseName: course.courseName,
+        courseTeacher: course.courseTeacher,
+        coursePlace: course.coursePlace,
+        selectCourseTime: course.courseTime,
+        isOwner: course.isOwner,
+        syncToClass: course.syncToClass,
+        defaultSyncToClass: course.defaultSyncToClass,
+      })
+
+    })
+  },
 })

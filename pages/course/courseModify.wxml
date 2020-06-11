@@ -6,6 +6,7 @@
 <view class="container">
   <view class="background-title">基本信息</view>
   <van-field
+    value="{{ courseName }}"
     label="课程名称"
     placeholder="请输入课程名称"
     maxlength="20"
@@ -14,6 +15,7 @@
     disabled="{{ !isOwner }}"
   />
   <van-field
+    value="{{ courseTeacher }}"
     label="任课教师"
     placeholder="请输入任课教师姓名"
     maxlength="20"
@@ -22,6 +24,7 @@
     disabled="{{ !isOwner }}"
   />
   <van-field
+    value="{{ coursePlace }}"
     label="上课地点"
     placeholder="请输入课程教学地点"
     maxlength="20"

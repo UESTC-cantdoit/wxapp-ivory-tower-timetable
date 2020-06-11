@@ -129,7 +129,7 @@ Page({
           this.setData({
             onModifyEventProcess: true
           })
-          //云数据库操作 添加记录至 events 集合
+          //云数据库操作 更新记录
           if (this.data.selectCourse == '不选择') {
             db.collection('events').doc(this.data.eventId).update({
               data: {
@@ -167,6 +167,7 @@ Page({
                 course_id: this.data.selectCourse_id,
                 course_classId: this.data.selectCourse_classId,
                 haveChanged: true,
+                //TODO 深度判断是否 changed
               }
             })
           }
@@ -195,6 +196,13 @@ Page({
               success: (res) => {
                 if (res.confirm) {
                   db.collection('events').doc(this.data.eventId).remove();
+                  db.collection('events').where({
+                    pre_id: this.data.eventId
+                  }).update({
+                    data: {
+                      pre_id: db.command.remove()
+                    }
+                  })
                   console.log('Delete event successfully.');
                 } else {
                   console.log('Cancel.');
