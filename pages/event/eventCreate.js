@@ -55,7 +55,7 @@ Page({
         selectCourse: courseName,
       });
     }
-    if (courseClass === 'null') {
+    if (courseClass == undefined) {
       this.setData({
         selectCourseBelongToClass: false
       });
@@ -218,10 +218,7 @@ Page({
     .where({
       _openid: getApp().globalData.userInfo.openid
     })
-    .field({
-      courseName: true,
-      classId: true,
-    }).get().then( res => {
+    .get().then( res => {
       // console.log(res.data);
       this.setData({
         courses: res.data
@@ -231,7 +228,7 @@ Page({
       this.data.courses.forEach(function(course) {
         coursesArr.push({
           text: course.courseName,
-          class: '',
+          class: course.classId,
         });
       });
       this.setData({ coursePickerCourses: coursesArr });

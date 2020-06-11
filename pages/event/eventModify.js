@@ -1,4 +1,5 @@
 // pages/event/eventModify.js
+const db = wx.cloud.database();
 Page({
 
   /**
@@ -61,6 +62,9 @@ Page({
   coursePickerOnConfirm(value) {
     const courseName = value.detail.value.text;
     const courseClass = value.detail.value.class;
+    this.setData({
+      selectCourse_index: value.detail.index,
+    })
     if (courseName === '不选择') {
       this.setData({
         selectCourse: '不选择'
@@ -71,7 +75,7 @@ Page({
       });
     }
 
-    if (courseClass === 'null') {
+    if (courseClass === undefined) {
       this.setData({
         selectCourseBelongToClass: false
       });
@@ -125,6 +129,51 @@ Page({
           this.setData({
             onModifyEventProcess: true
           })
+          //云数据库操作 添加记录至 events 集合
+          if (this.data.selectCourse == '不选择') {
+            db.collection('events').doc(this.data.eventId).update({
+              data: {
+                eventName: this.data.eventName,
+                eventDescription: this.data.eventDescription,
+                endDate: this.data.selectEndDate,
+              }
+            })
+          }else if (this.data.syncToClass == false){
+            if (this.data.selectCourse_index) {
+              this.setData({
+                selectCourse_id: this.data.courses[this.data.selectCourse_index-1]._id,
+              })
+            }
+            db.collection('events').doc(this.data.eventId).update({
+              data: {
+                eventName: this.data.eventName,
+                eventDescription: this.data.eventDescription,
+                endDate: this.data.selectEndDate,
+                course_id: this.data.selectCourse_id
+              }
+            })
+          }else if (this.data.syncToClass == true){
+            if (this.data.selectCourse_index) {
+              this.setData({
+                selectCourse_id: this.data.courses[this.data.selectCourse_index-1]._id,
+                selectCourse_classId: this.data.courses[this.data.selectCourse_index-1].classId
+              })
+            }
+            db.collection('events').doc(this.data.eventId).update({
+              data: {
+                eventName: this.data.eventName,
+                eventDescription: this.data.eventDescription,
+                endDate: this.data.selectEndDate,
+                course_id: this.data.selectCourse_id,
+                course_classId: this.data.selectCourse_classId,
+                haveChanged: true,
+              }
+            })
+          }
+          //云数据库操作完成
+          this.setData({
+            onModifyEventProcess: false
+          })
           console.log('Modify event successfully.');
         } else {
           console.log('Cancel.');
@@ -145,6 +194,7 @@ Page({
               content: '删除同步日程后，您的修改将不再能够更新他人的日程',
               success: (res) => {
                 if (res.confirm) {
+                  db.collection('events').doc(this.data.eventId).remove();
                   console.log('Delete event successfully.');
                 } else {
                   console.log('Cancel.');
@@ -152,6 +202,7 @@ Page({
               },
             });
           } else {
+            db.collection('events').doc(this.data.eventId).remove();
             console.log('Delete event successfully.');
           }
         } else {
@@ -169,6 +220,8 @@ Page({
       eventId: options.eventId
     });
     console.log('当前 eventId: '+this.data.eventId);
+    this.getData();
+    this.getCourses();
   },
 
   /**
@@ -176,23 +229,25 @@ Page({
    */
   onReady: function () {
     // 设置课程选择
-    var coursesArr = [];
-    coursesArr.push({ text: '不选择', class: 'null' });
-    this.data.courses.forEach(function(course) {
-      coursesArr.push({ text: course.courseName, class: course.class });
-    });
-    this.setData({ coursePickerCourses: coursesArr });
+    // var coursesArr = [];
+    // coursesArr.push({ text: '不选择', class: 'null' });
+    // this.data.courses.forEach(function(course) {
+    //   coursesArr.push({ text: course.courseName, class: course.class });
+    // });
+    // this.setData({ coursePickerCourses: coursesArr });
+    // this.getCourses();
     // 设置展示在截止日期处的日期
-    const date = this.data.selectEndDate;
-    if (date !== null) {
-      const year = date.getFullYear();
-      const month = date.getMonth() + 1;
-      const day = date.getDate();
-      const selectEndDateOnDisplay = year + '-' + ((month > 10) ? month : ('0' + month)) + '-' + ((day > 10) ? day : ('0' + day));
-      this.setData({
-        selectEndDateOnDisplay: selectEndDateOnDisplay
-      });
-    }
+    // const date = this.data.selectEndDate;
+    // console.log('date',this.data.selectEndDate)
+    // if (date !== null) {
+    //   const year = date.getFullYear();
+    //   const month = date.getMonth() + 1;
+    //   const day = date.getDate();
+    //   const selectEndDateOnDisplay = year + '-' + ((month > 10) ? month : ('0' + month)) + '-' + ((day > 10) ? day : ('0' + day));
+    //   this.setData({
+    //     selectEndDateOnDisplay: selectEndDateOnDisplay
+    //   });
+    // }
   },
 
   /**
@@ -235,5 +290,92 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  getData: function(){
+    db.collection('events').doc(this.data.eventId)
+    .get().then( res => {
+      let event = res.data;
+      // console.log('event',event);
+      event.isOwner = false; 
+      event.syncToClass = false;
+      event.defaultSyncToClass = false;
+
+      //判断是否为日程所有者
+      if ( event._openid == getApp().globalData.userInfo.openid 
+           && !('pre_id' in event)) {
+        event.isOwner = true; 
+      }
+      //判断是否已同步到班级
+      if ( 'course_classId' in event) {
+        event.defaultSyncToClass = true;
+        event.syncToClass = true;
+      }
+
+      console.log('event',event)
+      this.setData({
+        eventName: event.eventName,
+        eventDescription: event.eventDescription,
+        selectEndDate: event.endDate,
+        isOwner: event.isOwner,
+        defaultSyncToClassevent: event.defaultSyncToClass,
+        syncToClass: event.syncToClass,
+      })
+      
+      const date = this.data.selectEndDate;
+      console.log('date',this.data.selectEndDate)
+      if (date !== null) {
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        const selectEndDateOnDisplay = year + '-' + ((month > 10) ? month : ('0' + month)) + '-' + ((day >= 10) ? day : ('0' + day));
+        this.setData({
+          selectEndDateOnDisplay: selectEndDateOnDisplay
+        });
+      }
+      // 获取课程名称 判断课程时候同步自班级
+      if ( 'course_id' in event ) {
+        db.collection('courses').doc(event.course_id)
+        .get().then( course_res => {
+          let course = course_res.data;
+          console.log('course',course);
+          course.selectCourseBelongToClass = false;
+          if ( 'classId' in course ) {
+            course.selectCourseBelongToClass = true;
+          }else {
+            course.classId = '';
+          }
+          this.setData({
+            selectCourse: course.courseName,
+            selectCourse_id: course._id,
+            selectCourseBelongToClass: course.selectCourseBelongToClass,
+            selectCourse_classId: course.classId,
+          })
+        })
+      }
+      
+
+    })
+  },
+  getCourses: function (){
+    //获取课程信息
+    db.collection('courses')
+    .where({
+      _openid: getApp().globalData.userInfo.openid
+    })
+    .get().then( res => {
+      // console.log(res.data);
+      this.setData({
+        courses: res.data
+      })
+      var coursesArr = [];
+      coursesArr.push({ text: '不选择', class: 'null' });
+      this.data.courses.forEach(function(course) {
+        coursesArr.push({
+          text: course.courseName,
+          class: course.classId,
+        });
+      });
+      this.setData({ coursePickerCourses: coursesArr });
+    })
   }
 })

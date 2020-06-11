@@ -179,7 +179,7 @@ Page({
         classId: getApp().globalData.classId
       },
       success: (res) => {
-        // console.log('events',res);
+        console.log('events',res);
         //格式化结果
         for(let i=0;i<res.result.list.length;i++){
           var event = res.result.list[i];
@@ -215,7 +215,21 @@ Page({
               event.ownEvent = true
             } 
           }
-          event.endDateOnDisplay = event.endDate.substr(0,10);
+  
+          //格式化时间 (待优化：为解决未完全明确 bug 的非合理代码)
+          let dateString = event.endDate.substr(0,10);
+          let fakeDate = new Date(dateString.replace(/-/,"/")) 
+          event.endDate = new Date(fakeDate.getTime()+ 1000 * 60 * 60 * 24);
+          event.endDateOnDisplay = formatDate(event.endDate);
+          function formatDate(date) {
+            var y = date.getFullYear();
+            var m = date.getMonth() + 1;
+            m = m < 10 ? '0' + m : m;
+            var d = date.getDate();
+            d = d < 10 ? ('0' + d) : d;
+            return y + '-' + m + '-' + d;
+          }
+          
 
           if (event.pre_id) {
             pre_eventArr.push({

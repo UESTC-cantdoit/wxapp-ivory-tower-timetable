@@ -45,6 +45,7 @@
     />
   </van-popup>
   <van-field
+    value="{{ eventName }}"
     label="日程名称"
     placeholder="请输入日程名称"
     maxlength="20"
@@ -52,6 +53,7 @@
     bind:input="inputEventName"
   />
   <van-field
+    value="{{ eventDescription }}"
     label="日程描述"
     placeholder="请输入日程描述（可选）"
     maxlength="50"
@@ -86,6 +88,7 @@
     <view>
       <van-switch
         checked="{{ syncToClass }}"
+        disabled="{{ !selectCourseBelongToClass }}"
         active-color="#07c160"
         inactive-color="#ee0a24"
         size="20px"

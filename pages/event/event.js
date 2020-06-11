@@ -344,16 +344,7 @@ Page({
         for(let i=0;i<res.result.list.length;i++){
           var event = res.result.list[i];
           var date = new Date();
-          //处理 eventStatus
-          if (!event.done) {
-            if (date.getTime() > Date.parse(event.endDate)) {
-              event.eventStatus = '已结束';
-            }else {
-              event.eventStatus = '进行中';
-            }
-          }else {
-            event.eventStatus = '已完成';
-          }
+          
           //处理 eventSync
           if (event.course_classId) {
             event.eventSync = true;
@@ -366,7 +357,33 @@ Page({
           }else {
             event.eventStar = false;
           }
-          event.endDateOnDisplay = event.endDate.substr(0,10);
+
+          //格式化时间 (待优化：为解决未完全明确 bug 的非合理代码)
+          let dateString = event.endDate.substr(0,10);
+          let fakeDate = new Date(dateString.replace(/-/,"/")) 
+          let realDate = new Date(fakeDate.getTime()+ 1000 * 60 * 60 * 24);
+          event.endDateOnDisplay = formatDate(realDate);
+
+          function formatDate(date) {
+            var y = date.getFullYear();
+            var m = date.getMonth() + 1;
+            m = m < 10 ? '0' + m : m;
+            var d = date.getDate();
+            d = d < 10 ? ('0' + d) : d;
+            return y + '-' + m + '-' + d;
+          }
+
+          //处理 eventStatus
+          if (!event.done) {
+            if ((date.getTime()-(date.getTime()%(1000 * 60 * 60 * 24))) > Date.parse(event.endDate)) {
+              event.eventStatus = '已结束';
+            }else {
+              event.eventStatus = '进行中';
+            }
+          }else {
+            event.eventStatus = '已完成';
+          }
+
           if ( event.courseName.length !== 0 ) {
             eventArr.push({
               eventId: event._id,
