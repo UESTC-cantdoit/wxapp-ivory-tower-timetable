@@ -86,8 +86,13 @@
         bind:change="syncToClassOnChange"
       />
     </view>
-    <view slot="label" wx:if="{{ !syncToClass }}">
-      不同步到班级课程库
+    <view slot="label">
+      <view wx:if="{{ !syncToClass }}">
+        不同步到班级课程库
+      </view>
+      <view wx:else>
+        同步课程无法取消同步或删除
+      </view>
     </view>
   </van-cell>
 </view>
@@ -97,7 +102,7 @@
   <van-button
     type="primary"
     block
-    disabled="{{ courseName=='' || courseTeacher=='' || selectCourseTime.length==0 }}"
+    disabled="{{ courseName=='' || courseTeacher=='' }}"
     bind:click="createCourse"
     loading="{{ onCreateCourseProcess }}"
     loading-text="创建课程中..."

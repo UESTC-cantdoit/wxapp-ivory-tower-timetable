@@ -59,7 +59,7 @@
       <view class="popupCourseName">{{ selectCourseInfo.courseName }}</view>
       <view class="popupCourseTeacher">{{ selectCourseInfo.courseTeacher }}</view>
       <view class="popupCoursePlace">{{ selectCourseInfo.coursePlace }}</view>
-      <van-row gutter="0">
+      <van-row>
         <van-col span="12">
           <van-button type="info" bind:click="modifyCourse" block>修改课程信息</van-button>
         </van-col>
@@ -70,7 +70,14 @@
     </view>
     <!-- 点击空白填充后显示添加课程操作的遮盖层 -->
     <view wx:else>
-      <van-button color="linear-gradient(to right, #4bb0ff, #6149f6)" bind:click="addCourse" block>添加新的课程</van-button>
+      <van-row>
+        <van-col span="{{ haveClass ? 12 : 24 }}">
+          <van-button color="linear-gradient(to right, #4bb0ff, #6149f6)" bind:click="addCourse" block>添加新的课程</van-button>
+        </van-col>
+        <van-col span="{{ haveClass ? 12 : 0 }}" wx:if="{{ haveClass }}">
+          <van-button type="primary" bind:click="addCourseFromCourseList" block>从班级课程库添加</van-button>
+        </van-col>
+      </van-row>
     </view>
   </view>
 </van-popup>

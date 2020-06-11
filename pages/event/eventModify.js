@@ -5,7 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    globalDisabled: true, // 根据是否为日程所有者判断
+    isOwner: false, // 根据是否为日程所有者判断
     eventId: null,  // 通过路由传值自动获取
     courses: getApp().globalData.courses,
     coursePickerCourses: null,
@@ -19,6 +19,7 @@ Page({
     datePickerOnShow: false,
     haveClass: getApp().globalData.haveClass,
     syncToClass: false, // 需要获取
+    defaultSyncToClass: false,  // 修改前是否已同步到班级；需要获取
     onModifyEventProcess: false
   },
 
@@ -31,14 +32,29 @@ Page({
   },
 
   syncToClassOnChange({ detail }) {
-    this.setData({ syncToClass: detail });
+    if (this.data.defaultSyncToClass) {
+      wx.showModal({
+        title: '取消同步日程',
+        content: '您的修改将不再能够更新他人的日程',
+        success: (res) => {
+          if (res.confirm) {
+            console.log('Change event sync status successfully.');
+            this.setData({ syncToClass: detail });
+          } else {
+            console.log('Cancel.');
+          }
+        },
+      });
+    } else {
+      this.setData({ syncToClass: detail });
+    }
   },
 
   showCoursePicker() {
-    if (this.data.globalDisabled) {
-      //
-    } else {
+    if (this.data.isOwner == true) {  // 如果为日程拥有者，显示课程选择器
       this.setData({ coursePickerOnShow: true });
+    } else {  // 如果为日程同步者，提示无法选择课程
+      // todo
     }
   },
 
@@ -78,11 +94,7 @@ Page({
   },
 
   showDatePicker() {
-    if (this.data.globalDisabled) {
-      //
-    } else {
-      this.setData({ datePickerOnShow: true });
-    }
+    this.setData({ datePickerOnShow: true });
   },
 
   datePickerOnConfirm(value) {
@@ -90,7 +102,7 @@ Page({
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
-    const selectEndDateOnDisplay = year + '-' + ((month > 10) ? month : ('0' + month)) + '-' + ((day > 10) ? day : ('0' + day));
+    const selectEndDateOnDisplay = year + '-' + ((month >= 10) ? month : ('0' + month)) + '-' + ((day >= 10) ? day : ('0' + day));
     this.setData({
       selectEndDate: date,
       selectEndDateOnDisplay: selectEndDateOnDisplay,
@@ -104,7 +116,7 @@ Page({
     });
   },
 
-  modifyEvent() {
+  modifyEvent() { // 点击确认修改日程按钮
     wx.showModal({
       title: '修改日程',
       content: '您将修改日程：' + this.data.eventName,
@@ -114,6 +126,34 @@ Page({
             onModifyEventProcess: true
           })
           console.log('Modify event successfully.');
+        } else {
+          console.log('Cancel.');
+        }
+      },
+    });
+  },
+
+  deleteEvent() {
+    wx.showModal({
+      title: '删除日程',
+      content: '您将删除日程：' + this.data.eventName,
+      success: (res) => {
+        if (res.confirm) {
+          if (this.data.isOwner && this.data.defaultSyncToClass && this.data.haveClass) {
+            wx.showModal({
+              title: '如果您执意',
+              content: '删除同步日程后，您的修改将不再能够更新他人的日程',
+              success: (res) => {
+                if (res.confirm) {
+                  console.log('Delete event successfully.');
+                } else {
+                  console.log('Cancel.');
+                }
+              },
+            });
+          } else {
+            console.log('Delete event successfully.');
+          }
         } else {
           console.log('Cancel.');
         }

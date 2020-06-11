@@ -5,10 +5,10 @@
     <view>
       {{ selectCourse }}
     </view>
-    <view slot="label" wx:if="{{ selectCourse !== '不选择' && selectCourseBelongToClass }}">
+    <view slot="label" wx:if="{{ selectCourse !== '不选择' && selectCourseBelongToClass && haveClass }}">
       日程可同步到班级
     </view>
-    <view slot="label" wx:elif="{{ selectCourse !== '不选择' && !selectCourseBelongToClass }}">
+    <view slot="label" wx:elif="{{ selectCourse !== '不选择' && !selectCourseBelongToClass && haveClass }}">
       选择课程未同步到班级，日程不可同步到班级
     </view>
   </van-cell>
@@ -59,7 +59,7 @@
     bind:close="datePickerOnClose"
     bind:confirm="datePickerOnConfirm"
   />
-  <van-cell title="同步到班级" use-label-slot center>
+  <van-cell title="同步到班级" use-label-slot center wx:if="{{ haveClass }}">
     <view>
       <van-switch
         checked="{{ syncToClass }}"
@@ -70,11 +70,13 @@
         bind:change="syncToClassOnChange"
       />
     </view>
-    <view slot="label" wx:if="{{ !syncToClass }}">
-      不同步到班级日程库
-    </view>
-    <view slot="label" wx:else>
-      同步到班级日程库
+    <view slot="label">
+      <view wx:if="{{ !syncToClass }}">
+        不同步到班级日程库
+      </view>
+      <view wx:else>
+        同步到班级日程库
+      </view>
     </view>
   </van-cell>
 </view>
