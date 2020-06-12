@@ -15,7 +15,7 @@ Page({
     activeTab: 1,
     tabEnd: 2, // 标签数量减一
     showFloatBtn: true,
-    fadeAnimation: '',
+    haveClass: getApp().globalData.haveClass,
     event: [ // 获取时应按照 event 截止时间 eventEndDate 由早及晚依次获取
       {
         eventId: '22314',

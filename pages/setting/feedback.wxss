@@ -1,0 +1,4 @@
+/* pages/setting/feedback.wxss */
+.submitButton {
+  padding-top: 10px;
+}

@@ -86,6 +86,7 @@
     <view>
       <van-switch
         checked="{{ syncToClass }}"
+        disabled="{{ !selectCourseBelongToClass }}"
         active-color="#07c160"
         inactive-color="#ee0a24"
         size="20px"

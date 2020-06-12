@@ -1,60 +1,16 @@
-// pages/setting/setting.js
+// pages/setting/aboutUs.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    version: '1.0.0', // 小程序版本，从全局变量获取
-    versionDate: '2020-06', // 小程序版本日期，从全局变量获取
-    haveClass: getApp().globalData.haveClass
-  },
 
-  toCommonSetting() {
-    wx.navigateTo({
-      url: 'commonSetting',
-    });
-  },
-
-  toClassSetting() {
-    wx.navigateTo({
-      url: '../class/classSetting',
-    });
-  },
-
-  toHomePageSetting() {
-    wx.navigateTo({
-      url: 'homePageSetting',
-    });
-  },
-
-  toCoursePageSetting() {
-    wx.navigateTo({
-      url: 'coursePageSetting',
-    });
-  },
-
-  toEventPageSetting() {
-    wx.navigateTo({
-      url: 'eventPageSetting',
-    });
-  },
-
-  toAboutUs() {
-    wx.navigateTo({
-      url: 'aboutUs',
-    });
   },
 
   toFeedback() {
     wx.navigateTo({
       url: 'feedback',
-    });
-  },
-
-  toVersionDialog() {
-    wx.navigateTo({
-      url: 'versionDialog',
     });
   },
 

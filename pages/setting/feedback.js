@@ -1,60 +1,45 @@
-// pages/setting/setting.js
+// pages/setting/feedback.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    version: '1.0.0', // 小程序版本，从全局变量获取
-    versionDate: '2020-06', // 小程序版本日期，从全局变量获取
-    haveClass: getApp().globalData.haveClass
+    userName: '',
+    feedback: '',
+    onSubmitProcess: false,
   },
 
-  toCommonSetting() {
-    wx.navigateTo({
-      url: 'commonSetting',
+  userNameOnChange(e) {
+    this.setData({
+      userName: e.detail
     });
   },
 
-  toClassSetting() {
-    wx.navigateTo({
-      url: '../class/classSetting',
+  feedbackOnChange(e) {
+    this.setData({
+      feedback: e.detail
     });
   },
 
-  toHomePageSetting() {
-    wx.navigateTo({
-      url: 'homePageSetting',
-    });
-  },
-
-  toCoursePageSetting() {
-    wx.navigateTo({
-      url: 'coursePageSetting',
-    });
-  },
-
-  toEventPageSetting() {
-    wx.navigateTo({
-      url: 'eventPageSetting',
-    });
-  },
-
-  toAboutUs() {
-    wx.navigateTo({
-      url: 'aboutUs',
-    });
-  },
-
-  toFeedback() {
-    wx.navigateTo({
-      url: 'feedback',
-    });
-  },
-
-  toVersionDialog() {
-    wx.navigateTo({
-      url: 'versionDialog',
+  submitFeedback() {
+    var that = this;
+    wx.showModal({
+      title: '提交反馈',
+      content: '您的意见反馈将帮助我们更好地改进本小程序！谢谢！',
+      success (res) {
+        if (res.confirm) {
+          const userName = that.data.userName;
+          const feedback = that.data.feedback;
+          that.setData({
+            onSubmitProcess: true
+          });
+          console.log('user name: ' + userName);
+          console.log('submit feedback: ' + feedback);
+        } else {
+          console.log('cancel.');
+        }
+      }
     });
   },
 

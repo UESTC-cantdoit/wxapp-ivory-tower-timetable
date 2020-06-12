@@ -1,0 +1,46 @@
+<!--pages/setting/aboutUs.wxml-->
+<view class="container">
+  <view class="background-title">我们是谁</view>
+  <view>
+    <view class="background-text">我们是来自电子科技大学（UESTC）的大学生团队。</view>
+    <view class="background-text">我们致力于连结每一块小小的代码碎片，去创造出有关生活的无限种可能性。</view>
+  </view>
+</view>
+
+<van-divider />
+
+<view class="container">
+  <view class="background-title">小程序命名</view>
+  <view>
+    <view class="background-text">“象牙塔”在早期的文学界被看作一种主观幻想的艺术天地，当中的人忽视现实的种种，自隐于这理想的美满之地从事创作；在中国的语境之中，“象牙塔”也是远离尔虞我诈社会的高等学府——大学的象征。</view>
+    <view class="background-text">而现在，“象牙塔”又多了一层褒义，是一片让知识分子得以脱离繁杂多变的现实生活，专心自己的学术事业的世外桃源。</view>
+    <view class="background-text">“象牙塔”是好是坏，权看塔中人如何辩证看待社会现实与学术事业之间的联系与分歧，而这正是每一位正身处其中的大学生所应当思索的问题。</view>
+    <view class="background-text">在这看上去理想的境地——大学之中，用理想的方式实现同学们的协作，进而走好求知之路，使用“象牙塔”作为前缀再合适不过。</view>
+    <view class="background-text">因此，我们将本小程序命名为“象牙塔课程表”。</view>
+  </view>
+</view>
+
+<van-divider />
+
+<view class="container">
+  <view class="background-title">第三方支持</view>
+  <view>
+    <view class="background-text">在小程序 UI 设计中，我们主要使用了第三方的组件库 Vant Weapp，使得风格更加统一。</view>
+    <view class="background-text">在实现按拼音首字母索引课程名时，我们参考并引用了 Github 上的项目 pinyinjs。</view>
+    <view class="background-text">部分页面使用到了来自千库网的图片素材，均已获得个人商业用途授权。</view>
+  </view>
+</view>
+
+<van-divider />
+
+<view>
+  <view class="container">
+    <view class="background-title">意见反馈</view>
+    <view>
+      <view class="background-text">我们倾注不少心血在本小程序的开发过程之中。</view>
+      <view class="background-text">仍然，它并不成熟，可能充斥着许多我们未能发现的 Bug 或是设计上的遗漏失误。</view>
+      <view class="background-text">我们由衷地感谢您提出在使用本小程序过程中的不爽之处！</view>
+    </view>
+  </view>
+  <van-button type="primary" bind:click="toFeedback" block>提出意见反馈</van-button>
+</view>

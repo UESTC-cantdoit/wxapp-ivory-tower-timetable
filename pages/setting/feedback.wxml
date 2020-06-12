@@ -1,0 +1,36 @@
+<!--pages/setting/feedback.wxml-->
+<view class="container">
+  <view class="background-title">意见反馈 & Bug 提交</view>
+  <van-cell-group>
+    <van-field
+      value="{{ userName }}"
+      label="您的昵称"
+      placeholder="请输入您的昵称（可选）"
+      bind:change="userNameOnChange"
+      clearable
+      maxlength="20"
+    />
+    <van-field
+      value="{{ feedback }}"
+      label="您的想法"
+      type="textarea"
+      placeholder="您的建议非常有用！"
+      bind:change="feedbackOnChange"
+      autosize
+      clearable
+      maxlength="100"
+      show-word-limit
+    />
+  </van-cell-group>
+</view>
+
+<view class="submitButton">
+  <van-button
+    type="primary"
+    bind:click="submitFeedback"
+    disabled="{{ feedback == '' }}"
+    loading="{{ onSubmitProcess }}"
+    loading-text="提交中..."
+    block
+  >提交</van-button>
+</view>

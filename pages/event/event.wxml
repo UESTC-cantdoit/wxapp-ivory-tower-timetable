@@ -73,7 +73,41 @@
 </template>
 
 <template name="noEvent">
-  <!-- To do -->
+  <view class="container center-item">
+    <view class="body">
+      <van-image
+        round
+        width="20rem"
+        height="20rem"
+        src="cloud://timetable-81f1c.7469-timetable-81f1c-1302120168/images/astronaut-hi.jpg"
+      />
+      <view class="background-title">
+        <view>无当前日程</view>
+      </view>
+      <view class="background-text">
+        <view>去添加新的日程吧</view>
+      </view>
+    </view>
+  </view>
+
+  <van-divider />
+
+  <van-row>
+    <van-col span="{{ haveClass ? 12 : 24 }}">
+      <van-button
+        block
+        color="linear-gradient(to right, #4bb0ff, #6149f6)"
+        bind:click="createEvent"
+      >添加新的日程</van-button>
+    </van-col>
+    <van-col span="{{ haveClass ? 12 : 0 }}" wx:if="{{ haveClass }}">
+      <van-button
+        block
+        type="primary"
+        bind:click="addEventFromEventList"
+      >从班级日程库添加</van-button>
+    </van-col>
+  </van-row>
 </template>
 
 <van-icon
