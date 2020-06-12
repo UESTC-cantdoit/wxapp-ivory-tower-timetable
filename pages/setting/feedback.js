@@ -28,12 +28,14 @@ Page({
       title: '提交反馈',
       content: '您的意见反馈将帮助我们更好地改进本小程序！谢谢！',
       success (res) {
-        if (res.confirm) {
+        if (res.confirm) {  // 发送邮件参考 https://cloud.tencent.com/developer/article/1481793
+          const nowDate = new Date();
           const userName = that.data.userName;
           const feedback = that.data.feedback;
           that.setData({
             onSubmitProcess: true
           });
+          console.log('now: ' + nowDate);
           console.log('user name: ' + userName);
           console.log('submit feedback: ' + feedback);
         } else {
