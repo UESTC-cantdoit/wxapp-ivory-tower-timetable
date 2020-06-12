@@ -21,7 +21,8 @@
     "pages/setting/eventPageSetting",
     "pages/setting/aboutUs",
     "pages/setting/feedback",
-    "pages/setting/versionDialog"
+    "pages/setting/versionDialog",
+    "pages/common/welcome"
   ],
   "window": {
     "navigationBarBackgroundColor": "#ffffff",

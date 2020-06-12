@@ -141,3 +141,7 @@
 <view class="container">
   <van-cell title="偏好设置" icon="setting-o" size="large" is-link bind:click="toAppSetting" />
 </view>
+
+<view class="container">
+  <van-cell title="welcome" label="临时入口" size="large" is-link bind:click="toWelcome" />
+</view>

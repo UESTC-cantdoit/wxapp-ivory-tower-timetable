@@ -1,0 +1,8 @@
+/* pages/common/welcome.wxss */
+.body {
+  margin-top: 3rem;
+}
+
+.background-text {
+  padding: 5px 15px;
+}
