@@ -7,6 +7,11 @@ let startX = 0; //开始时的X坐标
 let startY = 0; //开始时的Y坐标
 let startTime = 0; //开始时的毫秒数
 
+let activeEventCount = 0;
+let eventArr = [];
+let eventCount = 0;
+let currentEventCount = 0;
+
 Page({
 
   /**
@@ -147,9 +152,7 @@ Page({
           if (event[i].eventId == eventId) {
             event[i].eventStatus = '已完成';
             //云数据库操作
-            db.collection('events').where({
-              _id:eventId
-            })
+            db.collection('events').doc(eventId)
             .update({
               data:{
                 done: true
@@ -167,9 +170,7 @@ Page({
         for (let i=0; i<event.length; i++) {
           if (event[i].eventId == eventId) {
             event[i].eventStar = true;
-            db.collection('events').where({
-              _id:eventId
-            })
+            db.collection('events').doc(eventId)
             .update({
               data:{
                 star: true
@@ -193,6 +194,12 @@ Page({
             break;
           }
         }
+        db.collection('events').doc(eventId)
+            .update({
+              data:{
+                done: db.command.remove()
+              }
+        })
         this.setData({
           event: event
         })
@@ -205,6 +212,12 @@ Page({
             break;
           }
         }
+        db.collection('events').doc(eventId)
+        .update({
+          data:{
+            star: db.command.remove()
+          }
+        })
         this.setData({
           event: event
         })
@@ -279,13 +292,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    // this.getDatabyCloud();
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    this.getDatabyCloud();
+    // this.getDatabyCloud();
   },
 
   /**
@@ -298,7 +312,9 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
+    eventCount = 0;
+    eventArr = [];
+    activeEventCount = 0;
   },
 
   /**
@@ -312,14 +328,18 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.getDatabyCloud();
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    console.log("上拉触底");
+    let that = this;
+    if ( currentEventCount == 10 ) {
+      that.getDatabyCloud();
+    }
   },
 
   /**
@@ -329,21 +349,22 @@ Page({
 
   },
   getDatabyCloud: function () {
-    var eventArr = [];
     var that = this;
     // console.log('event',getApp().globalData.userInfo.openid)
     wx.cloud.callFunction({
       name: 'get_event',
       data: {
         _openid: getApp().globalData.userInfo.openid,
-        course_classId: getApp().globalData.classId
+        course_classId: getApp().globalData.classId,
+        eventCount: eventCount,
       },
       success: (res) => {
-        // console.log('events',res.result.list);
-      //格式化结果
+          console.log('events',res.result.list);
+          eventCount += 10;
+          currentEventCount = res.result.list.length;
+        //格式化结果
         for(let i=0;i<res.result.list.length;i++){
           var event = res.result.list[i];
-          var date = new Date();
           
           //处理 eventSync
           if (event.course_classId) {
@@ -358,11 +379,11 @@ Page({
             event.eventStar = false;
           }
 
-          //格式化时间 (待优化：为解决未完全明确 bug 的非合理代码)
-          let dateString = event.endDate.substr(0,10);
-          let fakeDate = new Date(dateString.replace(/-/,"/")) 
-          let realDate = new Date(fakeDate.getTime()+ 1000 * 60 * 60 * 24);
-          event.endDateOnDisplay = formatDate(realDate);
+          //处理 eventStatus
+          const today = new Date();
+          event.endDate = new Date(event.endDate);
+          event.endDateOnDisplay = formatDate(event.endDate);
+          let todayDate = today.getTime()-(today.getTime()%(1000 * 60 * 60 * 24)) - 8*1000*60*60;
 
           function formatDate(date) {
             var y = date.getFullYear();
@@ -373,12 +394,12 @@ Page({
             return y + '-' + m + '-' + d;
           }
 
-          //处理 eventStatus
           if (!event.done) {
-            if ((date.getTime()-(date.getTime()%(1000 * 60 * 60 * 24))) > Date.parse(event.endDate)) {
+            if (event.endDate.getTime() < todayDate) {
               event.eventStatus = '已结束';
             }else {
               event.eventStatus = '进行中';
+              activeEventCount++;
             }
           }else {
             event.eventStatus = '已完成';
@@ -412,8 +433,15 @@ Page({
         }
         that.setData({
           event: eventArr,
+          eventCount: eventArr.length,
         })
+        console.log( activeEventCount )
+        if ( activeEventCount < 8 && (currentEventCount == 10)) {
+          console.log('##')
+          that.getDatabyCloud();
+        }
 
+        activeEventCount = 0;
       },
       fail: err => {
         console.log(err)

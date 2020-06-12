@@ -48,10 +48,12 @@ App({
       {courseName: '微积分', class: '互加二班'},
       {courseName: '概率论', class: '互加二班'},
       {courseName: '计算机组成原理', class: 'null'}
-    ]
+    ],
+    courseList: false,
+    eventList: false,
   },
 
-  get_globalData:function () {
+  get_globalData: function () {
     const db = wx.cloud.database();
     //查询 user-class 集合，获取 haveClass 信息
     db.collection('users-class').where({
@@ -101,7 +103,7 @@ App({
       
     })
   },
-  getOpenid:function(){
+  getOpenid: function () {
     const that = this;
     wx.cloud.callFunction({
       name:"get_openid",

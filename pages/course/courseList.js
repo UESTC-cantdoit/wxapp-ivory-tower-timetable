@@ -95,8 +95,9 @@ Page({
 
   modifyCourse(e) {
     const courseId = e.currentTarget.dataset.courseid;
+    console.log(courseId)
     wx.navigateTo({
-      url: 'courseModify?courseid=' + courseId
+      url: 'courseModify?courseId=' + courseId
     })
   },
 
@@ -104,7 +105,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
   },
 
   /**
@@ -119,6 +119,7 @@ Page({
    */
   onShow: function () {
     this.getData();
+    getApp().globalData.courseList = true;
   },
 
   /**

@@ -116,7 +116,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    
   },
 
   /**
@@ -131,6 +130,7 @@ Page({
    */
   onShow: function () {
     this.getData();
+    getApp().globalData.courseList = true;
   },
 
   /**
@@ -179,22 +179,37 @@ Page({
         classId: getApp().globalData.classId
       },
       success: (res) => {
-        console.log('events',res);
+        // console.log('events',res);
         //格式化结果
         for(let i=0;i<res.result.list.length;i++){
           var event = res.result.list[i];
-        
-          var date = new Date();
+
           //处理 eventStatus
+          const today = new Date();
+          event.endDate = new Date(event.endDate);
+          event.endDateOnDisplay = formatDate(event.endDate);
+          let todayDate = today.getTime()-(today.getTime()%(1000 * 60 * 60 * 24)) - 8*1000*60*60;
+
+          function formatDate(date) {
+            var y = date.getFullYear();
+            var m = date.getMonth() + 1;
+            m = m < 10 ? '0' + m : m;
+            var d = date.getDate();
+            d = d < 10 ? ('0' + d) : d;
+            return y + '-' + m + '-' + d;
+          }
+
           if (!event.done) {
-            if (date > event.endDate) {
-              event.eventStatus = '已结束';
+            //日程已结束则跳循环
+            if (event.endDate.getTime() < todayDate) {
+              continue;
             }else {
               event.eventStatus = '进行中';
             }
           }else {
             event.eventStatus = '已完成';
           }
+        
           //处理 eventSync
           if (event.course_classId) {
             event.eventSync = true;
@@ -215,22 +230,7 @@ Page({
               event.ownEvent = true
             } 
           }
-  
-          //格式化时间 (待优化：为解决未完全明确 bug 的非合理代码)
-          let dateString = event.endDate.substr(0,10);
-          let fakeDate = new Date(dateString.replace(/-/,"/")) 
-          event.endDate = new Date(fakeDate.getTime()+ 1000 * 60 * 60 * 24);
-          event.endDateOnDisplay = formatDate(event.endDate);
-          function formatDate(date) {
-            var y = date.getFullYear();
-            var m = date.getMonth() + 1;
-            m = m < 10 ? '0' + m : m;
-            var d = date.getDate();
-            d = d < 10 ? ('0' + d) : d;
-            return y + '-' + m + '-' + d;
-          }
           
-
           if (event.pre_id) {
             pre_eventArr.push({
               pre_id: event.pre_id

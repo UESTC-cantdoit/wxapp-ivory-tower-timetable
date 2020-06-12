@@ -7,14 +7,15 @@ Page({
    */
   data: {
     haveClass: false, // getApp().globalData.haveClass,
-    activeCourseNum: 8, // 当前班级中的同步课程数
+    activeCourseNum: 0, // 当前班级中的同步课程数
     newCourseNum: 0,  // 自用户上次登录以来新增的课程数
-    activeEventNum: 19, // 仅显示用户添加的同步课程的同步日程数
-    newEventNum: 1, // 自用户上次登录以来新增的日程数
+    activeEventNum: 0, // 仅显示用户添加的同步课程的同步日程数
+    newEventNum: 0, // 自用户上次登录以来新增的日程数
     className: '',
     classId: '',
     openid: '',
     isClassCreator: false,
+    focusDay: 3,
     focusEvent: [ // 应按照截止时间由早及晚排序
       {
         eventId: 1234,
@@ -132,7 +133,17 @@ Page({
    */
   onShow: function () {
     // this.getData();
-    this.data.openid && this.getDataOnPage();
+    // this.data.openid || this.getDataOnPage();
+    if ( getApp().globalData.courseList = true ){
+      this.setData({
+        newCourseNum: 0
+      })
+    }
+    if ( getApp().globalData.eventList = true ){
+      this.setData({
+        newEventNum: 0
+      })
+    }
   },
 
   /**
@@ -175,12 +186,11 @@ Page({
     wx.cloud.callFunction({
       name:"get_openid",
       success:res=>{
-        console.log(res.result.openid)
+        // console.log(res.result.openid)
         that.setData({
           openid:res.result.openid,
         })
         getApp().globalData.userInfo.openid = res.result.openid;
-        wx.setStorageSync("openid", that.data.userinfo)
         that.getDataOnPage();
       },
       fail:res=>{
@@ -188,7 +198,7 @@ Page({
       }
     })
   },
-  //获取用户信息
+  //获取数据
   getData: function(){
     this.setData({
       haveClass: getApp().globalData.haveClass,
@@ -224,15 +234,15 @@ Page({
 
     //TODO 获取星标日程
   },
-  //不调用 globalData 获取用户信息
+  //不调用 globalData 获取数据
   getDataOnPage: function(){
+    const that = this;
     //获取班级信息
     db.collection('users-class').where({
       _openid: this.data.openid,
     }).get().then(res => {
       // console.log("res",res);
-      if (res.data.length !== 0) {
-        if (res.data[0].classId) {
+      if (res.data.length !== 0 && res.data[0].classId) {
           this.setData({
               haveClass: true,
               className: res.data[0].className,
@@ -243,79 +253,153 @@ Page({
               isClassCreator: true
             })
           }
+
+          //获取课程数量
+          db.collection('courses').where({
+            classId: this.data.classId
+          }).count().then( res => {
+            this.setData({
+              activeCourseNum: res.total
+            })
+            //获取新增课程数 newCourseNum
+            const lastClassCourseNum = wx.getStorageSync('classCourseNum');
+            // console.log(lastClassCourseNum);
+            let newCourseNum = res.total - lastClassCourseNum;
+            if ( newCourseNum > 0 ) {
+              this.setData({
+                newCourseNum: newCourseNum
+              })
+            }
+            // let num = res.total;
+            wx.setStorageSync("classCourseNum", `${res.total}`);
+          })
+          //获取日程数量
+          wx.cloud.callFunction({
+            name: 'get_class_event_count',
+            data: {
+              classId: this.data.classId
+            },
+            success: (res) => {
+              this.setData({
+                activeEventNum: res.result
+              })
+              //获取新增日程数 newEventNum  
+              const lastClassEventNum = wx.getStorageSync('classEventNum');
+              // console.log(lastClassEventNum);
+              let newEventNum = res.result - lastClassEventNum;
+              if ( newEventNum > 0 ){
+                this.setData({
+                  newEventNum: newEventNum
+                })
+              }
+              wx.setStorageSync("classEventNum", `${res.result}`);
+            },
+          })
         }
-      }else {
-        console.log("not found class")
-      }
-      //获取课程数量
-      db.collection('courses').where({
-        classId: this.data.classId
-      }).count().then( res => {
-        this.setData({
-          activeCourseNum: res.total
-        })
-      })
-      //获取日程数量
-      db.collection('events').where({
-        course_classId: this.data.classId,
-        pre_id: db.command.exists(false)
-      }).count().then( res => {
-        this.setData({
-          activeEventNum: res.total
-        })
-      })
-    })
-  
-    //TODO 获取新增课程数 newCourseNum
 
-    //TODO 获取新增日程数 newEventNum 
-
-    //TODO 获取需关注日程数 focusEventNum
-    
-    function formatEvents(events) {
+    function formatStarEvents(events) {
       var eventsArr = [];
-      const today = new Date();
+      let date = new Date();
+      let todayDate = date.getTime()-(date.getTime()%(1000 * 60 * 60 * 24)) - 8*1000*60*60;
+      //今日零点
+      const today = new Date(todayDate);
+      //明日零点
       const tomorrow = new Date(today.getTime()+ 1000 * 60 * 60 * 24);
+      //需关注范围内最后一天零点
       events.map( event =>{
-        if (event.endDate < today){
-          event.eventEndStatus = '已截止'
-        }else if (event.endDate.toDateString() == today.toDateString()) {
-            event.eventEndStatus = '今日截止';
-        }else if (event.endDate.toDateString() == tomorrow.toDateString()) {
-          event.eventEndStatus = '明日截止';
-        }else {
-          function formatDate(date) {
-            var y = date.getFullYear();
-            var m = date.getMonth() + 1;
-            m = m < 10 ? '0' + m : m;
-            var d = date.getDate();
-            d = d < 10 ? ('0' + d) : d;
-            return y + '-' + m + '-' + d;
+          if (event.endDate < today){
+            event.eventEndStatus = '已截止'
+          }else if (event.endDate.toDateString() == today.toDateString()) {
+              event.eventEndStatus = '今日截止';
+          }else if (event.endDate.toDateString() == tomorrow.toDateString()) {
+            event.eventEndStatus = '明日截止';
+          }else {
+            function formatDate(date) {
+              var y = date.getFullYear();
+              var m = date.getMonth() + 1;
+              m = m < 10 ? '0' + m : m;
+              var d = date.getDate();
+              d = d < 10 ? ('0' + d) : d;
+              return y + '-' + m + '-' + d;
+            }
+            event.eventEndStatus = formatDate(event.endDate);
           }
-          event.eventEndStatus = formatDate(event.endDate);
-        }
-        eventsArr.push({ 
-          eventId: event._id,
-          eventName: event.eventName,
-          eventEndStatus:  event.eventEndStatus,
-        })
+          eventsArr.push({ 
+            eventId: event._id,
+            eventName: event.eventName,
+            eventEndStatus:  event.eventEndStatus,
+          })
       })
       return eventsArr
     }
-    //TODO 获取需关注日程 
+    function formatFocusEvents(events) {
+      var eventsArr = [];
+      let date = new Date();
+      let todayDate = date.getTime()-(date.getTime()%(1000 * 60 * 60 * 24)) - 8*1000*60*60;
+      //今日零点
+      const today = new Date(todayDate);
+      //明日零点
+      const tomorrow = new Date(today.getTime()+ 1000 * 60 * 60 * 24);
+      //需关注范围内最后一天零点
+      const lastFocusDay = new Date(today.getTime()+ 1000 * 60 * 60 * 24 * (that.data.focusDay-1));
+      //筛选需关注日程并格式化日程时间
+      events.map( event =>{
+        event.endDate = new Date(event.endDate);
+        if (event.endDate <=  lastFocusDay && !(event.endDate < today)){
+          // console.log(event.eventName,event.endDate)
+          if (event.endDate.toDateString() == today.toDateString()) {
+              event.eventEndStatus = '今日截止';
+          }else if (event.endDate.toDateString() == tomorrow.toDateString()) {
+            event.eventEndStatus = '明日截止';
+          }else {
+            function formatDate(date) {
+              var y = date.getFullYear();
+              var m = date.getMonth() + 1;
+              m = m < 10 ? '0' + m : m;
+              var d = date.getDate();
+              d = d < 10 ? ('0' + d) : d;
+              return y + '-' + m + '-' + d;
+            }
+            event.eventEndStatus = formatDate(event.endDate);
+          }
+          eventsArr.push({ 
+            eventId: event._id,
+            eventName: event.eventName,
+            eventEndStatus:  event.eventEndStatus,
+          })
+        }
+      })
+      return eventsArr
+    }
+    //获取需关注日程、需关注日程数
+    wx.cloud.callFunction({
+      name: 'get_focus_event',
+      data: {
+        _openid: this.data.openid,
+      },
+      success: (res) => {
+      // console.log(res);
+      var focusEvents = formatFocusEvents(res.result.data)
+      this.setData({
+        focusEvent:focusEvents,
+        focusEventNum: focusEvents.length
+      })
+      }
+    })
 
     //获取星标日程
     db.collection('events').where({
       star: true,
       _openid: this.data.openid
-    }).get().then( res => {
+    }).orderBy('endDate','asc').get().then( res => {
       // console.log(res.data);
-      var starEvents = formatEvents(res.data)
+      var starEvents = formatStarEvents(res.data)
       this.setData({
         starEvent:starEvents
       })
     })
-  },
+  })
+},
   //测试用登录按钮触发 暂时不触发
   onGotUserInfo:function(e){
     const that = this

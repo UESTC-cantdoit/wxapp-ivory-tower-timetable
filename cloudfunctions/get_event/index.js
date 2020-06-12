@@ -21,5 +21,7 @@ exports.main = async (event, context) => {
     }
   )
   .sort({endDate: 1})
+  .skip( event.eventCount)
+  .limit(10)
   .end()
 }

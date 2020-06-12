@@ -82,11 +82,17 @@ Page({
   },
 
   datePickerOnConfirm(value) {
-    const date = new Date(value.detail); // 获取选择的日期
+    let date = new Date(value.detail); // 获取选择的日期
+
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
     const selectEndDateOnDisplay = year + '-' + ((month >= 10) ? month : ('0' + month)) + '-' + ((day >= 10) ? day : ('0' + day));
+
+    date = new Date(selectEndDateOnDisplay)
+    date = date.getTime()-(date.getTime()%(1000 * 60 * 60 * 24)) - 8*1000*60*60;
+    date = new Date(date);
+
     this.setData({
       selectEndDate: date,
       selectEndDateOnDisplay: selectEndDateOnDisplay,

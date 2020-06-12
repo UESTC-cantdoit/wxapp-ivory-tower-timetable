@@ -38,27 +38,11 @@ Page({
         success: (res) => {
           if (res.confirm) {
             this.setData({ enableSearch: detail });
-            db.collection('class').where({
-              _openid: getApp().globalData.userInfo.openid,
-              classId: getApp().globalData.classId
-            }).update({
-              data: {
-                enableSearch: detail
-              }
-            })
           }
         },
       });
     } else {
       this.setData({ enableSearch: detail });
-      db.collection('class').where({
-        _openid: getApp().globalData.userInfo.openid,
-        classId: getApp().globalData.classId
-      }).update({
-        data: {
-          enableSearch: detail
-        }
-      })
     }
     console.log(this.data.enableSearch)
     console.log(detail)
@@ -78,7 +62,12 @@ Page({
             confirmColor: '#FF3333',
             success: (res) => {
               if (res.confirm) {
-                // todo
+                db.collection('users-class').where({
+                  classId: this.data.classId
+                }).remove();
+                db.collection('class').where({
+                  classId: this.data.classId
+                }).remove();
               }
             },
           });
@@ -101,7 +90,9 @@ Page({
             confirmColor: '#FF3333',
             success: (res) => {
               if (res.confirm) {
-                // todo
+                db.collection('users-class').where({
+                  _openid: getApp().globalData.userInfo.openid,
+                }).remove();
               }
             },
           });
@@ -112,7 +103,14 @@ Page({
 
   updateClass() { // 更新班级信息
     console.log('更新班级信息');
-    // todo
+    db.collection('class').where({
+      _openid: getApp().globalData.userInfo.openid,
+      classId: getApp().globalData.classId
+    }).update({
+      data: {
+        enableSearch: this.data.enableSearch
+      }
+    })
     this.backToHome();
   },
 
