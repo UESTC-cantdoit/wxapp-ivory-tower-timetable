@@ -31,7 +31,7 @@ page {
   font-weight: normal;
   font-size: 16px;
   color: rgba(69,90,100,.6);
-  padding: 10px 5px;
+  padding: 10px 15px;
 }
 
 .background-text-icon {

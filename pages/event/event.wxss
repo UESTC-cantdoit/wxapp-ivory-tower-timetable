@@ -43,3 +43,11 @@ page {
   -webkit-box-shadow:0 6rpx 10rpx 2rpx rgba(181, 181, 181, 0.397);
   */
 }
+
+.body {
+  padding-top: 20px;
+}
+
+.info {
+  padding-top: 5px;
+}

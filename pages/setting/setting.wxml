@@ -1,2 +1,34 @@
 <!--pages/setting/setting.wxml-->
-<text>pages/setting/setting.wxml</text>
+<view class="container center-item">
+  <view class="weapp-icon">
+    <van-image
+      round
+      width="4rem"
+      height="4rem"
+      src="cloud://timetable-81f1c.7469-timetable-81f1c-1302120168/images/象牙塔课表.png"
+    />
+    <view class="weapp-icon-title">象牙塔课程表</view>
+  </view>
+</view>
+
+<view class="container">
+  <van-cell-group>
+    <van-cell title="通用设置" is-link bind:click="toCommonSetting" />
+    <van-cell title="班级设置" is-link wx:if="{{ haveClass }}" bind:click="toClassSetting" />
+    <van-cell title="主页设置" is-link bind:click="toHomePageSetting" />
+    <van-cell title="课表设置" is-link bind:click="toCoursePageSetting" />
+    <van-cell title="日程设置" is-link bind:click="toEventPageSetting" />
+  </van-cell-group>
+</view>
+
+<view class="container">
+  <van-cell-group>
+    <van-cell title="关于我们" icon="manager-o" is-link bind:click="toAboutUs" />
+    <van-cell title="意见反馈" icon="comment-o" is-link bind:click="toFeedback" />
+  </van-cell-group>
+</view>
+
+<view class="container center-item">
+  <!-- 点击前往更新日志页 -->
+  <view class="version" bindtap="toVersionDialog">版本 {{ version }} ({{ versionDate }})</view>
+</view>

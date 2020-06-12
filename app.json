@@ -14,7 +14,14 @@
     "pages/common/success",
     "pages/common/ops",
     "pages/course/courseModify",
-    "pages/course/course"
+    "pages/course/course",
+    "pages/setting/commonSetting",
+    "pages/setting/homePageSetting",
+    "pages/setting/coursePageSetting",
+    "pages/setting/eventPageSetting",
+    "pages/setting/aboutUs",
+    "pages/setting/feedback",
+    "pages/setting/versionDialog"
   ],
   "window": {
     "navigationBarBackgroundColor": "#ffffff",

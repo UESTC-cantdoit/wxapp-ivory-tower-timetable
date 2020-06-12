@@ -1,0 +1,12 @@
+<!--pages/setting/versionDialog.wxml-->
+<!-- 版本 1.0.0 日志 -->
+<view class="container">
+  <van-divider contentPosition="left">
+    <view class="version-title">version 1.0.0</view>
+  </van-divider>
+  <view>
+    <view class="version-text">微信小程序“象牙塔课程表”正式上线，</view>
+    <view class="version-text">用它简化您的学习生活吧！</view>
+  </view>
+  <view class="version-date">2020-06</view>
+</view>
