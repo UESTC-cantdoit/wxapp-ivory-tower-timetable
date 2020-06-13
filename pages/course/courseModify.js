@@ -169,6 +169,7 @@ Page({
             onModifyCourseProcess: false
           })
           console.log('Modify course successfully.');
+          wx.navigateBack();
         } else {
           console.log('Cancel.');
         }
@@ -197,13 +198,16 @@ Page({
                     }
                   })
                   console.log('Delete course successfully.');
+                  wx.navigateBack();
                 } else {
                   console.log('Cancel.');
                 }
               },
             });
           } else {
+            db.collection('courses').doc(this.data.courseId).remove();
             console.log('Delete course successfully.');
+            wx.navigateBack();
           }
         } else {
           console.log('Cancel.');

@@ -15,7 +15,7 @@
       <view class="background-text">感谢您选择并使用本小程序！</view>
       <view class="background-text">您的所有操作都将保存到云端，</view>
       <view class="background-text">这意味着您需要登录才能正常使用本小程序。</view>
-      <view class="background-text">别担心，我们仅收集必需的用户信息，</view>
+      <view class="background-text">别担心，我们仅收集来自您的唯一标识，</view>
       <view class="background-text">点击下方的按钮加入我们吧！</view>
     </view>
   </view>
@@ -27,4 +27,4 @@
   block
   color="linear-gradient(to right, #00d2ff, #3a7bd5)"
   bind:click="login"
->登录到象牙塔课程表</van-button>
+>进入象牙塔课程表</van-button>

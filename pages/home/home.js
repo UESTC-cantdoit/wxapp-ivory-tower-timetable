@@ -181,9 +181,9 @@ Page({
       // console.log("res",res);
       if (res.data.length !== 0 && res.data[0].classId) {
           this.setData({
-              haveClass: true,
-              className: res.data[0].className,
-              classId: res.data[0].classId,
+            haveClass: true,
+            className: res.data[0].className,
+            classId: res.data[0].classId,
           })
           if(res.data[0]._openid == this.data.openid){
             this.setData({
