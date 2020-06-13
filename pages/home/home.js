@@ -8,6 +8,8 @@ Page({
   data: {
     haveClass: false, // getApp().globalData.haveClass,
     activeCourseNum: 0, // 当前班级中的同步课程数
+    displayMyClassModule: getApp().globalData.settings.displayMyClassModule,
+    focusEventDay: getApp().globalData.settings.focusEventDay,
     newCourseNum: 0,  // 自用户上次登录以来新增的课程数
     activeEventNum: 0, // 仅显示用户添加的同步课程的同步日程数
     newEventNum: 0, // 自用户上次登录以来新增的日程数
@@ -145,6 +147,10 @@ Page({
         newEventNum: 0
       })
     }
+    this.setData({
+      displayMyClassModule: getApp().globalData.settings.displayMyClassModule,
+      focusEventDay: getApp().globalData.settings.focusEventDay
+    })
   },
 
   /**
