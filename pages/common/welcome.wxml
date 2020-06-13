@@ -1,0 +1,30 @@
+<!--pages/common/welcome.wxml-->
+
+<view class="container center-item">
+  <view class="body">
+    <van-image
+      round
+      width="20rem"
+      height="20rem"
+      src="cloud://timetable-81f1c.7469-timetable-81f1c-1302120168/images/astronaut-hi.jpg"
+    />
+    <view class="background-title">
+      <view>盛大的欢迎</view>
+    </view>
+    <view>
+      <view class="background-text">感谢您选择并使用本小程序！</view>
+      <view class="background-text">您的所有操作都将保存到云端，</view>
+      <view class="background-text">这意味着您需要登录才能正常使用本小程序。</view>
+      <view class="background-text">别担心，我们仅收集必需的用户信息，</view>
+      <view class="background-text">点击下方的按钮加入我们吧！</view>
+    </view>
+  </view>
+</view>
+
+<van-divider />
+
+<van-button
+  block
+  color="linear-gradient(to right, #00d2ff, #3a7bd5)"
+  bind:click="login"
+>登录到象牙塔课程表</van-button>

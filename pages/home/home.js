@@ -96,23 +96,12 @@ Page({
     })
   },
 
-  createCourse() {
-    wx.navigateTo({
-      url: '../course/courseCreate'
+  toWelcome() {
+    wx.redirectTo({
+      url: '../common/welcome',
     })
   },
 
-  toSuccess() {
-    wx.navigateTo({
-      url: '../common/success'
-    })
-  },
-
-  toOps() {
-    wx.navigateTo({
-      url: '../common/ops'
-    })
-  },
 
   /**
    * 生命周期函数--监听页面加载

@@ -145,4 +145,7 @@
 <!-- 临时登录 -->
 <view wx:if="{{!openid}}">
   <button open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="onGotUserInfo">登录</button>
+
+<view class="container">
+  <van-cell title="welcome" label="临时入口" size="large" is-link bind:click="toWelcome" />
 </view>
