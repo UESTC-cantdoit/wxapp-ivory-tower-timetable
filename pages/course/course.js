@@ -174,7 +174,15 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.getData();
+    var app = getApp();
+    if (this.data.displayCourseNum != app.globalData.settings.displayCourseNum || this.data.displayDayNum != app.globalData.settings.displayDayNum) {
+      this.setData({
+        displayDayNum: app.globalData.settings.displayDayNum,
+        displayCourseNum: app.globalData.settings.displayCourseNum
+      });
+      this.onReady();
+    };
   },
 
   /**
@@ -192,11 +200,16 @@ Page({
   },
   getData: function () {
     // console.log('course',getApp().globalData.userInfo.openid)
-    db.collection('courses').where({
-      _openid: getApp().globalData.userInfo.openid
-    }).get().then( res => {
+  
+    wx.cloud.callFunction({
+      name: 'get_course',
+      data: {
+        _openid: getApp().globalData.userInfo.openid
+      }
+    })
+    .then( res => {
       var coursesArr = [];
-      res.data.forEach( course => {
+      res.result.data.forEach( course => {
         var courseTimeArr = [];
         //替换 courseTime 属性名
         course.courseTime.map( time =>{

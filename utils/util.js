@@ -31,8 +31,36 @@ function checkSelectTime(newItem, items) { // 判断选择的上课时间是否�
   return true;
 }
 
+const db = wx.cloud.database();
+
+function checkSelectTimeCloud( newItem ) {
+  const weekDay = newItem.weekDay;
+  const startTime = newItem.startTime;
+  const endTime = newItem.endTime;
+  const _ = db.command;
+
+  db.collection('courses').where({
+    _openid: getApp().globalData.userInfo.openid,
+  }).where({
+    courseTime: 
+      _.elemMatch({
+        startTime: _.lte(startTime),
+        endTime:  _.gte(endTime),
+        weekDay: _.eq(weekDay),
+      })
+  }).count().then( res => {
+    if (res.total == 0) {
+      return true;
+    }else {
+      return false;
+    }
+  })
+}
+
+
 module.exports = {
   formatTime: formatTime,
   formatNumber: formatNumber,
-  checkSelectTime: checkSelectTime
+  checkSelectTime: checkSelectTime,
+  checkSelectTimeCloud: checkSelectTimeCloud,
 }

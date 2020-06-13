@@ -75,16 +75,19 @@ Page({
     };
     var util = require('../../utils/util');
     if (util.checkSelectTime(newItem, items)) { // 若时间不冲突，则添加到 selectCourseTime 中并渲染
-      items.push(newItem);
-      this.setData({
-        selectCourseTime: items,
-        timePickerOnShow: false
-      });
-      Notify({ type: 'success', message: '您可以左滑删除已选择时间' });
+        items.push(newItem);
+        this.setData({
+          selectCourseTime: items,
+          timePickerOnShow: false
+        });
+        Notify({ type: 'success', message: '您可以左滑删除已选择时间' });
+      
     } else { // 若时间冲突，则给出提示
-      Notify('当前选择时间冲突与已有时间冲突');
+      Notify('当前选择时间与已添加时间冲突');
     }
   },
+
+  
 
   timeSelectOnChange(e) { // 选择的上课时间改变时
     const selectArray = e.detail.picker.children;
@@ -139,6 +142,7 @@ Page({
           this.setData({
             onCreateCourseProcess: true
           })
+        
           //云数据库操作：添加记录至 courses 集合
           if (this.data.syncToClass == true) {
             db.collection('courses').add({
