@@ -56,6 +56,7 @@ Page({
           })
           //云数据库操作结束
           console.log('Join class successfully.');
+          wx.navigateBack();
         } else {
           console.log('Cancel.');
         }

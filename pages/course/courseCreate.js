@@ -134,6 +134,33 @@ Page({
   },
 
   createCourse() {
+    const haveClass = this.data.haveClass;
+    const syncToClass = this.data.syncToClass;
+    const selectCourseTime = this.data.selectCourseTime;
+    console.log(selectCourseTime);
+    console.log(syncToClass);
+    if (haveClass) {  // 已加入班级
+      if (syncToClass == false && selectCourseTime.length == 0) { // 未同步班级且未选择上课时间
+        wx.showModal({
+          title: '无法创建课程',
+          content: '您至少选择一个上课时间，或同步课程到班级'
+        });
+      } else {
+        this.showCreateCourseDialog();
+      }
+    } else {  // 未加入班级
+      if (selectCourseTime.length == 0) { // 未选择上课时间
+        wx.showModal({
+          title: '无法创建课程',
+          content: '您至少选择一个上课时间'
+        });
+      } else {
+        this.showCreateCourseDialog();
+      }
+    }
+  },
+
+  showCreateCourseDialog() {
     wx.showModal({
       title: '创建课程',
       content: '您将创建课程：' + this.data.courseName,
@@ -169,6 +196,7 @@ Page({
             onCreateCourseProcess: false
           })
           console.log('Create course successfully.');
+          wx.navigateBack();
         } else {
           console.log('Cancel.');
         }

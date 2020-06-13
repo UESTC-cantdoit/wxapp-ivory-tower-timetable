@@ -176,6 +176,7 @@ Page({
             onModifyEventProcess: false
           })
           console.log('Modify event successfully.');
+          wx.navigateBack();
         } else {
           console.log('Cancel.');
         }
@@ -204,6 +205,7 @@ Page({
                     }
                   })
                   console.log('Delete event successfully.');
+                  wx.navigateBack();
                 } else {
                   console.log('Cancel.');
                 }
@@ -212,6 +214,7 @@ Page({
           } else {
             db.collection('events').doc(this.data.eventId).remove();
             console.log('Delete event successfully.');
+            wx.navigateBack();
           }
         } else {
           console.log('Cancel.');

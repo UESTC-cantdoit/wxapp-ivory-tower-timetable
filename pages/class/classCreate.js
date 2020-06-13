@@ -78,7 +78,8 @@ Page({
           this.setData({
             onCreateCourseProcess: false
           })
-          console.log('Crate class successfully.');
+          console.log('Create class successfully.');
+          wx.navigateBack();
         } else {
           console.log('Cancel.');
         }
