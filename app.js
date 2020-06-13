@@ -93,25 +93,26 @@ App({
       // console.log("courses",this.globalData.courses);
       
     })
-
-    db.collection('settings').where({
-      _id: this.globalData.userInfo.openid
-    }).get().then( res => {
-      if ( res.data.length == 0 ) {
-        db.collection('settings').add({
-          data: {
-            _id: this.globalData.userInfo.openid,
-            displayMyClassModule: true, 
-            focusEventDay: 3, 
-            displayDayNum: 7, 
-            displayCourseNum: 14, 
-          }
-        })
-      }else {
-        // console.log(res.data)
-        this.globalData.settings = res.data[0];
-        this.globalData.settingsGetDone = true;
-      }
-    })
+    if (this.globalData.userInfo.openid) {
+      db.collection('settings').where({
+        _id: this.globalData.userInfo.openid
+      }).get().then( res => {
+        if ( res.data.length == 0 ) {
+          db.collection('settings').add({
+            data: {
+              _id: this.globalData.userInfo.openid,
+              displayMyClassModule: true, 
+              focusEventDay: 3, 
+              displayDayNum: 7, 
+              displayCourseNum: 14, 
+            }
+          })
+        }else {
+          // console.log(res.data)
+          this.globalData.settings = res.data[0];
+          this.globalData.settingsGetDone = true;
+        }
+      })
+    }
   },
 })

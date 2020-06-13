@@ -51,7 +51,8 @@ Page({
           //云数据库操作：添加记录
           db.collection('users-class').add({
             data: {
-              classId:this.data.searchedClassId
+              classId: this.data.searchedClassId,
+              className: this.data.searchedClassName
             }
           })
           //云数据库操作结束
