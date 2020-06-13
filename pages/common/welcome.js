@@ -10,9 +10,10 @@ Page({
 
   login() {
     console.log('login in weapp.');
-    wx.switchTab({
-      url: '../home/home',
-    })
+    this.getOpenid();
+    // wx.switchTab({
+    //   url: '../home/home',
+    // })
   },
 
   /**
@@ -69,5 +70,23 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
+  },
+  getOpenid: function () {
+    const that = this;
+    wx.cloud.callFunction({
+      name:"get_openid",
+      success:res=>{
+        // console.log(res.result.openid)
+        const openid = res.result.openid;
+        getApp().globalData.userInfo.openid = openid;
+        wx.setStorageSync("openid", openid);
+        wx.reLaunch({
+          url: '../home/home?openid=' + openid
+        })
+      },
+      fail:res=>{
+        console.log("云函数调用失败")
+      }
+    })
+  },
 })

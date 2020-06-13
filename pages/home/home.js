@@ -107,22 +107,34 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.getOpenid();
-    // this.getData();
+    // console.log('opt',options);
+    
+    if ( 'openid' in options) {
+      this.setData({
+        openid: options.openid
+      })
+    }else if (getApp().globalData.userInfo.openid) {
+      this.setData({
+        openid: getApp().globalData.userInfo.openid
+      })
+    }else {
+      console.log('#3');
+      this.toWelcome();
+    }
+    
+    this.getDataOnPage()
+
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    // this.getData();
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    // this.getData();
-    // this.data.openid || this.getDataOnPage();
     if ( getApp().globalData.courseList = true ){
       this.setData({
         newCourseNum: 0
@@ -169,61 +181,7 @@ Page({
   onShareAppMessage: function () {
 
   },
-  //获取 openid
-  getOpenid:function(){
-    const that = this;
-    wx.cloud.callFunction({
-      name:"get_openid",
-      success:res=>{
-        // console.log(res.result.openid)
-        that.setData({
-          openid:res.result.openid,
-        })
-        getApp().globalData.userInfo.openid = res.result.openid;
-        that.getDataOnPage();
-      },
-      fail:res=>{
-        console.log("云函数调用失败")
-      }
-    })
-  },
   //获取数据
-  getData: function(){
-    this.setData({
-      haveClass: getApp().globalData.haveClass,
-      openid: getApp().globalData.userInfo.openid,
-      className: getApp().globalData.className,
-      classId: getApp().globalData.classId,
-      isClassCreator: getApp().globalData.classCreator,
-    })
-    //获取课程数量
-    db.collection('courses').where({
-      classId: getApp().globalData.classId
-    }).count().then( res => {
-      this.setData({
-        activeCourseNum: res.total
-      })
-    })
-    //获取日程数量
-    db.collection('events').where({
-      course_classId: getApp().globalData.classId,
-      pre_id: db.command.exists(false)
-    }).count().then( res => {
-      this.setData({
-        activeEventNum: res.total
-      })
-    })
-    //TODO 获取新增课程数 newCourseNum
-
-    //TODO 获取新增日程数 newEventNum 
-
-    //TODO 获取需关注日程数 focusEventNum
-
-    //TODO 获取需关注日程 
-
-    //TODO 获取星标日程
-  },
-  //不调用 globalData 获取数据
   getDataOnPage: function(){
     const that = this;
     //获取班级信息
@@ -259,7 +217,6 @@ Page({
                 newCourseNum: newCourseNum
               })
             }
-            // let num = res.total;
             wx.setStorageSync("classCourseNum", `${res.total}`);
           })
           //获取日程数量
@@ -272,16 +229,23 @@ Page({
               this.setData({
                 activeEventNum: res.result
               })
-              //获取新增日程数 newEventNum  
-              const lastClassEventNum = wx.getStorageSync('classEventNum');
-              // console.log(lastClassEventNum);
-              let newEventNum = res.result - lastClassEventNum;
-              if ( newEventNum > 0 ){
-                this.setData({
-                  newEventNum: newEventNum
-                })
-              }
-              wx.setStorageSync("classEventNum", `${res.result}`);
+              //获取新增日程数 newEventNum
+              db.collection('events').where({
+                course_classId: this.data.classId,
+                pre_id: db.command.exists(false)
+              }).count().then( res2 => {
+                // console.log('res',res2)
+                const lastClassEventNum = wx.getStorageSync('classEventNum');
+                // console.log(lastClassEventNum);
+                let newEventNum = res2.total - lastClassEventNum;
+                if ( newEventNum > 0 && newEventNum <= res.result){
+                  this.setData({
+                    newEventNum: newEventNum
+                  })
+                }
+                wx.setStorageSync("classEventNum", `${res2.total}`);
+              })
+              
             },
           })
         }
@@ -389,25 +353,4 @@ Page({
     })
   })
 },
-  //测试用登录按钮触发 暂时不触发
-  onGotUserInfo:function(e){
-    const that = this
-    wx.cloud.callFunction({
-      name:"get_openid",
-      success:res=>{
-        console.log("云函数调用成功")
-        that.setData({
-          openid:res.result.openid,
-          userinfo: e.detail.userInfo
-        })
-        that.data.userinfo.openid = that.data.openid
-        console.log("userinfo", that.data.userinfo)
-        wx.setStorageSync("userinfo", that.data.userinfo)
-      },
-      fail:res=>{
-        console.log("云函数调用失败")
-      }
-    })
-  },
-
 })

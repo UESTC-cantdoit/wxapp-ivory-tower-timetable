@@ -7,37 +7,24 @@ App({
       traceUser:true
     })
     //从缓存中获取用户信息
-    //temp code
     const ui = wx.getStorageSync('openid');
     this.globalData.userInfo.openid = ui;
-    // const ui = wx.getStorageSync('userinfo')
-    // this.globalData.userInfo = ui;
-    //获取全局变量（命名待规范）
-    this.getOpenid();
+
+    //获取全局变量
+    if (this.globalData.userInfo.openid) {
+      this.get_globalData();
+    }else {
+      wx.redirectTo({
+        url: './pages/common/welcome',
+      })
+      this.get_globalData();
+    }    
     //调用API从本地缓存中获取数据
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
   },
-  getUserInfo:function(cb){
-    var that = this
-    if(this.globalData.userInfo){
-      typeof cb == "function" && cb(this.globalData.userInfo)
-    }else{
-      //调用登录接口
-      wx.login({
-        success: function () {
-          wx.getUserInfo({
-            success: function (res) {
-              that.globalData.userInfo = res.userInfo
-              typeof cb == "function" && cb(that.globalData.userInfo)
-              console.log("userInfo",that.globalData.userInfo)
-            }
-          })
-        }
-      })
-    }
-  },
+  
   globalData:{
     userInfo: {},
     haveClass: true,
@@ -101,20 +88,6 @@ App({
       })
       // console.log("courses",this.globalData.courses);
       
-    })
-  },
-  getOpenid: function () {
-    const that = this;
-    wx.cloud.callFunction({
-      name:"get_openid",
-      success:res=>{
-        // console.log(res.result.openid)
-        that.globalData.userInfo.openid = res.result.openid
-        this.get_globalData();
-      },
-      fail:res=>{
-        console.log("云函数调用失败")
-      }
     })
   },
 })
