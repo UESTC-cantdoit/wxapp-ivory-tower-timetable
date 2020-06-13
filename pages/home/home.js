@@ -108,6 +108,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+
+    this.getDataOnPage();
+  
     if ( getApp().globalData.courseList = true ){
       this.setData({
         newCourseNum: 0
@@ -131,8 +134,7 @@ Page({
         activeEventNum: getApp().globalData.classEventCount 
       })
     }
-    
-    this.getStarEvents();
+  
   },
 
   /**
@@ -331,7 +333,6 @@ Page({
           newCourseNum: newCourseNum
         })
       }
-
       wx.setStorageSync("classCourseNum", `${res.total}`); 
     })
     //获取日程数量
@@ -359,7 +360,7 @@ Page({
             })
           }
           
-          wx.setStorageSync("classEventNum", `${res.result}`);
+          wx.setStorageSync("classEventNum", `${res2.total}`);
         })
       },
     })
