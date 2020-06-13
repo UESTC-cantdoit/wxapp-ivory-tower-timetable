@@ -1,6 +1,6 @@
 <!--pages/home.wxml-->
 <!-- 我的班级：尚未加入班级时 -->
-<view class="container" wx:if="{{ !haveClass }}">
+<view class="container" wx:if="{{ !haveClass && displayMyClassModule }}">
   <van-cell
     title="我的班级"
     label=""
@@ -28,7 +28,7 @@
 </view>
 
 <!-- 我的班级：已加入班级后 -->
-<view class="container" wx:else>
+<view class="container" wx:if="{{ haveClass }}">
   <van-cell-group>
     <van-cell
       title="我的班级"

@@ -4,9 +4,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    displayDayNum: 7, // 由偏好设置获取；显示的天数，可选值为“5”和“7”
+    displayDayNum: getApp().globalData.settings.displayDayNum, // 由偏好设置获取；显示的天数，可选值为“5”和“7”
     displayDay: ['一', '二', '三', '四', '五', '六', '日'], // 根据 displayDayNum 生成
-    displayCourseNum: 14, // 由偏好设置获取；显示的每天课程数，可选值为“11”至“14”
+    displayCourseNum: getApp().globalData.settings.displayCourseNum, // 由偏好设置获取；显示的每天课程数，可选值为“11”至“14”
     displayCourse: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], // 根据 displayCourseNum 生成
     haveClass: getApp().globalData.haveClass,
     course: [ // 由数据库获取
@@ -130,6 +130,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
     const displayDayNum = this.data.displayDayNum;
     const displayCourseNum = this.data.displayCourseNum;
 
@@ -197,17 +204,17 @@ Page({
   },
 
   /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () { // 若修改过每周显示天数或每天显示课程数，则重新加载本页面
-   
+    var app = getApp();
+    if (this.data.displayCourseNum != app.globalData.settings.displayCourseNum || this.data.displayDayNum != app.globalData.settings.displayDayNum) {
+      this.setData({
+        displayDayNum: app.globalData.settings.displayDayNum,
+        displayCourseNum: app.globalData.settings.displayCourseNum
+      });
+      this.onReady();
+    };
   },
 
   /**
@@ -228,7 +235,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.onReady();
   },
 
   /**

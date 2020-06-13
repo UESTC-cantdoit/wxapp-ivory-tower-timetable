@@ -25,8 +25,14 @@ App({
     }
   },
   globalData:{
+    settings: { // 从数据库获取
+      displayMyClassModule: true, // 未加入班级者可以设置主页是否显示“我的班级”模块
+      focusEventDay: 3, // 主页关注日程的时间阈值
+      displayDayNum: 7, // 课程页每周显示天数
+      displayCourseNum: 14, // 课程页每天显示课程数
+    },
     userInfo: null,
-    haveClass: true,
+    haveClass: false,
     courses: [
       {courseName: '微积分', class: '互加二班'},
       {courseName: '概率论', class: '互加二班'},

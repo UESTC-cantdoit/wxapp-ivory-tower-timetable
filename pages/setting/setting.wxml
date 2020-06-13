@@ -13,18 +13,18 @@
 
 <view class="container">
   <van-cell-group>
-    <van-cell title="通用设置" is-link bind:click="toCommonSetting" />
+    <van-cell title="通用设置" is-link wx:if="{{ false }}" bind:click="toCommonSetting" />
     <van-cell title="班级设置" is-link wx:if="{{ haveClass }}" bind:click="toClassSetting" />
     <van-cell title="主页设置" is-link bind:click="toHomePageSetting" />
     <van-cell title="课表设置" is-link bind:click="toCoursePageSetting" />
-    <van-cell title="日程设置" is-link bind:click="toEventPageSetting" />
+    <van-cell title="日程设置" is-link wx:if="{{ false }}" bind:click="toEventPageSetting" />
   </van-cell-group>
 </view>
 
 <view class="container">
   <van-cell-group>
     <van-cell title="关于我们" icon="manager-o" is-link bind:click="toAboutUs" />
-    <van-cell title="意见反馈" icon="comment-o" is-link bind:click="toFeedback" />
+    <van-cell title="意见反馈" wx:if="{{ false }}" icon="comment-o" is-link bind:click="toFeedback" />
   </van-cell-group>
 </view>
 

@@ -6,6 +6,8 @@ Page({
    */
   data: {
     haveClass: getApp().globalData.haveClass,
+    displayMyClassModule: getApp().globalData.settings.displayMyClassModule,
+    focusEventDay: getApp().globalData.settings.focusEventDay,
     activeCourseNum: 8, // 当前班级中的同步课程数
     newCourseNum: 0,  // 自用户上次登录以来新增的课程数
     activeEventNum: 19, // 仅显示用户添加的同步课程的同步日程数
@@ -115,7 +117,11 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.setData({
+      haveClass: getApp().globalData.haveClass,
+      displayMyClassModule: getApp().globalData.settings.displayMyClassModule,
+      focusEventDay: getApp().globalData.settings.focusEventDay
+    })
   },
 
   /**

@@ -31,9 +31,9 @@
   </view>
 </view>
 
-<van-divider />
+<van-divider wx:if="{{ false }}" />
 
-<view>
+<view wx:if="{{ false }}">
   <view class="container">
     <view class="background-title">意见反馈</view>
     <view>

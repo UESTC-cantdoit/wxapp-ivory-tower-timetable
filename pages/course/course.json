@@ -1,8 +1,8 @@
 {
   "usingComponents": {
     "van-grid": "@vant/weapp/grid/index",
-    "van-grid-item": "@vant/weapp/grid-item/index",
-    "van-overlay": "@vant/weapp/overlay/index"
+    "van-grid-item": "@vant/weapp/grid-item/index"
   },
-  "navigationBarTitleText": "象牙塔课程表"
+  "navigationBarTitleText": "象牙塔课程表",
+  "enablePullDownRefresh": true
 }

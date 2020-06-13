@@ -1,2 +1,25 @@
 <!--pages/setting/coursePageSetting.wxml-->
-<text>pages/setting/coursePageSetting.wxml</text>
+<view class="container">
+  <view class="background-title">显示设置</view>
+  <van-cell-group>
+    <!-- 设置显示每周课程天数（5 或 7） -->
+    <van-cell
+      title="每周显示天数"
+      value="{{ displayDayNum }} 天"
+      label="设置课表页横排显示的天数"
+      clickable
+      center
+      bind:click="selectDisplayDayNum" />
+    <!-- 设置显示每天课程节数（11 - 14） -->
+    <van-cell
+      title="每天显示课程数"
+      value="{{ displayCourseNum }} 节"
+      label="设置课表页竖排显示的课程数"
+      clickable
+      center
+      bind:click="selectDisplayCourseNum" />
+    <!-- 设置每节课程渲染高度（防止不同机型出现文字溢出的情况发生） -->
+  </van-cell-group>
+</view>
+
+<van-notify id="van-notify" />

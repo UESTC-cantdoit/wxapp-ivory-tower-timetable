@@ -1,2 +1,31 @@
 <!--pages/setting/homePageSetting.wxml-->
-<text>pages/setting/homePageSetting.wxml</text>
+<view class="container" wx:if="{{ !haveClass }}">
+  <view class="background-title">我的班级设置</view>
+  <van-cell-group>
+    <!-- 设置是否显示“我的班级”模块（未加入班级时） -->
+    <van-cell
+      wx:if="{{ !haveClass }}"
+      title="显示“我的班级”模块"
+      value="{{ displayMyClassModule ? '显示' : '隐藏' }}"
+      label="未加入班级时可隐藏主页此模块"
+      clickable
+      center
+      bind:click="selectDisplayMyClassModule" />
+  </van-cell-group>
+</view>
+
+<view class="container">
+  <view class="background-title">我的日程设置</view>
+  <van-cell-group>
+    <!-- 设置关注日程阈值（1天 3天 7天） -->
+    <van-cell
+      title="关注日程时间阈值"
+      value="{{ focusEventDay }} 天"
+      label="设置主页显示关注日程的时间阈值"
+      clickable
+      center
+      bind:click="selectFocusEventDay" />
+  </van-cell-group>
+</view>
+
+<van-notify id="van-notify" />
