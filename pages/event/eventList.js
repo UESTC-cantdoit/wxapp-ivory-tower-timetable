@@ -148,7 +148,7 @@ Page({
         classId: getApp().globalData.classId
       },
       success: (res) => {
-        // console.log('events',res);
+        console.log('events',res);
         //格式化结果
         for(let i=0;i<res.result.list.length;i++){
           var event = res.result.list[i];

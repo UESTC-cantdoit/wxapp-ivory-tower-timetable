@@ -138,8 +138,8 @@ Page({
             })
           }else if (this.data.syncToClass == true){
             this.setData({
-              selectCourse_id: this.data.courses[this.data.selectCourse_index-1]._id,
-              selectCourse_classId: this.data.courses[this.data.selectCourse_index-1].pre_id //** 易引起 bug 标记
+              selectCourse_id: this.data.courses[this.data.selectCourse_index-1].pre_id,
+              selectCourse_classId: this.data.courses[this.data.selectCourse_index-1].classId //** 易引起 bug 标记
             })
             db.collection('events').add({
               data: {

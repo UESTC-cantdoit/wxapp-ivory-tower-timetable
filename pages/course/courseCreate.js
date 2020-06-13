@@ -63,9 +63,9 @@ Page({
     const selectTimeOne = this.data.selectTimeOne;
     const selectTimeTwo = this.data.selectTimeTwo;
     (selectTimeOne < selectTimeTwo) ? (
-      startTime = selectTimeOne, endTime = selectTimeTwo
+      startTime = parseInt(selectTimeOne), endTime = parseInt(selectTimeTwo)
     ) : (
-      startTime = selectTimeTwo, endTime = selectTimeOne
+      startTime = parseInt(selectTimeTwo), endTime = parseInt(selectTimeOne)
     );
     const newItem = { // 新建一个存储上课时间的对象
       id: new Date().getTime(),
@@ -75,15 +75,18 @@ Page({
     };
     var util = require('../../utils/util');
     if (util.checkSelectTime(newItem, items)) { // 若时间不冲突，则添加到 selectCourseTime 中并渲染
+      // if (util.checkSelectTimeCloud( newItem )) {
         items.push(newItem);
         this.setData({
           selectCourseTime: items,
           timePickerOnShow: false
         });
         Notify({ type: 'success', message: '您可以左滑删除已选择时间' });
-      
+      // }else {
+      //   Notify('当前选择时间冲突与已有时间冲突');
+      // }
     } else { // 若时间冲突，则给出提示
-      Notify('当前选择时间与已添加时间冲突');
+      Notify('当前选择时间冲突与已有时间冲突');
     }
   },
 
