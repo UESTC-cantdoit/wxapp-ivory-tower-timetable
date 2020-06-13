@@ -141,9 +141,13 @@ Page({
     const displayCourseNum = this.data.displayCourseNum;
 
     // 获取显示的天数，更新 displayDay
-    if (displayDayNum != 7) {
+    if (displayDayNum == 5) {
       this.setData({
         displayDay: ['一', '二', '三', '四', '五']
+      });
+    } else {
+      this.setData({
+        displayDay: ['一', '二', '三', '四', '五', '六', '日']
       });
     }
 
