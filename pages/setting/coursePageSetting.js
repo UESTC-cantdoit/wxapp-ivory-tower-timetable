@@ -1,6 +1,8 @@
 // pages/setting/coursePageSetting.js
 import Notify from '../../miniprogram_npm/@vant/weapp/notify/notify';
 
+const db = wx.cloud.database();
+
 Page({
 
   /**
@@ -8,7 +10,8 @@ Page({
    */
   data: {
     displayDayNum: getApp().globalData.settings.displayDayNum,
-    displayCourseNum: getApp().globalData.settings.displayCourseNum
+    displayCourseNum: getApp().globalData.settings.displayCourseNum,
+    openid:  getApp().globalData.userInfo.openid,
   },
 
   selectDisplayDayNum() { // 可选值为 5 和 7
@@ -27,7 +30,12 @@ Page({
     });
     app.globalData.settings.displayDayNum = nowDisplayDayNum; // 修改全局变量
     this.showNotify(notifyText + nowDisplayDayNum + ' 天'); // 页面提示
-    // todo: 数据库操作
+    // 数据库操作
+    db.collection('settings').doc(this.data.openid).update({
+      data: {
+        displayDayNum: nowDisplayDayNum
+      }
+    })
   },
 
   selectDisplayCourseNum() {  // 可选值为 11, 12, 13, 14
@@ -46,7 +54,12 @@ Page({
     });
     app.globalData.settings.displayCourseNum = nowDisplayCourseNum;
     this.showNotify(notifyText + nowDisplayCourseNum + ' 节');
-    // todo: 数据库操作
+    // 数据库操作
+    db.collection('settings').doc(this.data.openid).update({
+      data: {
+        displayCourseNum: nowDisplayCourseNum
+      }
+    })
   },
 
   showNotify(msg) {

@@ -37,13 +37,11 @@ App({
       displayDayNum: 7, // 课程页每周显示天数
       displayCourseNum: 14, // 课程页每天显示课程数
     },
-    courses: [
-      {courseName: '微积分', class: '互加二班'},
-      {courseName: '概率论', class: '互加二班'},
-      {courseName: '计算机组成原理', class: 'null'}
-    ],
+    settingsGetDone: false,
+    courses: [],
     courseList: false,
     eventList: false,
+    classEventCount: 0,
   },
 
   get_globalData: function () {
@@ -94,6 +92,26 @@ App({
       })
       // console.log("courses",this.globalData.courses);
       
+    })
+
+    db.collection('settings').where({
+      _id: this.globalData.userInfo.openid
+    }).get().then( res => {
+      if ( res.data.length == 0 ) {
+        db.collection('settings').add({
+          data: {
+            _id: this.globalData.userInfo.openid,
+            displayMyClassModule: true, 
+            focusEventDay: 3, 
+            displayDayNum: 7, 
+            displayCourseNum: 14, 
+          }
+        })
+      }else {
+        // console.log(res.data)
+        this.globalData.settings = res.data[0];
+        this.globalData.settingsGetDone = true;
+      }
     })
   },
 })

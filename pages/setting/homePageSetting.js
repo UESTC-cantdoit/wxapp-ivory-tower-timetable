@@ -1,4 +1,5 @@
 // pages/setting/homePageSetting.js
+const db = wx.cloud.database();
 import Notify from '../../miniprogram_npm/@vant/weapp/notify/notify';
 
 Page({
@@ -9,7 +10,8 @@ Page({
   data: {
     haveClass: getApp().globalData.haveClass,
     displayMyClassModule: getApp().globalData.settings.displayMyClassModule,
-    focusEventDay: getApp().globalData.settings.focusEventDay
+    focusEventDay: getApp().globalData.settings.focusEventDay,
+    openid:  getApp().globalData.userInfo.openid
   },
 
   selectDisplayMyClassModule() {
@@ -30,7 +32,12 @@ Page({
     });
     app.globalData.settings.displayMyClassModule = nowSelectDisplayMyClassModule;
     this.showNotify(nowStatus + '“我的班级”模块');
-    // todo: 数据库操作
+    // 数据库操作
+    db.collection('settings').doc(this.data.openid).update({
+      data: {
+        displayMyClassModule: nowSelectDisplayMyClassModule
+      }
+    })
   },
 
   selectFocusEventDay() {
@@ -53,7 +60,12 @@ Page({
     });
     app.globalData.settings.focusEventDay = nowFocusEventDay;
     this.showNotify(notifyTextStart + nowFocusEventDay + notifyTextEnd);
-    // todo: 数据库操作
+    // 数据库操作
+    db.collection('settings').doc(this.data.openid).update({
+      data: {
+        focusEventDay: nowFocusEventDay
+      }
+    })
   },
 
   showNotify(msg) {
@@ -68,7 +80,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    
   },
 
   /**

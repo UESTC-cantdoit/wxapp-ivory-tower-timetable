@@ -8,38 +8,7 @@ Page({
   data: {
     noteInfo: "嘿，还没有来自其他人的同步日程哦",
     noteInfoDisplay: false,
-    event: [ // 仅获取已选择课程的相关日程；应按照截止时间从早到晚排序
-      {
-        eventId: '22314',
-        eventTitle: '这是一个事件',
-        eventBindCourse: '数据库原理及运用',
-        eventStatus: '已完成',
-        eventEndDate: '2020-05-31',
-        eventDescription: '利用 Powerdesigner 完成数据库建模作业',
-        eventSync: true,
-        eventStar: false
-      },
-      {
-        eventId: '22315',
-        eventTitle: '这是另一个事件',
-        eventBindCourse: '微积分',
-        eventStatus: '进行中',
-        eventEndDate: '2020-06-12',
-        eventDescription: '在 MOOC 提交作业',
-        eventSync: false,
-        eventStar: true
-      },
-      {
-        eventId: '22316',
-        eventTitle: '这是又另一个事件',
-        eventBindCourse: '达芬奇',
-        eventStatus: '已结束',
-        eventEndDate: '2020-04-23',
-        eventDescription: '是一个艺术家',
-        eventSync: true,
-        eventStar: true
-      }
-    ]
+    event: [],
   },
 
   switchNoteInfo() {
@@ -286,7 +255,12 @@ Page({
         this.setData({
           event: eventArr,
         })
-      }
+
+        getApp().globalData.classEventCount = eventArr.length;
+      },
+      fail: err => {
+        console.log('error',err)
+      },
     })
   },
 })

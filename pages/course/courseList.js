@@ -39,6 +39,7 @@ Page({
           courseTeacher: res.data.courseTeacher,
           coursePlace: res.data.coursePlace,
           courseTime: res.data.courseTime,
+          classId: res.data.classId,
           pre_id: courseId,
         }
       })
@@ -160,7 +161,8 @@ Page({
     db.collection('courses')
     .where(db.command.or([
       {
-        classId: getApp().globalData.classId
+        classId: getApp().globalData.classId,
+        pre_id: db.command.exists(false)
       },
       {
         _openid: getApp().globalData.userInfo.openid,
@@ -169,7 +171,7 @@ Page({
     ]))
     .orderBy('courseName','asc')
     .get().then(res => {
-      // console.log('course_res',res)
+      // console.log('course_res',res.data)
       //添加课程名称拼音
       var pinyinUtil = require('../../utils/pinyinUtil');
       res.data.forEach(function(course) {
@@ -260,7 +262,6 @@ Page({
       var other_coursesArr = [];
       var pre_coursesArr = [];
       if (res.data) {
-        anchorIndex.push('#');
         res.data.forEach(function(course) {
           //分离原生课程与同步派生课程
           if (course._openid == getApp().globalData.userInfo.openid) {
@@ -300,10 +301,13 @@ Page({
             }
           }
         })
-        courseList.push({
-          anchorIndex: '#',
-          course: other_coursesArr
-        });
+        if (other_coursesArr.length != 0) {
+          anchorIndex.push('#');
+          courseList.push({
+            anchorIndex: '#',
+            course: other_coursesArr
+          });
+        }
       }
       //索引去重
       function distinct(arr) {
