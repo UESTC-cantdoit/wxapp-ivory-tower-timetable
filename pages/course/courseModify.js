@@ -133,6 +133,31 @@ Page({
   },
 
   modifyCourse() {
+    const haveClass = this.data.haveClass;
+    const syncToClass = this.data.syncToClass;
+    const selectCourseTime = this.data.selectCourseTime;
+    if (haveClass) {  // 已加入班级
+      if (syncToClass == false && selectCourseTime.length == 0) { // 未同步班级且未选择上课时间
+        wx.showModal({
+          title: '无法修改课程',
+          content: '您至少选择一个上课时间，或同步课程到班级'
+        });
+      } else {
+        this.showModifyCourseDialog();
+      }
+    } else {  // 未加入班级
+      if (selectCourseTime.length == 0) { // 未选择上课时间
+        wx.showModal({
+          title: '无法修改课程',
+          content: '您至少选择一个上课时间'
+        });
+      } else {
+        this.showModifyCourseDialog();
+      }
+    }
+  },
+
+  showModifyCourseDialog() {
     wx.showModal({
       title: '修改课程',
       content: '您将修改课程：' + this.data.courseName,
@@ -153,8 +178,11 @@ Page({
                 haveChanged: true,
                 //TODO 深度判断是否 changed
               }
+            }).then(function(){
+              console.log('Modify course successfully.');
+              wx.navigateBack();              
             })
-          }else {
+          } else {
             db.collection('courses').doc(this.data.courseId).update({
               data: {
                 courseName:this.data.courseName,
@@ -162,14 +190,11 @@ Page({
                 coursePlace: this.data.coursePlace,
                 courseTime:this.data.selectCourseTime
               }
+            }).then(function(){
+              console.log('Modify course successfully.');
+              wx.navigateBack();              
             })
           }
-          //数据库操作完成
-          this.setData({
-            onModifyCourseProcess: false
-          })
-          console.log('Modify course successfully.');
-          wx.navigateBack();
         } else {
           console.log('Cancel.');
         }
@@ -196,18 +221,23 @@ Page({
                     data: {
                       pre_id: db.command.remove()
                     }
+                  }).then(function(){
+                    console.log('Delete course successfully.');
+                    wx.navigateBack();
                   })
-                  console.log('Delete course successfully.');
-                  wx.navigateBack();
                 } else {
                   console.log('Cancel.');
                 }
               },
             });
           } else {
-            db.collection('courses').doc(this.data.courseId).remove();
-            console.log('Delete course successfully.');
-            wx.navigateBack();
+            db.collection('courses')
+              .doc(this.data.courseId)
+              .remove()
+              .then(function(){
+                console.log('Delete course successfully.');
+                wx.navigateBack();
+              })
           }
         } else {
           console.log('Cancel.');
@@ -239,6 +269,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    this.setData({
+      haveClass: getApp().globalData.haveClass
+    })
   },
 
   /**

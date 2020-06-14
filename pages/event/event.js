@@ -22,38 +22,7 @@ Page({
     tabEnd: 2, // 标签数量减一
     showFloatBtn: true,
     haveClass: getApp().globalData.haveClass,
-    event: [ // 获取时应按照 event 截止时间 eventEndDate 由早及晚依次获取
-      {
-        eventId: '22314',
-        eventTitle: '这是一个事件',
-        eventBindCourse: '数据库原理及运用',
-        eventStatus: '已完成',
-        eventEndDate: '2020-05-31', // 理论上直接使用 Date() 函数的值，这里是测试方便
-        eventDescription: '利用 Powerdesigner 完成数据库建模作业',
-        eventSync: true,
-        eventStar: false
-      },
-      {
-        eventId: '22315',
-        eventTitle: '这是另一个事件',
-        eventBindCourse: '微积分',
-        eventStatus: '进行中',
-        eventEndDate: '2020-06-12',
-        eventDescription: '在 MOOC 提交作业',
-        eventSync: false,
-        eventStar: true
-      },
-      {
-        eventId: '22316',
-        eventTitle: '这是又另一个事件',
-        eventBindCourse: '达芬奇',
-        eventStatus: '已结束',
-        eventEndDate: '2020-04-23',
-        eventDescription: '是一个艺术家',
-        eventSync: true,
-        eventStar: true
-      }
-    ],
+    event: [],  // 获取时应按照 event 截止时间 eventEndDate 由早及晚依次获取
     showEventActionSheet: false,
     eventOperations: [],
     eventOperationModifyEventInfo: {
@@ -306,6 +275,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    this.setData({
+      haveClass: getApp().globalData.haveClass
+    });
     this.getDatabyCloud();
   },
   /**
@@ -359,9 +331,9 @@ Page({
         eventCount: eventCount,
       },
       success: (res) => {
-          console.log('events',res.result.list);
-          eventCount += 10;
-          currentEventCount = res.result.list.length;
+        console.log('events',res.result.list);
+        eventCount += 10;
+        currentEventCount = res.result.list.length;
         //格式化结果
         for(let i=0;i<res.result.list.length;i++){
           var event = res.result.list[i];
@@ -397,11 +369,11 @@ Page({
           if (!event.done) {
             if (event.endDate.getTime() < todayDate) {
               event.eventStatus = '已结束';
-            }else {
+            } else {
               event.eventStatus = '进行中';
               activeEventCount++;
             }
-          }else {
+          } else {
             event.eventStatus = '已完成';
           }
 
@@ -416,7 +388,7 @@ Page({
               eventSync: event.eventSync,
               eventStar: event.eventStar
             })
-          }else {
+          } else {
             eventArr.push({
               eventId: event._id,
               eventTitle: event.eventName,
@@ -428,8 +400,6 @@ Page({
               eventStar: event.eventStar
             })
           }
-          
-          
         }
         that.setData({
           event: eventArr,
@@ -440,8 +410,8 @@ Page({
           console.log('##')
           that.getDatabyCloud();
         }
-
         activeEventCount = 0;
+        wx.stopPullDownRefresh();
       },
       fail: err => {
         console.log(err)

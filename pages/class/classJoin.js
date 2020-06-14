@@ -54,10 +54,10 @@ Page({
               classId: this.data.searchedClassId,
               className: this.data.searchedClassName
             }
+          }).then(function(){
+            console.log('Join class successfully.');
+            wx.navigateBack();
           })
-          //云数据库操作结束
-          console.log('Join class successfully.');
-          wx.navigateBack();
         } else {
           console.log('Cancel.');
         }

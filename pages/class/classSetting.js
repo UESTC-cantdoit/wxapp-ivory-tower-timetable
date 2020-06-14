@@ -6,11 +6,11 @@ Page({
    * 页面的初始数据
    */
   data: {
-    className: '互加二班',
-    classId: 'hujia2ban',
-    enableSearch: false,
-    onUpdateClassProcess: false,
-    isClassCreator: false
+    className: getApp().globalData.className,
+    classId: getApp().globalData.classId,
+    isClassCreator: getApp().globalData.isClassCreator,
+    enableSearch: getApp().globalData.classSetting.enableSearch,
+    onUpdateClassProcess: false
   },
 
   inputClassName: function(e) {
@@ -44,8 +44,6 @@ Page({
     } else {
       this.setData({ enableSearch: detail });
     }
-    console.log(this.data.enableSearch)
-    console.log(detail)
   },
 
   dismissClass() {  // 解散班级
@@ -67,7 +65,10 @@ Page({
                 }).remove();
                 db.collection('class').where({
                   classId: this.data.classId
-                }).remove();
+                }).remove().then(function(){
+                  getApp().globalData.haveClass = false;
+                  wx.navigateBack();
+                })
               }
             },
           });
@@ -92,7 +93,10 @@ Page({
               if (res.confirm) {
                 db.collection('users-class').where({
                   _openid: getApp().globalData.userInfo.openid,
-                }).remove();
+                }).remove().then(function(){
+                  getApp().globalData.haveClass = false;
+                  wx.navigateBack();
+                })
               }
             },
           });
@@ -102,21 +106,23 @@ Page({
   },
 
   updateClass() { // 更新班级信息
-    console.log('更新班级信息');
+    const className = this.data.className;
+    const enableSearch = this.data.enableSearch;
+    this.setData({
+      onUpdateClassProcess: true
+    });
     db.collection('class').where({
       _openid: getApp().globalData.userInfo.openid,
       classId: getApp().globalData.classId
     }).update({
       data: {
-        enableSearch: this.data.enableSearch
+        className: className,
+        enableSearch: enableSearch
       }
-    })
-    this.backToHome();
-  },
-
-  backToHome() {  // 回到首页
-    wx.switchTab({
-      url: '../home/home'
+    }).then(function(){
+      getApp().globalData.className = className;
+      getApp().globalData.classSetting.enableSearch = enableSearch;
+      wx.navigateBack();
     })
   },
 
@@ -138,7 +144,12 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.getData();
+    this.setData({
+      className: getApp().globalData.className,
+      classId: getApp().globalData.classId,
+      isClassCreator: getApp().globalData.isClassCreator,
+      enableSearch: getApp().globalData.classSetting.enableSearch,
+    })
   },
 
   /**
@@ -174,31 +185,32 @@ Page({
   onShareAppMessage: function () {
 
   },
+
   getData: function (options) {
-    this.setData({
-      className: getApp().globalData.className,
-      classId: getApp().globalData.classId,
-    })
-    db.collection('class').where({
-      _openid: getApp().globalData.userInfo.openid,
-      classId: getApp().globalData.classId
-    }).get().then( res => {
-      // console.log(res)
-      if (res.data.length !== 0) {
-        this.setData({
-          isClassCreator: true,
-          enableSearch: res.data[0].enableSearch,
-        })
-      }
-    })
+    const openId = getApp().globalData.userInfo.openid; // 获取当前用户的 openId
     db.collection('class').where({
       classId: getApp().globalData.classId
     }).get().then( res => {
-      if (res.data.length !== 0) {
-        this.setData({
-          enableSearch: res.data[0].enableSearch,
-        })
+      console.log(res);
+      if (res.data.length !== 0) {  // 搜索班级成功
+        const _openId = res.data[0]._openid;
+        const enableSearchStatus = res.data[0].enableSearch;
+        if (openId == _openId) {  // 是班级创建者
+          this.setData({
+            isClassCreator: true,
+            enableSearch: enableSearchStatus,
+          })
+          getApp().globalData.isClassCreator = true;
+          getApp().globalData.classSetting.enableSearch = enableSearchStatus;
+        } else {  // 非班级创建者
+          this.setData({
+            isClassCreator: false,
+            enableSearch: enableSearchStatus,
+          })
+          getApp().globalData.isClassCreator = false;
+          getApp().globalData.classSetting.enableSearch = enableSearchStatus;
+        }
       }
     })
-  },
+  }
 })

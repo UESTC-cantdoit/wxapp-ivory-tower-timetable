@@ -1,4 +1,5 @@
 {
   "usingComponents": {},
-  "navigationBarTitleText": "象牙塔课程表"
+  "navigationBarTitleText": "象牙塔课程表",
+  "enablePullDownRefresh": true
 }

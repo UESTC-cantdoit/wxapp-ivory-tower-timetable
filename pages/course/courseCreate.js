@@ -140,8 +140,6 @@ Page({
     const haveClass = this.data.haveClass;
     const syncToClass = this.data.syncToClass;
     const selectCourseTime = this.data.selectCourseTime;
-    console.log(selectCourseTime);
-    console.log(syncToClass);
     if (haveClass) {  // 已加入班级
       if (syncToClass == false && selectCourseTime.length == 0) { // 未同步班级且未选择上课时间
         wx.showModal({
@@ -183,6 +181,9 @@ Page({
                 courseTime: this.data.selectCourseTime,
                 classId: getApp().globalData.classId
               }
+            }).then(function(){
+              console.log('Create course successfully.');
+              wx.navigateBack();
             })
           }else {
             db.collection('courses').add({
@@ -192,14 +193,11 @@ Page({
                 coursePlace: this.data.coursePlace,
                 courseTime:this.data.selectCourseTime
               }
+            }).then(function(){
+              console.log('Create course successfully.');
+              wx.navigateBack();
             })
           }
-          //数据库操作完成
-          this.setData({
-            onCreateCourseProcess: false
-          })
-          console.log('Create course successfully.');
-          wx.navigateBack();
         } else {
           console.log('Cancel.');
         }

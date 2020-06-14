@@ -10,44 +10,7 @@ Page({
     displayCourseNum: getApp().globalData.settings.displayCourseNum, // 由偏好设置获取；显示的每天课程数，可选值为“11”至“14”
     displayCourse: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], // 根据 displayCourseNum 生成
     haveClass: getApp().globalData.haveClass,
-    course: [ // 由数据库获取
-      {
-        courseId: 1,
-        courseName: '微积分',
-        courseTeacher: '李xx',
-        coursePlace: '品学楼 201',
-        courseTime: [ // 上课时间
-          {
-            day: 3, // 周三
-            startTime: 3, // 第三节课开始到
-            endTime: 4  // 第四节课结束
-          },
-          {
-            day: 4,
-            startTime: 7,
-            endTime: 8
-          },
-        ]
-      },
-      {
-        courseId: 2,
-        courseName: '数据结构与设计',
-        courseTeacher: '王xx',
-        coursePlace: '立人楼 515',
-        courseTime: [
-          {
-            day: 1,
-            startTime: 1,
-            endTime: 1
-          },
-          {
-            day: 2,
-            startTime: 2,
-            endTime: 2
-          },
-        ]
-      },
-    ],
+    course: [], // 由数据库获取
     showPopup: false,
     courseTimetable: [], // onLoad 中加载生成，处理 course 信息并添加到此处
     selectCourseInfo: {
@@ -147,12 +110,14 @@ Page({
   onShow: function () { // 若修改过每周显示天数或每天显示课程数，则重新加载本页面
     this.getData();
     var app = getApp();
+    this.setData({
+      haveClass: app.globalData.haveClass
+    });
     if (this.data.displayCourseNum != app.globalData.settings.displayCourseNum || this.data.displayDayNum != app.globalData.settings.displayDayNum) {
       this.setData({
         displayDayNum: app.globalData.settings.displayDayNum,
         displayCourseNum: app.globalData.settings.displayCourseNum
       });
-      this.onReady();
     };
   },
 
@@ -175,14 +140,6 @@ Page({
    */
   onPullDownRefresh: function () {
     this.getData();
-    var app = getApp();
-    if (this.data.displayCourseNum != app.globalData.settings.displayCourseNum || this.data.displayDayNum != app.globalData.settings.displayDayNum) {
-      this.setData({
-        displayDayNum: app.globalData.settings.displayDayNum,
-        displayCourseNum: app.globalData.settings.displayCourseNum
-      });
-      this.onReady();
-    };
   },
 
   /**
@@ -198,6 +155,7 @@ Page({
   onShareAppMessage: function () {
 
   },
+
   getData: function () {
     // console.log('course',getApp().globalData.userInfo.openid)
   
@@ -206,8 +164,7 @@ Page({
       data: {
         _openid: getApp().globalData.userInfo.openid
       }
-    })
-    .then( res => {
+    }).then( res => {
       var coursesArr = [];
       res.result.data.forEach( course => {
         var courseTimeArr = [];
@@ -233,6 +190,7 @@ Page({
         course: coursesArr
       });
       this.setCourseTimetable();
+      wx.stopPullDownRefresh();
     })
   },
 

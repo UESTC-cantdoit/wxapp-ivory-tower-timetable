@@ -6,19 +6,19 @@ Page({
    * 页面的初始数据
    */
   data: {
-    haveClass: false, // getApp().globalData.haveClass,
-    activeCourseNum: 0, // 当前班级中的同步课程数
+    haveClass: getApp().globalData.haveClass, // getApp().globalData.haveClass,
+    activeCourseNum: getApp().globalData.activeCourseNum, // 当前班级中的同步课程数
     displayMyClassModule: getApp().globalData.settings.displayMyClassModule,
     focusEventDay: getApp().globalData.settings.focusEventDay,
     newCourseNum: 0,  // 自用户上次登录以来新增的课程数
-    activeEventNum: 0, // 仅显示用户添加的同步课程的同步日程数
+    activeEventNum: getApp().globalData.activeEventNum, // 仅显示用户添加的同步课程的同步日程数
     newEventNum: 0, // 自用户上次登录以来新增的日程数
-    className: '',
-    classId: '',
-    openid: '',
-    isClassCreator: false,
-    focusEvent: [], // 应按照截止时间由早及晚排序
-    starEvent: [],
+    className: getApp().globalData.className,
+    classId: getApp().globalData.classId,
+    openid: getApp().globalData.userInfo.openid,
+    isClassCreator: getApp().globalData.isClassCreator,
+    focusEvent: getApp().globalData.home.focusEvent, // 应按照截止时间由早及晚排序
+    starEvent: getApp().globalData.home.starEvent
   },
 
   createClass() {
@@ -76,7 +76,6 @@ Page({
     })
   },
 
-
   /**
    * 生命周期函数--监听页面加载
    */
@@ -87,11 +86,11 @@ Page({
       this.setData({
         openid: options.openid
       })
-    }else if (getApp().globalData.userInfo.openid) {
+    } else if (getApp().globalData.userInfo.openid) {
       this.setData({
         openid: getApp().globalData.userInfo.openid
       })
-    }else {
+    } else {
       this.toWelcome();
     }
     
@@ -102,39 +101,38 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
+
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    this.setData({
+      haveClass: getApp().globalData.haveClass,
+      activeCourseNum: getApp().globalData.activeCourseNum,
+      displayMyClassModule: getApp().globalData.settings.displayMyClassModule,
+      focusEventDay: getApp().globalData.settings.focusEventDay,
+      activeEventNum: getApp().globalData.activeEventNum,
+      className: getApp().globalData.className,
+      classId: getApp().globalData.classId,
+      openid: getApp().globalData.userInfo.openid,
+      isClassCreator: getApp().globalData.isClassCreator,
+      focusEvent: getApp().globalData.home.focusEvent,
+      starEvent: getApp().globalData.home.starEvent
+    })
 
-    this.getDataOnPage();
-  
     if ( getApp().globalData.courseList = true ){
       this.setData({
         newCourseNum: 0
       })
     }
+
     if ( getApp().globalData.eventList = true ){
       this.setData({
         newEventNum: 0
       })
     }
-    if (getApp().globalData.settingsGetDone) {
-      this.setData({
-        displayMyClassModule: getApp().globalData.settings.displayMyClassModule,
-        focusEventDay: getApp().globalData.settings.focusEventDay
-      })
-      this.getFocusEvents();
-    }
-
-    if ( getApp().globalData.classEventCount ) {
-      this.setData({
-        activeEventNum: getApp().globalData.classEventCount 
-      })
-    }
-  
   },
 
   /**
@@ -155,7 +153,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.getDataOnPage();
   },
 
   /**
@@ -171,45 +169,67 @@ Page({
   onShareAppMessage: function () {
 
   },
-  //获取数据
-  getDataOnPage: function(){
-    const that = this;
-    //获取班级信息
-    db.collection('users-class').where({
-      _openid: this.data.openid,
+
+  getDataOnPage: function(){  // 获取数据
+    var that = this;
+    db.collection('users-class').where({  // 获取班级信息
+      _openid: that.data.openid,
     }).get().then(res => {
-      // console.log("res",res);
-      if (res.data.length !== 0 && res.data[0].classId) {
-          this.setData({
-            haveClass: true,
-            className: res.data[0].className,
-            classId: res.data[0].classId,
+      // console.log("res: ",res);
+      if (res.data.length !== 0 && res.data[0].classId) { // 成功查询到班级
+        that.setData({
+          haveClass: true,
+          className: res.data[0].className,
+          classId: res.data[0].classId,
+        })
+
+        getApp().globalData.haveClass = true;
+        getApp().globalData.className = res.data[0].className;
+        getApp().globalData.classId = res.data[0].classId;
+
+        if (res.data[0]._openid == that.data.openid) {  // 如果为班级创建者
+          that.setData({
+            isClassCreator: true
           })
-          if(res.data[0]._openid == this.data.openid){
-            this.setData({
-              isClassCreator: true
-            })
-          }
-          // 获取班级日程、课程数量
-          this.getClassItemCount();
+          getApp().globalData.isClassCreator = true;
         }
 
-    // 获取关注日程
-    db.collection('settings').doc(this.data.openid).get().then( res2 => {
-      // console.log(res2);
-      that.setData({
-        focusEventDay: res2.data.focusEventDay,
-        displayMyClassModule: res2.data.displayMyClassModule
-      })
-      that.getFocusEvents();
+        that.getClassItemCount(); // 获取班级日程、课程数量
+      } else {  // 查询班级失败
+        that.setData({
+          haveClass: false
+        })
+        getApp().globalData.haveClass = false;
+      }
+
+      db.collection('settings')
+        .doc(that.data.openid)
+        .get()
+        .then( res2 => { // 获取设置信息
+          // console.log(res2);
+          const displayMyClassModule = res2.data.displayMyClassModule;
+          const focusEventDay = res2.data.focusEventDay;
+          const displayDayNum = res2.data.displayDayNum;
+          const displayCourseNum = res2.data.displayCourseNum;
+          that.setData({
+            focusEventDay: focusEventDay,
+            displayMyClassModule: displayMyClassModule
+          })
+          getApp().globalData.settings.displayMyClassModule = displayMyClassModule;
+          getApp().globalData.settings.focusEventDay = focusEventDay;
+          getApp().globalData.settings.displayDayNum = displayDayNum;
+          getApp().globalData.settings.displayCourseNum = displayCourseNum;
+        }).then(function(){ // 获取展示在主页的日程
+          that.getFocusEvents();
+          that.getStarEvents();
+        }).then(function(){
+          wx.stopPullDownRefresh();
+        })
     })
-    // 获取星标日程
-    that.getStarEvents();
-  })
   },
-  // 获取关注日程
-  getFocusEvents: function () {
-    const that = this;
+
+  getFocusEvents: function () { // 获取关注日程
+    var that = this;
     // console.log(that.data.focusEventDay)
     function formatFocusEvents(events) {
       var eventsArr = [];
@@ -227,10 +247,10 @@ Page({
         if (event.endDate <=  lastFocusDay && !(event.endDate < today)){
           // console.log(event.eventName,event.endDate)
           if (event.endDate.toDateString() == today.toDateString()) {
-              event.eventEndStatus = '今日截止';
-          }else if (event.endDate.toDateString() == tomorrow.toDateString()) {
+            event.eventEndStatus = '今日截止';
+          } else if (event.endDate.toDateString() == tomorrow.toDateString()) {
             event.eventEndStatus = '明日截止';
-          }else {
+          } else {
             function formatDate(date) {
               var y = date.getFullYear();
               var m = date.getMonth() + 1;
@@ -250,34 +270,40 @@ Page({
       })
       return eventsArr
     }
-    //获取需关注日程、需关注日程数
-    wx.cloud.callFunction({
+
+    wx.cloud.callFunction({ //获取需关注日程、需关注日程数
       name: 'get_focus_event',
       data: {
         _openid: this.data.openid,
       },
       success: (res) => {
-      // console.log(res);
-      var focusEvents = formatFocusEvents(res.result.data)
-      this.setData({
-        focusEvent:focusEvents,
-        focusEventNum: focusEvents.length
-      })
+        // console.log(res);
+        const focusEvent = formatFocusEvents(res.result.data);
+        const focusEventNum = focusEvent.length;
+        this.setData({
+          focusEvent: focusEvent,
+          focusEventNum: focusEventNum
+        })
+        getApp().globalData.home.focusEvent = focusEvent;
+        getApp().globalData.home.focusEventNum = focusEventNum;
       }
     })
   },
-  // 获取星标日程
-  getStarEvents: function () {
-     db.collection('events').where({
+
+  getStarEvents: function () {  // 获取星标日程
+    var that = this;
+    db.collection('events').where({
       star: true,
-      _openid: this.data.openid
+      _openid: that.data.openid
     }).orderBy('endDate','asc').get().then( res => {
       // console.log(res.data);
-      var starEvents = formatStarEvents(res.data)
-      this.setData({
-        starEvent:starEvents
-      })
+      const starEvent = formatStarEvents(res.data);
+      that.setData({
+        starEvent: starEvent
+      });
+      getApp().globalData.home.starEvent = starEvent;
     })
+
     function formatStarEvents(events) {
       var eventsArr = [];
       let date = new Date();
@@ -308,23 +334,26 @@ Page({
           eventsArr.push({ 
             eventId: event._id,
             eventName: event.eventName,
-            eventEndStatus:  event.eventEndStatus,
+            eventEndStatus:  event.eventEndStatus
           })
       })
-      return eventsArr
+      return eventsArr;
     }
   },
+
   getClassItemCount: function () {
-    const that = this;
+    var that = this;
     //获取课程数量
     db.collection('courses').where({
-      classId: this.data.classId,
+      classId: that.data.classId,
       pre_id: db.command.exists(false)
     }).count().then( res => {
-      this.setData({
-        activeCourseNum: res.total
-      })
-      //获取新增课程数 newCourseNum
+      const activeCourseNum = res.total;
+      that.setData({
+        activeCourseNum: activeCourseNum
+      });
+      getApp().globalData.activeCourseNum = activeCourseNum;
+      // 获取新增课程数 newCourseNum
       const lastClassCourseNum = wx.getStorageSync('classCourseNum');
       // console.log('last',lastClassCourseNum);
       let newCourseNum = res.total - lastClassCourseNum;
@@ -335,16 +364,18 @@ Page({
       }
       wx.setStorageSync("classCourseNum", `${res.total}`); 
     })
-    //获取日程数量
-    wx.cloud.callFunction({
+
+    wx.cloud.callFunction({ //获取班级日程数量
       name: 'get_class_event_count',
       data: {
         classId: that.data.classId
       },
       success: (res) => {
+        const activeEventNum = res.result;
         that.setData({
-          activeEventNum: res.result
-        })
+          activeEventNum: activeEventNum
+        });
+        getApp().globalData.activeEventNum = activeEventNum;
         //获取新增日程数 newEventNum
         db.collection('events').where({
           course_classId: that.data.classId,
@@ -359,7 +390,6 @@ Page({
               newEventNum: newEventNum
             })
           }
-          
           wx.setStorageSync("classEventNum", `${res2.total}`);
         })
       },

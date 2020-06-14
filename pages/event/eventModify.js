@@ -8,7 +8,7 @@ Page({
   data: {
     isOwner: false, // 根据是否为日程所有者判断
     eventId: null,  // 通过路由传值自动获取
-    courses: getApp().globalData.courses,
+    courses: null,
     coursePickerCourses: null,
     coursePickerOnShow: false,
     selectCourse: '不选择', // 需要获取
@@ -137,8 +137,11 @@ Page({
                 eventDescription: this.data.eventDescription,
                 endDate: this.data.selectEndDate,
               }
+            }).then(function(){
+              console.log('Modify event successfully.');
+              wx.navigateBack();
             })
-          }else if (this.data.syncToClass == false){
+          } else if (this.data.syncToClass == false) {
             if (this.data.selectCourse_index) {
               this.setData({
                 selectCourse_id: this.data.courses[this.data.selectCourse_index-1]._id,
@@ -151,6 +154,9 @@ Page({
                 endDate: this.data.selectEndDate,
                 course_id: this.data.selectCourse_id
               }
+            }).then(function(){
+              console.log('Modify event successfully.');
+              wx.navigateBack();
             })
           }else if (this.data.syncToClass == true){
             if (this.data.selectCourse_index) {
@@ -169,14 +175,11 @@ Page({
                 haveChanged: true,
                 //TODO 深度判断是否 changed
               }
+            }).then(function(){
+              console.log('Modify event successfully.');
+              wx.navigateBack();
             })
           }
-          //云数据库操作完成
-          this.setData({
-            onModifyEventProcess: false
-          })
-          console.log('Modify event successfully.');
-          wx.navigateBack();
         } else {
           console.log('Cancel.');
         }
@@ -203,18 +206,23 @@ Page({
                     data: {
                       pre_id: db.command.remove()
                     }
+                  }).then(function(){
+                    console.log('Delete event successfully.');
+                    wx.navigateBack();
                   })
-                  console.log('Delete event successfully.');
-                  wx.navigateBack();
                 } else {
                   console.log('Cancel.');
                 }
               },
             });
           } else {
-            db.collection('events').doc(this.data.eventId).remove();
-            console.log('Delete event successfully.');
-            wx.navigateBack();
+            db.collection('events')
+              .doc(this.data.eventId)
+              .remove()
+              .then(function(){
+                console.log('Delete event successfully.');
+                wx.navigateBack();
+              })
           }
         } else {
           console.log('Cancel.');
@@ -265,7 +273,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.setData({
+      haveClass: getApp().globalData.haveClass
+    });
   },
 
   /**

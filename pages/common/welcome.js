@@ -72,7 +72,6 @@ Page({
 
   },
   getOpenid: function () {
-    const that = this;
     wx.cloud.callFunction({
       name:"get_openid",
       success:res=>{
@@ -80,6 +79,27 @@ Page({
         const openid = res.result.openid;
         getApp().globalData.userInfo.openid = openid;
         wx.setStorageSync("openid", openid);
+        
+        const db = wx.cloud.database();
+        db.collection('settings').where({ // 获取设置信息
+          _id: openid
+        }).get().then( res => {
+          if ( res.data.length == 0 ) { // 用户没有设置信息
+            db.collection('settings').add({
+              data: {
+                _id: openid,
+                displayMyClassModule: true, 
+                focusEventDay: 3, 
+                displayDayNum: 7, 
+                displayCourseNum: 14, 
+              }
+            })
+          } else { // 用户存在设置信息
+            getApp().globalData.settings = res.data[0];
+            getApp().globalData.settingsGetDone = true;
+          }
+        })
+
         wx.reLaunch({
           url: '../home/home?openid=' + openid
         })

@@ -6,7 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    courses: getApp().globalData.courses,
+    courses: null,
     coursePickerCourses: null,
     coursePickerOnShow: false,
     selectCourse: '不选择',
@@ -123,8 +123,11 @@ Page({
                 eventDescription: this.data.eventDescription,
                 endDate: this.data.selectEndDate,
               }
+            }).then(function(){
+              console.log('Create event successfully.');
+              wx.navigateBack();
             })
-          }else if (this.data.syncToClass == false){
+          } else if (this.data.syncToClass == false) {
             this.setData({
               selectCourse_id: this.data.courses[this.data.selectCourse_index-1]._id,
             })
@@ -135,8 +138,11 @@ Page({
                 endDate: this.data.selectEndDate,
                 course_id: this.data.selectCourse_id
               }
+            }).then(function(){
+              console.log('Create event successfully.');
+              wx.navigateBack();
             })
-          }else if (this.data.syncToClass == true){
+          } else if (this.data.syncToClass == true) {
             this.setData({
               selectCourse_id: this.data.courses[this.data.selectCourse_index-1].pre_id,
               selectCourse_classId: this.data.courses[this.data.selectCourse_index-1].classId //** 易引起 bug 标记
@@ -149,14 +155,11 @@ Page({
                 course_id: this.data.selectCourse_id,
                 course_classId: this.data.selectCourse_classId,
               }
+            }).then(function(){
+              console.log('Create event successfully.');
+              wx.navigateBack();
             })
           }
-          //云数据库操作完成
-          this.setData({
-            onCreateEventProcess: false
-          })
-          console.log('Create event successfully.');
-          wx.navigateBack();
         } else {
           console.log('Cancel.');
         }
@@ -181,6 +184,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    this.setData({
+      haveClass: getApp().globalData.haveClass
+    });
     this.getData();
   },
 

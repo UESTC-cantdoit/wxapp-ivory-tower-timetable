@@ -5,6 +5,7 @@
   <van-field
     disabled="{{ !isClassCreator }}"
     label="班级名称"
+    value="{{ className }}"
     placeholder="{{ className }}"
     input-align="right"
     maxlength="12"

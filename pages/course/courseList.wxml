@@ -1,5 +1,5 @@
 <!--pages/course/courseList.wxml-->
-<van-index-bar wx:if="{{ course.length !== 0 }}" index-list="{{ anchorIndexList }}">
+<van-index-bar wx:if="{{ courseAnchorIndexList.length != 0 }}" index-list="{{ anchorIndexList }}">
   <view wx:for="{{ courseAnchorIndexList }}" wx:key="anchorIndex">
     <template is="indexBarItem" data="{{ ...item }}" />
   </view>
@@ -21,16 +21,17 @@
       height="20rem"
       src="cloud://timetable-81f1c.7469-timetable-81f1c-1302120168/images/astronaut-fly.jpg"
     />
-    <view class="background-text">
-      <view>似乎还没有人添加课程到这里，</view>
-      <view>您就是第一个尝试吃“螃蟹”的人，</view>
-      <view>现在就创建同步课程吧！</view>
+    <view>
+      <view class="background-text">似乎还没有人添加课程到这里，</view>
+      <view class="background-text">您就是第一个尝试吃“螃蟹”的人，</view>
+      <view class="background-text">现在就创建同步课程吧！</view>
     </view>
     <van-divider />
     <van-button
       round
       type="primary"
       bind:click="createCourse"
+      block
     >新建课程</van-button>
   </view>
 </view>
