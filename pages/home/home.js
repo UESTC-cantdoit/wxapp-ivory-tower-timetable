@@ -133,10 +133,6 @@ Page({
         newEventNum: 0
       })
     }
-
-    this.setData({
-      className: getApp().globalData.className,
-    })
   },
 
   /**
