@@ -116,6 +116,8 @@ Page({
             onCreateEventProcess: true
           })
           //云数据库操作 添加记录至 events 集合
+          const selectedCourse = this.data.courses[this.data.selectCourse_index-1];
+          console.log(selectedCourse);
           if (this.data.selectCourse == '不选择') {
             db.collection('events').add({
               data: {
@@ -129,7 +131,7 @@ Page({
             })
           } else if (this.data.syncToClass == false) {
             this.setData({
-              selectCourse_id: this.data.courses[this.data.selectCourse_index-1]._id,
+              selectCourse_id: selectedCourse._id,
             })
             db.collection('events').add({
               data: {
@@ -142,11 +144,19 @@ Page({
               console.log('Create event successfully.');
               wx.navigateBack();
             })
-          } else if (this.data.syncToClass == true) {
-            this.setData({
-              selectCourse_id: this.data.courses[this.data.selectCourse_index-1].pre_id,
-              selectCourse_classId: this.data.courses[this.data.selectCourse_index-1].classId //** 易引起 bug 标记
-            })
+          }else if (this.data.syncToClass == true){
+            if ( 'pre_id' in selectedCourse ) {
+              this.setData({
+                selectCourse_id: selectedCourse.pre_id,
+                selectCourse_classId: selectedCourse.classId
+              })
+            }else {
+              this.setData({
+                selectCourse_id: selectedCourse._id,
+                selectCourse_classId: selectedCourse.classId
+              })
+            }
+            
             db.collection('events').add({
               data: {
                 eventName: this.data.eventName,

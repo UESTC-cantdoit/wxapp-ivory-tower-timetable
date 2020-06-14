@@ -18,7 +18,10 @@ Page({
   },
 
   searchClass: function(e) {
-    if (this.data.classId !== undefined) { 
+    if (this.data.classId !== '') { 
+      this.setData({
+        haveSearchedClass: true
+      })
       console.log(this.data.classId);
       const that = this ;
       wx.cloud.callFunction({
@@ -35,6 +38,10 @@ Page({
               haveSearchedClass: true,
               searchedClassName: res.result.data[0].className,
               classExist: true
+            });
+          }else {
+            that.setData({
+              classExist: false
             });
           }
         }
