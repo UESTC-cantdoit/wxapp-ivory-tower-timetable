@@ -12,7 +12,7 @@ Page({
     selectCourse: '不选择',
     selectCourse_id: null,
     selectCourse_classId: null,
-    selectCourse_index: null,
+    selectCourse_index: 0,
     selectCourseBelongToClass: false,
     eventName: null,
     eventDescription: '',
@@ -183,7 +183,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options);
+    if ( 'courseId' in options) {
+      this.setData({
+        selectCourse_id: options.courseId
+      });
+    }
   },
 
   /**
@@ -258,6 +262,27 @@ Page({
         });
       });
       this.setData({ coursePickerCourses: coursesArr });
+
+      for (let i = 0 ; i < this.data.courses.length ; i++ ) {
+        let course = this.data.courses[i];
+        if (course._id == this.data.selectCourse_id) {
+          course.selectCourseBelongToClass = false;
+          if ( 'classId' in course ) {
+            course.selectCourseBelongToClass = true;
+          }else {
+            course.classId = '';
+          }
+          this.setData({
+            selectCourse: course.courseName,
+            selectCourse_id: course._id,
+            selectCourseBelongToClass: course.selectCourseBelongToClass,
+            selectCourse_classId: course.classId,
+            onLoadingStatus: false,
+            selectCourse_index: i+1
+          })
+          break;
+        } 
+      }
     })
   }
 })
