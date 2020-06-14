@@ -357,10 +357,10 @@ Page({
     wx.cloud.callFunction({ //获取班级日程数量
       name: 'get_class_event_count',
       data: {
+        _openid: that.data.openid,
         classId: that.data.classId
       },
       success: (res) => {
-        console.log(res);
         const activeEventNum = res.result.total;
         that.setData({
           activeEventNum: activeEventNum
