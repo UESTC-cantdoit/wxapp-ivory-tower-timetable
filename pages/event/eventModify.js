@@ -160,7 +160,8 @@ Page({
                 eventName: this.data.eventName,
                 eventDescription: this.data.eventDescription,
                 endDate: this.data.selectEndDate,
-                course_id: this.data.selectCourse_id
+                course_id: this.data.selectCourse_id,
+                course_classId: db.command.remove()
               }
             }).then(function(){
               console.log('Modify event successfully.');
