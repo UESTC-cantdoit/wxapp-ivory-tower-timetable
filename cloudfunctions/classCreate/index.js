@@ -5,12 +5,14 @@ const db = cloud.database()
 
 // 云函数入口函数
 exports.main = async (event, context) => {
+  const date = new Date();
   try {
     db.collection('users-class').add({
       data: {
         className: event.className,
         _openid: event.openid,
         classId: event.classId.toString(),
+        joinDate: date
       }
     })
     return await db.collection('class').add({

@@ -60,7 +60,7 @@ Page({
             name: "get_new_classId",
             success:res => {
               let classId;
-              if (res.result.data[0].classId) {
+              if (res.result.data.length != 0) {
                 classId = parseInt(res.result.data[0].classId);
                 classId += Math.ceil(Math.random() * 100);  // 随机生成一个大于前一个编号 1-100 的数字
               } else {

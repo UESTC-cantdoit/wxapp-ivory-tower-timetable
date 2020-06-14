@@ -61,20 +61,14 @@ Page({
             confirmColor: '#FF3333',
             success: (res) => {
               if (res.confirm) {
-                db.collection('users-class').where({
-                  classId: this.data.classId
-                }).remove();
-                db.collection('events').where({
-                  course_classId: this.data.classId
-                }).remove();
-                db.collection('courses').where({
-                  classId: this.data.classId
-                }).remove();
-                db.collection('class').where({
-                  classId: this.data.classId
-                }).remove().then(function(){
-                  getApp().globalData.haveClass = false;
-                  wx.navigateBack();
+                wx.cloud.callFunction({
+                  name: 'class_dismiss',
+                  data: {
+                    classId: this.data.classId
+                  }
+                }).then(function(){
+                    getApp().globalData.haveClass = false;
+                    wx.navigateBack();
                 })
               }
             },
@@ -126,13 +120,15 @@ Page({
     this.setData({
       onUpdateClassProcess: true
     });
-    db.collection('users-class').where({
-      classId: getApp().globalData.classId
-    }).update({
+    
+    wx.cloud.callFunction({
+      name: 'class_update',
       data: {
+        classId: this.data.classId,
         className: className,
       }
     })
+
     db.collection('class').where({
       _openid: getApp().globalData.userInfo.openid,
       classId: getApp().globalData.classId
