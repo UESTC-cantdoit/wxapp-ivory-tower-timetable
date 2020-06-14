@@ -109,7 +109,6 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () { // 若修改过每周显示天数或每天显示课程数，则重新加载本页面
-    this.getData();
     var app = getApp();
     this.setData({
       haveClass: app.globalData.haveClass
@@ -120,6 +119,7 @@ Page({
         displayCourseNum: app.globalData.settings.displayCourseNum
       });
     };
+    this.getData();
   },
 
   /**
@@ -159,7 +159,9 @@ Page({
 
   getData: function () {
     // console.log('course',getApp().globalData.userInfo.openid)
-  
+    const displayDayNum = this.data.displayDayNum;
+    const displayCourseNum = this.data.displayCourseNum;
+    console.log('displayDayNum: '+displayDayNum+';displayCourseNum: '+displayCourseNum);
     wx.cloud.callFunction({
       name: 'get_course',
       data: {
@@ -168,14 +170,20 @@ Page({
     }).then( res => {
       var coursesArr = [];
       res.result.data.forEach( course => {
+        console.log(course);
         var courseTimeArr = [];
         //替换 courseTime 属性名
         course.courseTime.map( time =>{
-          courseTimeArr.push({ 
-            'day': time.weekDay,
-            'startTime': time.startTime,
-            'endTime': time.endTime
-          })
+          const day = time.weekDay;
+          const startTime = time.startTime;
+          const endTime = time.endTime;
+          if (day <= displayDayNum && endTime <= displayCourseNum) {  // 仅显示课表内内容
+            courseTimeArr.push({ 
+              'day': day,
+              'startTime': startTime,
+              'endTime': endTime
+            });
+          }
         })
         // 替换属性名其它方法
         // JSON.parse(JSON.stringify(course.courseTime).replace(/weekDay/g, 'day'))   

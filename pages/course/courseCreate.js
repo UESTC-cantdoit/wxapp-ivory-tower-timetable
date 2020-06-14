@@ -179,7 +179,8 @@ Page({
                 courseTeacher: this.data.courseTeacher,
                 coursePlace: this.data.coursePlace,
                 courseTime: this.data.selectCourseTime,
-                classId: getApp().globalData.classId
+                classId: getApp().globalData.classId,
+                createDate: new Date()
               }
             }).then(function(){
               console.log('Create course successfully.');
@@ -191,7 +192,8 @@ Page({
                 courseName:this.data.courseName,
                 courseTeacher:this.data.courseTeacher,
                 coursePlace: this.data.coursePlace,
-                courseTime:this.data.selectCourseTime
+                courseTime:this.data.selectCourseTime,
+                createDate: new Date()
               }
             }).then(function(){
               console.log('Create course successfully.');

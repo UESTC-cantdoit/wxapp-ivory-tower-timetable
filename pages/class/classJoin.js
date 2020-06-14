@@ -70,7 +70,8 @@ Page({
           db.collection('users-class').add({
             data: {
               classId: classId,
-              className: className
+              className: className,
+              joinDate: new Date()
             }
           }).then(function(){
             getApp().globalData.classId = classId;

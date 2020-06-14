@@ -1,5 +1,9 @@
+<view wx:if="{{ onLoadingStatus }}" class="center-item">
+  <image src="../../images/loading-clock.gif" mode="aspectFit" class="loading-gif" />
+</view>
+
 <!-- 顶部日期栏 -->
-<van-sticky>
+<van-sticky wx:if="{{ !onLoadingStatus }}">
   <van-grid column-num="{{ displayDayNum + 1 }}">
     <van-grid-item use-slot custom-class="top-left-grid-item">
       <view class="top-left-item">

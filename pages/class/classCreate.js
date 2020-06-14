@@ -69,6 +69,7 @@ Page({
                   enableSearch: enableSearch,
                   openid: openid,
                   classId: classId,
+                  createDate: new Date()
                 }
               }).then(function(){
                 app.globalData.className = className;

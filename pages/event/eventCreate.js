@@ -126,6 +126,7 @@ Page({
                 eventName: this.data.eventName,
                 eventDescription: this.data.eventDescription,
                 endDate: this.data.selectEndDate,
+                createDate: new Date()
               }
             }).then(function(){
               console.log('Create event successfully.');
@@ -140,19 +141,20 @@ Page({
                 eventName: this.data.eventName,
                 eventDescription: this.data.eventDescription,
                 endDate: this.data.selectEndDate,
-                course_id: this.data.selectCourse_id
+                course_id: this.data.selectCourse_id,
+                createDate: new Date()
               }
             }).then(function(){
               console.log('Create event successfully.');
               wx.navigateBack();
             })
-          }else if (this.data.syncToClass == true){
+          } else if (this.data.syncToClass == true) {
             if ( 'pre_id' in selectedCourse ) {
               this.setData({
                 selectCourse_id: selectedCourse.pre_id,
                 selectCourse_classId: selectedCourse.classId
               })
-            }else {
+            } else {
               this.setData({
                 selectCourse_id: selectedCourse._id,
                 selectCourse_classId: selectedCourse.classId
@@ -166,6 +168,7 @@ Page({
                 endDate: this.data.selectEndDate,
                 course_id: this.data.selectCourse_id,
                 course_classId: this.data.selectCourse_classId,
+                createDate: new Date()
               }
             }).then(function(){
               console.log('Create event successfully.');
