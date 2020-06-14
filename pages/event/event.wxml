@@ -1,9 +1,14 @@
 <!--pages/event/event.wxml-->
+<view wx:if="{{ onLoadingStatus }}" class="center-item">
+  <image src="../../images/loading-clock.gif" mode="aspectFit" class="loading-gif" />
+</view>
+
 <view
   style="width:100%;height:100%;"
   bind:touchstart="touchStart" 
   bind:touchend="touchEnd" 
   bind:touchcancel="touchCancel"
+  wx:if="{{ !onLoadingStatus }}"
 >
   <van-tabs
     active="{{ activeTab }}"

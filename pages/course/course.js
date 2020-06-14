@@ -161,7 +161,6 @@ Page({
     // console.log('course',getApp().globalData.userInfo.openid)
     const displayDayNum = this.data.displayDayNum;
     const displayCourseNum = this.data.displayCourseNum;
-    console.log('displayDayNum: '+displayDayNum+';displayCourseNum: '+displayCourseNum);
     wx.cloud.callFunction({
       name: 'get_course',
       data: {
@@ -170,7 +169,6 @@ Page({
     }).then( res => {
       var coursesArr = [];
       res.result.data.forEach( course => {
-        console.log(course);
         var courseTimeArr = [];
         //替换 courseTime 属性名
         course.courseTime.map( time =>{

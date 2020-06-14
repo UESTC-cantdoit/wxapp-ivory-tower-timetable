@@ -59,7 +59,8 @@ Page({
       title: null,
       star: null,
       status: null
-    }
+    },
+    onLoadingStatus: true
   },
 
   createEvent() {
@@ -403,15 +404,19 @@ Page({
         }
         that.setData({
           event: eventArr,
-          eventCount: eventArr.length,
+          eventCount: eventArr.length
         })
         console.log( activeEventCount )
         if ( activeEventCount < 8 && (currentEventCount == 10)) {
           console.log('##')
           that.getDatabyCloud();
+        } else {
+          that.setData({
+            onLoadingStatus: false
+          })
+          wx.stopPullDownRefresh();
         }
         activeEventCount = 0;
-        wx.stopPullDownRefresh();
       },
       fail: err => {
         console.log(err)

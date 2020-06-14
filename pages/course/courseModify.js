@@ -106,27 +106,32 @@ Page({
     const { position, instance } = event.detail;
     switch (position) {
       case 'right': // 点击“删除”按钮时
-        const itemId = event.currentTarget.dataset.id;
-        let items = this.data.selectCourseTime;
-        wx.showModal({
-          title: '删除',
-          content: '确定删除所选时间吗',
-          success: (res) => {
-            if (res.confirm) {
-              for(var i=0; i<items.length; i++){
-                if (items[i].id == itemId) {
-                  items.splice(i,1);
-                  break;
-        　　    }
+        if (this.data.isOwner) {
+          const itemId = event.currentTarget.dataset.id;
+          let items = this.data.selectCourseTime;
+          wx.showModal({
+            title: '删除',
+            content: '确定删除所选时间吗',
+            success: (res) => {
+              if (res.confirm) {
+                for(var i=0; i<items.length; i++){
+                  if (items[i].id == itemId) {
+                    items.splice(i,1);
+                    break;
+          　　    }
+                }
+                this.setData({
+                  selectCourseTime: items
+                });
+              } else {
+                instance.close();
               }
-              this.setData({
-                selectCourseTime: items
-              });
-            } else {
-              instance.close();
-            }
-          },
-        });
+            },
+          });
+        } else {
+          Notify({ type: 'danger', message: '您并非此课程的拥有者' });
+          instance.close();
+        }
         break;
       default: // 点击其它地方
         instance.close();
