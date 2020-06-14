@@ -67,7 +67,7 @@
       >添加到课程表</van-button>
       <!-- 非课程拥有者已添加课程后 -->
       <van-button
-        type="danger"
+        type="primary"
         size="small"
         bind:click="removeFromCourse"
         data-courseId="{{ courseId }}"

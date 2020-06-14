@@ -43,26 +43,28 @@ Page({
   coursePickerOnConfirm(value) {
     const courseName = value.detail.value.text;
     const courseClass = value.detail.value.class;
+    console.log(courseClass);
     this.setData({
       selectCourse_index: value.detail.index,
     });
     if (courseName === '不选择') {
       this.setData({
-        selectCourse: '不选择'
+        selectCourse: '不选择',
+        selectCourseBelongToClass: false
       });
     } else {
       this.setData({
         selectCourse: courseName,
       });
-    }
-    if (courseClass == undefined) {
-      this.setData({
-        selectCourseBelongToClass: false
-      });
-    } else {
-      this.setData({
-        selectCourseBelongToClass: true
-      });
+      if (courseClass) {
+        this.setData({
+          selectCourseBelongToClass: true
+        });
+      } else {
+        this.setData({
+          selectCourseBelongToClass: false
+        });
+      }
     }
 
     this.setData({
@@ -114,7 +116,7 @@ Page({
         if (res.confirm) {
           this.setData({
             onCreateEventProcess: true
-          })
+          });
           //云数据库操作 添加记录至 events 集合
           const selectedCourse = this.data.courses[this.data.selectCourse_index-1];
           console.log(selectedCourse);
@@ -188,7 +190,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    
+
   },
 
   /**

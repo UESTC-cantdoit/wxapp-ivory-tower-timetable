@@ -56,22 +56,30 @@ Page({
   },
 
   removeFromEvent(e) {
-    console.log(e);
-    const eventId = e.currentTarget.dataset.eventid;
-    // 将目标日程从日程中移除
-    try {
-      db.collection('events').where({
-        _openid: getApp().globalData.userInfo.openid,
-        pre_id: eventId
-      }).remove()
-    } catch(e) {
-      console.error(e)
-    }
-    let index = this.data.event.findIndex(function(event){
-      return event.eventId == eventId;
-    })
-    this.setData({
-      [`event[${index}].inEvent`]: false
+    var that = this;
+    wx.showModal({
+      title: '移除已添加日程',
+      content: '您确定要移除该同步日程吗',
+      success (res) {
+        if (res.confirm) {
+          const eventId = e.currentTarget.dataset.eventid;
+          // 将目标日程从日程中移除
+          try {
+            db.collection('events').where({
+              _openid: getApp().globalData.userInfo.openid,
+              pre_id: eventId
+            }).remove()
+          } catch(e) {
+            console.error(e)
+          }
+          let index = that.data.event.findIndex(function(event){
+            return event.eventId == eventId;
+          })
+          that.setData({
+            [`event[${index}].inEvent`]: false
+          })
+        }
+      }
     })
   },
 

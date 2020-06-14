@@ -1,5 +1,7 @@
 // pages/event/eventModify.js
 const db = wx.cloud.database();
+import Notify from '../../miniprogram_npm/@vant/weapp/notify/notify';
+
 Page({
 
   /**
@@ -53,11 +55,16 @@ Page({
   },
 
   showCoursePicker() {
-    if (this.data.isOwner == true) {  // 如果为日程拥有者，显示课程选择器
-      this.setData({ coursePickerOnShow: true });
-    } else {  // 如果为日程同步者，提示无法选择课程
-      // todo
-    }
+    // 选择课程无法修改
+    this.showNotify('无法修改已选择的课程');
+  },
+
+  showNotify(msg) {
+    Notify({
+      type: 'danger',
+      message: msg,
+      duration: 1500
+    });
   },
 
   coursePickerOnConfirm(value) {
@@ -340,6 +347,7 @@ Page({
         isOwner: event.isOwner,
         defaultSyncToClassevent: event.defaultSyncToClass,
         syncToClass: event.syncToClass,
+        onLoadingStatus: false
       })
       
       const date = this.data.selectEndDate;
@@ -353,7 +361,7 @@ Page({
           selectEndDateOnDisplay: selectEndDateOnDisplay
         });
       }
-      // 获取课程名称 判断课程时候同步自班级
+      // 获取课程名称 判断课程是否同步自班级
       if ( 'course_id' in event ) {
         db.collection('courses').doc(event.course_id)
         .get().then( course_res => {
@@ -374,10 +382,9 @@ Page({
           })
         })
       }
-      
-
     })
   },
+
   getCourses: function (){
     //获取课程信息
     db.collection('courses')

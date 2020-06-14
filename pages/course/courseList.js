@@ -65,33 +65,42 @@ Page({
   },
 
   removeFromCourse(e) {
-    const courseId = e.currentTarget.dataset.courseid;
-    //云数据库操作
-    try {
-      db.collection('courses').where({
-        _openid: getApp().globalData.userInfo.openid,
-        pre_id: courseId
-      }).remove()
-    } catch(e) {
-      console.error(e)
-    }
-    //数据回显
-    //定位课程数据
-    let anchorIndex = -1;
-    let courseIndex = -1;
-    for (let i = 0; i < this.data.courseAnchorIndexList.length; i++) {
-      anchorIndex = i;
-      const anchor = this.data.courseAnchorIndexList[i];
-      courseIndex = anchor.course.findIndex( course => {
-          return course.courseId == courseId
-      })
-      if (courseIndex != -1) {
-        break;
+    var that = this;
+    wx.showModal({
+      title: '移除已添加课程',
+      content: '您确定要移除该同步课程吗',
+      success (res) {
+        if (res.confirm) {
+          const courseId = e.currentTarget.dataset.courseid;
+          //云数据库操作
+          try {
+            db.collection('courses').where({
+              _openid: getApp().globalData.userInfo.openid,
+              pre_id: courseId
+            }).remove()
+          } catch(e) {
+            console.error(e)
+          }
+          //数据回显
+          //定位课程数据
+          let anchorIndex = -1;
+          let courseIndex = -1;
+          for (let i = 0; i < that.data.courseAnchorIndexList.length; i++) {
+            anchorIndex = i;
+            const anchor = that.data.courseAnchorIndexList[i];
+            courseIndex = anchor.course.findIndex( course => {
+                return course.courseId == courseId
+            })
+            if (courseIndex != -1) {
+              break;
+            }
+          }
+          //设置 haveAddedToCourse 为 false
+          that.setData({
+            [`courseAnchorIndexList[${anchorIndex}].course[${courseIndex}].haveAddedToCourse`]: false
+          })
+        }
       }
-    }
-    //设置 haveAddedToCourse 为 false
-    this.setData({
-      [`courseAnchorIndexList[${anchorIndex}].course[${courseIndex}].haveAddedToCourse`]: false
     })
   },
 
