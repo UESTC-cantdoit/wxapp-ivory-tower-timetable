@@ -91,7 +91,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    this.getData();
+    // this.getData();
   },
 
   /**
@@ -140,7 +140,7 @@ Page({
     var eventArr = [];
     var pre_eventArr = [];
     var that = this;
-    //从云数据获取用户日程
+
     wx.cloud.callFunction({
       name: 'get_class_event',
       data: {
@@ -153,11 +153,8 @@ Page({
         for(let i=0;i<res.result.list.length;i++){
           var event = res.result.list[i];
 
-          //处理 eventStatus
-          const today = new Date();
           event.endDate = new Date(event.endDate);
           event.endDateOnDisplay = formatDate(event.endDate);
-          let todayDate = today.getTime()-(today.getTime()%(1000 * 60 * 60 * 24)) - 8*1000*60*60;
 
           function formatDate(date) {
             var y = date.getFullYear();
@@ -167,18 +164,7 @@ Page({
             d = d < 10 ? ('0' + d) : d;
             return y + '-' + m + '-' + d;
           }
-
-          if (!event.done) {
-            //日程已结束则跳循环
-            if (event.endDate.getTime() < todayDate) {
-              continue;
-            }else {
-              event.eventStatus = '进行中';
-            }
-          }else {
-            event.eventStatus = '已完成';
-          }
-        
+  
           //处理 eventSync
           if (event.course_classId) {
             event.eventSync = true;
@@ -258,9 +244,9 @@ Page({
 
         getApp().globalData.classEventCount = eventArr.length;
       },
-      fail: err => {
-        console.log('error',err)
-      },
+      fail: (err) => {
+        console.log('eventlist_getData错误',err)
+      }
     })
   },
 })
