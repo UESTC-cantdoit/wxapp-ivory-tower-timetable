@@ -119,6 +119,10 @@ Page({
         newEventNum: 0
       })
     }
+
+    this.setData({
+      className: getApp().globalData.className,
+    })
   },
 
   /**
@@ -173,12 +177,17 @@ Page({
         getApp().globalData.className = res.data[0].className;
         getApp().globalData.classId = res.data[0].classId;
 
-        if (res.data[0]._openid == that.data.openid) {  // 如果为班级创建者
-          that.setData({
-            isClassCreator: true
-          })
-          getApp().globalData.isClassCreator = true;
-        }
+        db.collection('class').where({
+          classId: res.data[0].classId
+        }).get().then( classRes => {
+          if (classRes.data[0]._openid == that.data.openid) {  // 如果为班级创建者
+            that.setData({
+              isClassCreator: true
+            })
+            getApp().globalData.isClassCreator = true;
+          }
+        })
+
 
         that.getClassItemCount(); // 获取班级日程、课程数量
       } else {  // 查询班级失败

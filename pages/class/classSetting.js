@@ -64,6 +64,12 @@ Page({
                 db.collection('users-class').where({
                   classId: this.data.classId
                 }).remove();
+                db.collection('events').where({
+                  course_classId: this.data.classId
+                }).remove();
+                db.collection('courses').where({
+                  classId: this.data.classId
+                }).remove();
                 db.collection('class').where({
                   classId: this.data.classId
                 }).remove().then(function(){
@@ -92,6 +98,14 @@ Page({
             confirmColor: '#FF3333',
             success: (res) => {
               if (res.confirm) {
+                db.collection('events').where({
+                  _openid: getApp().globalData.userInfo.openid,
+                  course_classId: this.data.classId
+                }).remove();
+                db.collection('courses').where({
+                  _openid: getApp().globalData.userInfo.openid,
+                  classId: this.data.classId
+                }).remove();
                 db.collection('users-class').where({
                   _openid: getApp().globalData.userInfo.openid,
                 }).remove().then(function(){
@@ -112,6 +126,13 @@ Page({
     this.setData({
       onUpdateClassProcess: true
     });
+    db.collection('users-class').where({
+      classId: getApp().globalData.classId
+    }).update({
+      data: {
+        className: className,
+      }
+    })
     db.collection('class').where({
       _openid: getApp().globalData.userInfo.openid,
       classId: getApp().globalData.classId
@@ -125,6 +146,8 @@ Page({
       getApp().globalData.classSetting.enableSearch = enableSearch;
       wx.navigateBack();
     })
+
+
   },
 
   backToHome() {
