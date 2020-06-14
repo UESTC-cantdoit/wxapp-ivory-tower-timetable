@@ -1,0 +1,75 @@
+<!--
+此文件为开发者工具生成，生成时间: 2020/6/14 下午5:35:13 
+使用方法：
+1. 在"pages\class\classSetting.wxml"中使用`include`指令引入此模板，
+2. 在"pages\class\classSetting.wxss"中使用`import`指令引入"pages\class\classSetting.skeleton.wxss"
+3. 书写对应的逻辑，来控制骨架屏的显示与隐藏
+
+更多详细信息可以参考文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/skeleton.html
+-->
+<template name="skeleton">
+  <view class="sk-container">
+    <view class="container">
+      <view class="background-title sk-transparent sk-text-14-2857-613 sk-text" style="background-size: 16.2225% 1.225rem;">班级信息</view>
+      <view is="miniprogram_npm/@vant/weapp/field/index">
+        <view is="miniprogram_npm/@vant/weapp/cell/index">
+          <view class="field-index--van-field van-cell weapp-cell-index--van-cell sk-pseudo sk-pseudo-circle" hover-class="van-cell--hover hover-class" hover-stay-time="70" style="true">
+            <view class="van-cell__title weapp-cell-index--van-cell__title sk-transparent sk-text-20-8333-466 sk-text" style="max-width: 90px; min-width: 90px; background-size: 62.2222% 1.5rem;">班级名称</view>
+            <view class="van-cell__value weapp-cell-index--van-cell__value ">
+              <view class="van-field__body field-index--van-field__body van-field__body--text field-index--van-field__body--text"><input class=" van-field__input field-index--van-field__input van-field__input--right field-index--van-field__input--right van-field__input--disabled field-index--van-field__input--disabled" cursor="-1" maxlength="12" placeholder="xxxx" placeholder-class="van-field__placeholder"
+                  placeholder-style="true" selection-end="-1" selection-start="-1" type="text" value="xxxx" disabled="true"></input>
+                <view class="van-field__icon-container field-index--van-field__icon-container"></view>
+                <view class="van-field__button field-index--van-field__button"></view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view is="miniprogram_npm/@vant/weapp/cell/index">
+        <view class="van-cell weapp-cell-index--van-cell van-cell--clickable weapp-cell-index--van-cell--clickable sk-pseudo sk-pseudo-circle" hover-class="van-cell--hover hover-class" hover-stay-time="70" style="true">
+          <view class="van-cell__title weapp-cell-index--van-cell__title sk-transparent" style="true">班级编号
+            <view class="van-cell__label weapp-cell-index--van-cell__label sk-transparent sk-text-16-6667-367 sk-text" style="background-size: 76.9231% 1.125rem;">搜索班级编号以加入班级</view>
+          </view>
+          <view class="van-cell__value weapp-cell-index--van-cell__value sk-transparent sk-text-20-8333-902 sk-text" style="background-size: 38.2721% 1.5rem; background-position-x: 100%;">xxxxxx</view>
+        </view>
+      </view>
+    </view>
+    <view class="container">
+      <view class="background-title sk-transparent sk-text-14-2857-840 sk-text" style="background-size: 16.2225% 1.225rem;">班级设置</view>
+      <view is="miniprogram_npm/@vant/weapp/cell/index">
+        <view class="van-cell weapp-cell-index--van-cell sk-pseudo sk-pseudo-circle" hover-class="van-cell--hover hover-class" hover-stay-time="70" style="true">
+          <view class="van-cell__title weapp-cell-index--van-cell__title sk-transparent" style="true">允许被搜索
+            <view class="van-cell__label weapp-cell-index--van-cell__label "></view>
+          </view>
+          <view class="van-cell__value weapp-cell-index--van-cell__value ">
+            <view>
+              <view is="miniprogram_npm/@vant/weapp/switch/index">
+                <view class=" van-switch switch-index--van-switch van-switch--on switch-index--van-switch--on van-switch--disabled switch-index--van-switch--disabled" style="font-size: 20px; background-color: rgb(7, 193, 96); border: none;">
+                  <view class="van-switch__node switch-index--van-switch__node "></view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="container" style="padding-top: 20px;">
+      <view is="miniprogram_npm/@vant/weapp/row/index">
+        <view class="van-row row-index--van-row sk-pseudo sk-pseudo-circle" style="margin-right: -2.5px; margin-left: -2.5px;">
+          <view is="miniprogram_npm/@vant/weapp/col/index">
+            <view class=" van-col col-index--van-col van-col--8 col-index--van-col--8" style="padding-left: 2.5px; padding-right: 2.5px;">
+              <view is="miniprogram_npm/@vant/weapp/button/index"><button app-parameter="true" business-id="true" class="van-button button-index--van-button van-button--danger button-index--van-button--danger van-button--normal button-index--van-button--normal van-button--block button-index--van-button--block sk-button sk-pseudo sk-pseudo-circle"
+                  data-detail="null" form-type="true" hover-class="van-button--active hover-class" lang="true" open-type="true" send-message-img="true" send-message-path="true" send-message-title="true" session-from="true" style="border: none;"><view class="van-button__text button-index--van-button__text sk-transparent sk-text-15-0000-243 sk-text" style="background-size: 100% 1.25rem; background-position-x: 50%;">退出班级</view></button></view>
+            </view>
+          </view>
+          <view is="miniprogram_npm/@vant/weapp/col/index">
+            <view class=" van-col col-index--van-col van-col--16 col-index--van-col--16" style="padding-left: 2.5px; padding-right: 2.5px;">
+              <view is="miniprogram_npm/@vant/weapp/button/index"><button app-parameter="true" business-id="true" class="van-button button-index--van-button van-button--primary button-index--van-button--primary van-button--normal button-index--van-button--normal van-button--block button-index--van-button--block sk-button sk-pseudo sk-pseudo-circle"
+                  data-detail="null" form-type="true" hover-class="van-button--active hover-class" lang="true" open-type="true" send-message-img="true" send-message-path="true" send-message-title="true" session-from="true" style="border: none;"><view class="van-button__text button-index--van-button__text sk-transparent sk-text-15-0000-883 sk-text" style="background-size: 100% 1.25rem; background-position-x: 50%;">回到主页</view></button></view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>

@@ -18,7 +18,8 @@ Page({
     openid: getApp().globalData.userInfo.openid,
     isClassCreator: getApp().globalData.isClassCreator,
     focusEvent: getApp().globalData.home.focusEvent, // 应按照截止时间由早及晚排序
-    starEvent: getApp().globalData.home.starEvent
+    starEvent: getApp().globalData.home.starEvent,
+    onLoadingStatus: true,
   },
 
   createClass() {
@@ -93,9 +94,6 @@ Page({
     } else {
       this.toWelcome();
     }
-    
-    this.getDataOnPage()
-
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -108,19 +106,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.setData({
-      haveClass: getApp().globalData.haveClass,
-      activeCourseNum: getApp().globalData.activeCourseNum,
-      displayMyClassModule: getApp().globalData.settings.displayMyClassModule,
-      focusEventDay: getApp().globalData.settings.focusEventDay,
-      activeEventNum: getApp().globalData.activeEventNum,
-      className: getApp().globalData.className,
-      classId: getApp().globalData.classId,
-      openid: getApp().globalData.userInfo.openid,
-      isClassCreator: getApp().globalData.isClassCreator,
-      focusEvent: getApp().globalData.home.focusEvent,
-      starEvent: getApp().globalData.home.starEvent
-    })
+    this.getDataOnPage();
 
     if ( getApp().globalData.courseList = true ){
       this.setData({
@@ -224,6 +210,9 @@ Page({
           that.getStarEvents();
         }).then(function(){
           wx.stopPullDownRefresh();
+          that.setData({
+            onLoadingStatus: false
+          });
         })
     })
   },
@@ -371,7 +360,8 @@ Page({
         classId: that.data.classId
       },
       success: (res) => {
-        const activeEventNum = res.result;
+        console.log(res);
+        const activeEventNum = res.result.total;
         that.setData({
           activeEventNum: activeEventNum
         });

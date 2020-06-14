@@ -1,0 +1,103 @@
+<!--
+此文件为开发者工具生成，生成时间: 2020/6/14 下午6:07:34 
+使用方法：
+1. 在"pages\course\courseModify.wxml"中使用`include`指令引入此模板，
+2. 在"pages\course\courseModify.wxss"中使用`import`指令引入"pages\course\courseModify.skeleton.wxss"
+3. 书写对应的逻辑，来控制骨架屏的显示与隐藏
+
+更多详细信息可以参考文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/skeleton.html
+-->
+<template name="skeleton">
+  <view class="sk-container">
+    <view class="container">
+      <view class="background-title sk-transparent sk-text-14-2857-516 sk-text" style="background-size: 16.2225% 1.225rem;">基本信息</view>
+      <view is="miniprogram_npm/@vant/weapp/field/index">
+        <view is="miniprogram_npm/@vant/weapp/cell/index">
+          <view class="field-index--van-field van-cell weapp-cell-index--van-cell sk-pseudo sk-pseudo-circle" hover-class="van-cell--hover hover-class" hover-stay-time="70" style="true">
+            <view class="van-cell__title weapp-cell-index--van-cell__title sk-transparent sk-text-20-8333-348 sk-text" style="max-width: 90px; min-width: 90px; background-size: 62.2222% 1.5rem;">课程名称</view>
+            <view class="van-cell__value weapp-cell-index--van-cell__value ">
+              <view class="van-field__body field-index--van-field__body van-field__body--text field-index--van-field__body--text"><input class=" van-field__input field-index--van-field__input van-field__input--disabled field-index--van-field__input--disabled" cursor="-1" maxlength="20" placeholder="请输入课程名称" placeholder-class="van-field__placeholder" placeholder-style="true"
+                  selection-end="-1" selection-start="-1" type="text" value="xxxxxx" disabled="true"></input>
+                <view class="van-field__icon-container field-index--van-field__icon-container"></view>
+                <view class="van-field__button field-index--van-field__button"></view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view is="miniprogram_npm/@vant/weapp/field/index">
+        <view is="miniprogram_npm/@vant/weapp/cell/index">
+          <view class="field-index--van-field van-cell weapp-cell-index--van-cell sk-pseudo sk-pseudo-circle" hover-class="van-cell--hover hover-class" hover-stay-time="70" style="true">
+            <view class="van-cell__title weapp-cell-index--van-cell__title sk-transparent sk-text-20-8333-624 sk-text" style="max-width: 90px; min-width: 90px; background-size: 62.2222% 1.5rem;">任课教师</view>
+            <view class="van-cell__value weapp-cell-index--van-cell__value ">
+              <view class="van-field__body field-index--van-field__body van-field__body--text field-index--van-field__body--text"><input class=" van-field__input field-index--van-field__input van-field__input--disabled field-index--van-field__input--disabled" cursor="-1" maxlength="20" placeholder="请输入任课教师姓名" placeholder-class="van-field__placeholder" placeholder-style="true"
+                  selection-end="-1" selection-start="-1" type="text" value="xxxx" disabled="true"></input>
+                <view class="van-field__icon-container field-index--van-field__icon-container"></view>
+                <view class="van-field__button field-index--van-field__button"></view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view is="miniprogram_npm/@vant/weapp/field/index">
+        <view is="miniprogram_npm/@vant/weapp/cell/index">
+          <view class="field-index--van-field van-cell weapp-cell-index--van-cell sk-pseudo sk-pseudo-circle" hover-class="van-cell--hover hover-class" hover-stay-time="70" style="true">
+            <view class="van-cell__title weapp-cell-index--van-cell__title sk-transparent sk-text-20-8333-255 sk-text" style="max-width: 90px; min-width: 90px; background-size: 62.2222% 1.5rem;">上课地点</view>
+            <view class="van-cell__value weapp-cell-index--van-cell__value ">
+              <view class="van-field__body field-index--van-field__body van-field__body--text field-index--van-field__body--text"><input class="van-field__input field-index--van-field__input van-field__input--disabled field-index--van-field__input--disabled sk-transparent sk-text-20-8333-687 sk-text" cursor="-1" maxlength="20" placeholder="请输入课程教学地点" placeholder-class="van-field__placeholder"
+                  placeholder-style="true" selection-end="-1" selection-start="-1" type="text" value="true" disabled="true" style="background-size: 49.763% 1.5rem;">请输入课程教学地点</input>
+                <view class="van-field__icon-container field-index--van-field__icon-container"></view>
+                <view class="van-field__button field-index--van-field__button"></view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="container">
+      <view class="background-title sk-transparent sk-text-14-2857-367 sk-text" style="background-size: 16.2225% 1.225rem;">上课时间</view>
+      <view is="miniprogram_npm/@vant/weapp/swipe-cell/index" data-id="1592071408275">
+        <view class="van-swipe-cell swipe-cell-index--van-swipe-cell" data-key="cell">
+          <view style="true">
+            <view is="miniprogram_npm/@vant/weapp/cell/index">
+              <view class="van-cell weapp-cell-index--van-cell sk-pseudo sk-pseudo-circle" hover-class="van-cell--hover hover-class" hover-stay-time="70" style="true">
+                <view class="van-cell__title weapp-cell-index--van-cell__title sk-transparent sk-text-20-8333-187 sk-text" style="background-size: 32.634% 1.5rem;">选择时间</view>
+                <view class="van-cell__value weapp-cell-index--van-cell__value sk-transparent sk-text-20-8333-518 sk-text" style="background-size: 60.169% 1.5rem; background-position-x: 100%;">周 1 第 1-2 节课</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view is="miniprogram_npm/@vant/weapp/button/index"><button app-parameter="true" business-id="true" class="van-button button-index--van-button van-button--default button-index--van-button--default van-button--normal button-index--van-button--normal van-button--block button-index--van-button--block van-button--disabled button-index--van-button--disabled van-button--unclickable button-index--van-button--unclickable sk-button sk-pseudo sk-pseudo-circle"
+          data-detail="null" form-type="true" hover-class="van-button--active hover-class" lang="true" open-type="true" send-message-img="true" send-message-path="true" send-message-title="true" session-from="true" style="border: none;"><view is="miniprogram_npm/@vant/weapp/icon/index" class="van-button__icon button-index--van-button__icon"><view class="van-icon icon-index--van-icon van-icon-edit icon-index--van-icon-edit sk-pseudo sk-pseudo-circle" style="color: ;font-size: 1.2em;line-height: inherit;"></view></view><view class="van-button__text button-index--van-button__text sk-transparent sk-text-15-0000-25 sk-text" style="background-size: 100% 1.25rem; background-position-x: 50%;">添加上课时间</view></button></view>
+      <view
+        is="miniprogram_npm/@vant/weapp/popup/index">
+        <view is="miniprogram_npm/@vant/weapp/overlay/index">
+          <view is="miniprogram_npm/@vant/weapp/transition/index"></view>
+        </view>
+    </view>
+  </view>
+  <view class="container">
+    <view class="background-title sk-transparent sk-text-14-2857-419 sk-text" style="background-size: 16.2225% 1.225rem;">最后一步</view>
+    <view is="miniprogram_npm/@vant/weapp/row/index">
+      <view class="van-row row-index--van-row sk-pseudo sk-pseudo-circle" style="margin-right: -2.5px; margin-left: -2.5px;">
+        <view is="miniprogram_npm/@vant/weapp/col/index">
+          <view class=" van-col col-index--van-col van-col--8 col-index--van-col--8" style="padding-left: 2.5px; padding-right: 2.5px;">
+            <view is="miniprogram_npm/@vant/weapp/button/index"><button app-parameter="true" business-id="true" class="van-button button-index--van-button van-button--danger button-index--van-button--danger van-button--normal button-index--van-button--normal van-button--block button-index--van-button--block sk-button sk-pseudo sk-pseudo-circle"
+                data-detail="null" form-type="true" hover-class="van-button--active hover-class" lang="true" open-type="true" send-message-img="true" send-message-path="true" send-message-title="true" session-from="true" style="border: none;"><view class="van-button__text button-index--van-button__text sk-transparent sk-text-15-0000-436 sk-text" style="background-size: 100% 1.25rem; background-position-x: 50%;">删除课程</view></button></view>
+          </view>
+        </view>
+        <view is="miniprogram_npm/@vant/weapp/col/index">
+          <view class=" van-col col-index--van-col van-col--16 col-index--van-col--16" style="padding-left: 2.5px; padding-right: 2.5px;">
+            <view is="miniprogram_npm/@vant/weapp/button/index"><button app-parameter="true" business-id="true" class="van-button button-index--van-button van-button--primary button-index--van-button--primary van-button--normal button-index--van-button--normal van-button--block button-index--van-button--block sk-button sk-pseudo sk-pseudo-circle"
+                data-detail="null" form-type="true" hover-class="van-button--active hover-class" lang="true" open-type="true" send-message-img="true" send-message-path="true" send-message-title="true" session-from="true" style="border: none;"><view class="van-button__text button-index--van-button__text sk-transparent sk-text-15-0000-574 sk-text" style="background-size: 100% 1.25rem; background-position-x: 50%;">确认修改课程</view></button></view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view is="miniprogram_npm/@vant/weapp/notify/index" id="van-notify">
+    <view is="miniprogram_npm/@vant/weapp/transition/index"></view>
+  </view>
+  </view>
+</template>

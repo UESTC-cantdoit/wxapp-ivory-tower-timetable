@@ -18,13 +18,14 @@
   </van-grid>
 </van-sticky>
 
-
 <!-- 课程表：先渲染生成 grid 块，再绑定数据 -->
-<van-grid column-num="{{ displayDayNum + 1 }}" clickable>
-  <view wx:for="{{ courseTimetable }}" wx:key="gridId">
-    <template is="course" data="{{ ...item }}" />
-  </view>
-</van-grid>
+<view wx:if="{{ !onLoadingStatus }}">
+  <van-grid column-num="{{ displayDayNum + 1 }}" clickable>
+    <view wx:for="{{ courseTimetable }}" wx:key="gridId">
+      <template is="course" data="{{ ...item }}" />
+    </view>
+  </van-grid>
+</view>
 
 <!-- 课程 template -->
 <template name="course">

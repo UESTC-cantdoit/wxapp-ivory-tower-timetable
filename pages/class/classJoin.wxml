@@ -10,7 +10,14 @@
     bind:input="inputClassId"
     use-button-slot
   >
-    <van-button slot="button" size="small" type="primary" bind:click="searchClass">搜索</van-button>
+    <van-button
+      slot="button"
+      size="small"
+      type="primary"
+      bind:click="searchClass"
+      loading="{{ onSearchClassStatus }}"
+      loading-text="搜索中..."
+    >搜索</van-button>
   </van-field>
 </view>
 
@@ -21,7 +28,13 @@
       <van-cell title="班级编号" value="{{ searchedClassId }}" />
       <van-cell title="班级昵称" value="{{ searchedClassName }}" />
     </view>
-    <van-button type="primary" block bind:click="joinClass">加入班级</van-button>
+    <van-button
+      type="primary"
+      block
+      bind:click="joinClass"
+      loading="{{ onJoinClassStatus }}"
+      loading-text="正在前往班级..."
+    >加入班级</van-button>
   </view>
 
   <view wx:if="{{ !classExist }}">

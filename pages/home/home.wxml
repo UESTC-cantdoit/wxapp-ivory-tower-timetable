@@ -1,120 +1,131 @@
 <!--pages/home.wxml-->
 <!-- 我的班级：尚未加入班级时 -->
-<view class="container" wx:if="{{ !haveClass && displayMyClassModule }}">
-  <van-cell
-    title="我的班级"
-    label=""
-    value="无"
-    icon="friends-o"
-    size="large"
-    use-label-slot
-  >
-    <view slot="label">
-      <view>您尚未加入班级哦</view>
-    </view>
-  </van-cell>
-  <van-panel use-footer-slot>
-    <view slot="footer">
-      <van-row gutter="5">
-        <van-col span="12">
-          <van-button type="info" block bind:click="createClass">创建班级</van-button>
-        </van-col>
-        <van-col span="12">
-          <van-button type="primary" block bind:click="joinClass">加入班级</van-button>
-        </van-col>
-      </van-row>
-    </view>
-  </van-panel>
+<view wx:if="{{ onLoadingStatus }}" class="center-item">
+  <image src="../../images/loading-clock.gif" mode="aspectFit" class="loading-gif" />
 </view>
 
-<!-- 我的班级：已加入班级后 -->
-<view class="container" wx:if="{{ haveClass }}">
-  <van-cell-group>
+<view wx:if="{{ !onLoadingStatus }}">
+  <view class="container" wx:if="{{ !haveClass && displayMyClassModule }}">
     <van-cell
       title="我的班级"
-      value="{{ className }}"
+      label=""
+      value="无"
       icon="friends-o"
       size="large"
-      clickable
-      bind:click="toClassSetting"
       use-label-slot
     >
-      <!-- 当用户是班级创建者时，班级编号会显示在 label 处 -->
-      <view slot="label" wx:if="{{ isClassCreator }}">
-        班级编号：{{ classId }}
+      <view slot="label">
+        <view>您尚未加入班级哦</view>
       </view>
     </van-cell>
-    <!-- value 显示活动中的课程数 -->
-    <van-cell
-      title="课程库"
-      is-link
-      use-label-slot
-      value="{{ activeCourseNum }}"
-      bind:click="toCourseList"
-    >
-      <view slot="label" wx:if="{{ newCourseNum != 0 }}">
-        新增 {{ newCourseNum }} 个课程
+    <van-panel use-footer-slot>
+      <view slot="footer">
+        <van-row gutter="5">
+          <van-col span="12">
+            <van-button type="info" block bind:click="createClass">创建班级</van-button>
+          </van-col>
+          <van-col span="12">
+            <van-button type="primary" block bind:click="joinClass">加入班级</van-button>
+          </van-col>
+        </van-row>
       </view>
-    </van-cell>
-    <!-- value 显示活动中的日程数 -->
-    <van-cell
-      title="日程库"
-      is-link
-      use-label-slot
-      value="{{ activeEventNum }}"
-      bind:click="toEventList"
-    >
-      <view slot="label" wx:if="{{ newEventNum != 0 }}">
-        新增 {{ newEventNum }} 个日程
-      </view>
-    </van-cell>
-  </van-cell-group>
-</view>
+    </van-panel>
+  </view>
 
-<!-- 我的日程 -->
-<view class="container">
-  <van-cell title="我的日程" icon="underway-o" size="large">
-    <van-icon slot="right-icon" name="plus" bind:click="createEvent" />
-  </van-cell>
-  <!-- 关注日程：即将截止的日程；阈值可以在偏好设置中设置 -->
-  <van-panel>
-    <view slot="header">
-      <van-cell use-label-slot>
-        <view slot="title">
-          <view class="cellTitle">关注日程</view>
-          <van-tag type="primary" class="cellTag">进行中</van-tag>
-        </view>
-        <view slot="label">
-          <view wx:if="{{ focusEvent.length != 0 }}">您有 {{ focusEvent.length }} 项需要关注的日程</view>
-          <view wx:else>干得好！没有即将截止的日程</view>
-        </view>
-      </van-cell>
-    </view>
-    <view>
-      <view wx:for="{{ focusEvent }}" wx:key="eventId">
-        <template is="focusEventItem" data="{{ ...item }}" />
-      </view>
-    </view>
-  </van-panel>
-  <!-- 星标日程：加了星标的日程 -->
-  <van-panel>
-    <view slot="header">
-      <van-cell use-label-slot>
-        <view slot="title">
-          <view class="cellTitle">星标日程</view>
-          <van-tag plain color="#f2826a" class="cellTag">星标</van-tag>
-        </view>
-        <view slot="label">
-          <view wx:if="{{ starEvent.length == 0 }}">为您喜爱的日程添加星标吧</view>
+  <!-- 我的班级：已加入班级后 -->
+  <view class="container" wx:if="{{ haveClass }}">
+    <van-cell-group>
+      <van-cell
+        title="我的班级"
+        value="{{ className }}"
+        icon="friends-o"
+        size="large"
+        clickable
+        bind:click="toClassSetting"
+        use-label-slot
+      >
+        <!-- 当用户是班级创建者时，班级编号会显示在 label 处 -->
+        <view slot="label" wx:if="{{ isClassCreator }}">
+          班级编号：{{ classId }}
         </view>
       </van-cell>
-    </view>
-    <view>
-      <view wx:for="{{ starEvent }}" wx:key="eventId">
-        <template is="starEventItem" data="{{ ...item }}" />
+      <!-- value 显示活动中的课程数 -->
+      <van-cell
+        title="课程库"
+        is-link
+        use-label-slot
+        value="{{ activeCourseNum }}"
+        bind:click="toCourseList"
+      >
+        <view slot="label" wx:if="{{ newCourseNum != 0 }}">
+          新增 {{ newCourseNum }} 个课程
+        </view>
+      </van-cell>
+      <!-- value 显示活动中的日程数 -->
+      <van-cell
+        title="日程库"
+        is-link
+        use-label-slot
+        value="{{ activeEventNum }}"
+        bind:click="toEventList"
+      >
+        <view slot="label" wx:if="{{ newEventNum != 0 }}">
+          新增 {{ newEventNum }} 个日程
+        </view>
+      </van-cell>
+    </van-cell-group>
+  </view>
+
+  <!-- 我的日程 -->
+  <view class="container">
+    <van-cell title="我的日程" icon="underway-o" size="large">
+      <van-icon slot="right-icon" name="plus" bind:click="createEvent" />
+    </van-cell>
+    <!-- 关注日程：即将截止的日程；阈值可以在偏好设置中设置 -->
+    <van-panel>
+      <view slot="header">
+        <van-cell use-label-slot>
+          <view slot="title">
+            <view class="cellTitle">关注日程</view>
+            <van-tag type="primary" class="cellTag">进行中</van-tag>
+          </view>
+          <view slot="label">
+            <view wx:if="{{ focusEvent.length != 0 }}">您有 {{ focusEvent.length }} 项需要关注的日程</view>
+            <view wx:else>干得好！没有即将截止的日程</view>
+          </view>
+        </van-cell>
       </view>
-    </view>
-  </van-panel>
+      <view>
+        <view wx:for="{{ focusEvent }}" wx:key="eventId">
+          <template is="focusEventItem" data="{{ ...item }}" />
+        </view>
+      </view>
+    </van-panel>
+    <!-- 星标日程：加了星标的日程 -->
+    <van-panel>
+      <view slot="header">
+        <van-cell use-label-slot>
+          <view slot="title">
+            <view class="cellTitle">星标日程</view>
+            <van-tag plain color="#f2826a" class="cellTag">星标</van-tag>
+          </view>
+          <view slot="label">
+            <view wx:if="{{ starEvent.length == 0 }}">为您喜爱的日程添加星标吧</view>
+          </view>
+        </van-cell>
+      </view>
+      <view>
+        <view wx:for="{{ starEvent }}" wx:key="eventId">
+          <template is="starEventItem" data="{{ ...item }}" />
+        </view>
+      </view>
+    </van-panel>
+  </view>
+
+  <!-- 快捷按钮 -->
+  <view class="container">
+    <van-cell title="偏好设置" icon="setting-o" size="large" is-link bind:click="toAppSetting" />
+  </view>
 </view>
 
 <template name="focusEventItem">
@@ -137,7 +148,3 @@
   />
 </template>
 
-<!-- 快捷按钮 -->
-<view class="container">
-  <van-cell title="偏好设置" icon="setting-o" size="large" is-link bind:click="toAppSetting" />
-</view>

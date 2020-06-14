@@ -35,7 +35,8 @@ Page({
     haveClass: getApp().globalData.haveClass,
     syncToClass: false,
     defaultSyncToClass: false,  // 同步课程为 true
-    onModifyCourseProcess: false
+    onModifyCourseProcess: false,
+    onLoadingStatus: true
   },
 
   inputCourseName(value) {
@@ -250,12 +251,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log('options',options)
     this.setData({
       courseId: options.courseId
     });
-    console.log('courseId',this.data.courseId);
-    this.getData();
   },
 
   /**
@@ -271,7 +269,8 @@ Page({
   onShow: function () {
     this.setData({
       haveClass: getApp().globalData.haveClass
-    })
+    });
+    this.getData();
   },
 
   /**
@@ -337,6 +336,7 @@ Page({
         isOwner: course.isOwner,
         syncToClass: course.syncToClass,
         defaultSyncToClass: course.defaultSyncToClass,
+        onLoadingStatus: false
       })
 
     })

@@ -1,5 +1,9 @@
 <!--pages/event/eventList.wxml-->
-<view>
+<view wx:if="{{ onLoadingStatus }}" class="center-item">
+  <image src="../../images/loading-clock.gif" mode="aspectFit" class="loading-gif" />
+</view>
+
+<view wx:if="{{ !onLoadingStatus }}">
   <view class="background-title">其他用户的同步日程</view>
   <!-- 未检索到已添加课程的其他同学同步日程时，显示 emptyEventList -->
   <view wx:if="{{ event.length == 0 }}">
@@ -10,9 +14,7 @@
       <template is="event" data="{{ ...item }}" />
     </view>
   </view>
-</view>
 
-<view>
   <view class="background-title">您的同步日程</view>
   <!-- 未检索到用户的同步日程时，显示 emptyOwnEventList -->
   <view wx:if="{{ event.length == 0 }}">

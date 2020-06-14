@@ -1,4 +1,6 @@
 /* pages/course/courseModify.wxss */
+@import "./courseModify.skeleton.wxss";
+
 .van-swipe-cell__left,
 .van-swipe-cell__right {
   display: inline-block;

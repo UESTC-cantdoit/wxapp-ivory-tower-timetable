@@ -9,6 +9,7 @@ Page({
     noteInfo: "嘿，还没有来自其他人的同步日程哦",
     noteInfoDisplay: false,
     event: [],
+    onLoadingStatus: true // 加载完成后显示页面
   },
 
   switchNoteInfo() {
@@ -85,13 +86,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    this.getData();
+
   },
 
   /**
@@ -120,7 +122,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.getData();
   },
 
   /**
@@ -254,7 +256,9 @@ Page({
         // console.log(eventArr);
         this.setData({
           event: eventArr,
-        })
+          onLoadingStatus: false
+        });
+        wx.stopPullDownRefresh();
 
         getApp().globalData.classEventCount = eventArr.length;
       },

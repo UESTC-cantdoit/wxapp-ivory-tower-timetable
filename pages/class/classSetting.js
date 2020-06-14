@@ -10,7 +10,8 @@ Page({
     classId: getApp().globalData.classId,
     isClassCreator: getApp().globalData.isClassCreator,
     enableSearch: getApp().globalData.classSetting.enableSearch,
-    onUpdateClassProcess: false
+    onUpdateClassProcess: false,
+    onLoadingStatus: true
   },
 
   inputClassName: function(e) {
@@ -126,11 +127,15 @@ Page({
     })
   },
 
+  backToHome() {
+    wx.navigateBack();
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.getData();
+
   },
 
   /**
@@ -144,12 +149,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.setData({
-      className: getApp().globalData.className,
-      classId: getApp().globalData.classId,
-      isClassCreator: getApp().globalData.isClassCreator,
-      enableSearch: getApp().globalData.classSetting.enableSearch,
-    })
+    this.getData()
   },
 
   /**
@@ -193,8 +193,16 @@ Page({
     }).get().then( res => {
       console.log(res);
       if (res.data.length !== 0) {  // 搜索班级成功
+        const className = res.data[0].className;
+        const classId = res.data[0].classId;
         const _openId = res.data[0]._openid;
         const enableSearchStatus = res.data[0].enableSearch;
+        this.setData({
+          className: className,
+          classId: classId
+        });
+        getApp().globalData.className = className;
+        getApp().globalData.classId = classId;
         if (openId == _openId) {  // 是班级创建者
           this.setData({
             isClassCreator: true,
@@ -210,6 +218,9 @@ Page({
           getApp().globalData.isClassCreator = false;
           getApp().globalData.classSetting.enableSearch = enableSearchStatus;
         }
+        this.setData({
+          onLoadingStatus: false
+        });
       }
     })
   }

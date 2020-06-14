@@ -17,7 +17,8 @@ Page({
      * todo: 'onReady: function()' 函数体内读取公用课程信息后生成；
      *       每一项应按 anchorIndex 英文字符顺序排序
      */
-    courseAnchorIndexList: []
+    courseAnchorIndexList: [],
+    onLoadingStatus: true // 未加载完之前不显示页面
   },
 
   createCourse() {
@@ -106,13 +107,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    this.getData();
+
   },
 
   /**
@@ -141,7 +143,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.getData();
   },
 
   /**
@@ -317,8 +319,10 @@ Page({
       //返回数据
       this.setData({
         anchorIndexList: anchorIndex,
-        courseAnchorIndexList: courseList
+        courseAnchorIndexList: courseList,
+        onLoadingStatus: false
       })
+      wx.stopPullDownRefresh();
     })
   },
 })

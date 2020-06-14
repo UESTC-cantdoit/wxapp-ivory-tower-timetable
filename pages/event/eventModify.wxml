@@ -7,126 +7,131 @@
   2、已结束但未设置为完成的日程可修改
   3、已完成的日程不可修改
 -->
-<view class="container">
-  <view class="background-title">基本信息</view>
-  <!-- 日程同步者不可修改选择课程 -->
-  <van-cell
-    title="课程"
-    center
-    is-link
-    use-label-slot
-    bind:click="showCoursePicker"
-  >
-    <view>
-      {{ selectCourse }}
-    </view>
-    <view slot="label" wx:if="{{ isOwner && haveClass }}">
-      <view wx:if="{{ selectCourse !== '不选择' && selectCourseBelongToClass }}">
-        日程可同步到班级
-      </view>
-      <view wx:elif="{{ selectCourse !== '不选择' && !selectCourseBelongToClass }}">
-        选择课程未同步到班级，日程不可同步到班级
-      </view>
-    </view>
-  </van-cell>
-  <van-popup
-    show="{{ coursePickerOnShow }}"
-    position="bottom"
-    custom-style="height: 50%;"
-    round
-    bind:close="coursePickerOnCancel"
-  >
-    <van-picker
-      show-toolbar
-      title="所属课程"
-      columns="{{ coursePickerCourses }}"
-      bind:confirm="coursePickerOnConfirm"
-      bind:cancel="coursePickerOnCancel"
-    />
-  </van-popup>
-  <van-field
-    value="{{ eventName }}"
-    label="日程名称"
-    placeholder="请输入日程名称"
-    maxlength="20"
-    clearable
-    bind:input="inputEventName"
-  />
-  <van-field
-    value="{{ eventDescription }}"
-    label="日程描述"
-    placeholder="请输入日程描述（可选）"
-    maxlength="50"
-    bind:input="inputEventDescription"
-  />
-</view>
+<import src="./eventModify.skeleton.wxml" />
+<template is="skeleton" wx:if="{{ onLoadingStatus }}" />
 
-<view class="container">
-  <view class="background-title">日程设置</view>
-  <van-cell
-    title="截止日期"
-    center
-    is-link
-    use-label-slot
-    bind:click="showDatePicker"
-  >
-    <view>
-      {{ selectEndDateOnDisplay }}
-    </view>
-    <view slot="label" wx:if="{{ selectEndDateOnDisplay == '' }}">
-      您至多选择当前日期的六个月后
-    </view>
-  </van-cell>
-  <van-calendar
-    title="选择截止日期"
-    color="#04BE02"
-    show="{{ datePickerOnShow }}"
-    bind:close="datePickerOnClose"
-    bind:confirm="datePickerOnConfirm"
-  />
-  <van-cell title="同步到班级" use-label-slot center wx:if="{{ haveClass }}">
-    <view>
-      <van-switch
-        checked="{{ syncToClass }}"
-        disabled="{{ !selectCourseBelongToClass }}"
-        active-color="#07c160"
-        inactive-color="#ee0a24"
-        size="20px"
-        bind:change="syncToClassOnChange"
-        wx:if="{{ isOwner }}"
+<view wx:if="{{ !onLoadingStatus }}">
+  <view class="container">
+    <view class="background-title">基本信息</view>
+    <!-- 日程同步者不可修改选择课程 -->
+    <van-cell
+      title="课程"
+      center
+      is-link
+      use-label-slot
+      bind:click="showCoursePicker"
+    >
+      <view>
+        {{ selectCourse }}
+      </view>
+      <view slot="label" wx:if="{{ isOwner && haveClass }}">
+        <view wx:if="{{ selectCourse !== '不选择' && selectCourseBelongToClass }}">
+          日程可同步到班级
+        </view>
+        <view wx:elif="{{ selectCourse !== '不选择' && !selectCourseBelongToClass }}">
+          选择课程未同步到班级，日程不可同步到班级
+        </view>
+      </view>
+    </van-cell>
+    <van-popup
+      show="{{ coursePickerOnShow }}"
+      position="bottom"
+      custom-style="height: 50%;"
+      round
+      bind:close="coursePickerOnCancel"
+    >
+      <van-picker
+        show-toolbar
+        title="所属课程"
+        columns="{{ coursePickerCourses }}"
+        bind:confirm="coursePickerOnConfirm"
+        bind:cancel="coursePickerOnCancel"
       />
-      <view wx:else>同步自班级日程库</view>
-    </view>
-    <view slot="label" wx:if="{{ isOwner }}">
-      <view wx:if="{{ !syncToClass }}">
-        不同步到班级日程库
-      </view>
-      <view wx:else>
-        同步到班级日程库
-      </view>
-    </view>
-  </van-cell>
-</view>
+    </van-popup>
+    <van-field
+      value="{{ eventName }}"
+      label="日程名称"
+      placeholder="请输入日程名称"
+      maxlength="20"
+      clearable
+      bind:input="inputEventName"
+    />
+    <van-field
+      value="{{ eventDescription }}"
+      label="日程描述"
+      placeholder="请输入日程描述（可选）"
+      maxlength="50"
+      bind:input="inputEventDescription"
+    />
+  </view>
 
-<view class="container">
-  <view class="background-title">最后一步</view>
-  <van-row gutter="5">
-    <van-col span="8">
-      <van-button
-        type="danger"
-        block
-        bind:click="deleteEvent"
-      >删除日程</van-button>
-    </van-col>
-    <van-col span="16">
-      <van-button
-        type="primary"
-        block
-        disabled="{{ eventName==null || selectEndDateOnDisplay=='' }}"
-        bind:click="modifyEvent"
-        loading="{{ onModifyEventProcess }}"
-        loading-text="修改日程中..."
-      >确认修改日程</van-button>
-    </van-col>
-  </van-row>
+  <view class="container">
+    <view class="background-title">日程设置</view>
+    <van-cell
+      title="截止日期"
+      center
+      is-link
+      use-label-slot
+      bind:click="showDatePicker"
+    >
+      <view>
+        {{ selectEndDateOnDisplay }}
+      </view>
+      <view slot="label" wx:if="{{ selectEndDateOnDisplay == '' }}">
+        您至多选择当前日期的六个月后
+      </view>
+    </van-cell>
+    <van-calendar
+      title="选择截止日期"
+      color="#04BE02"
+      show="{{ datePickerOnShow }}"
+      bind:close="datePickerOnClose"
+      bind:confirm="datePickerOnConfirm"
+    />
+    <van-cell title="同步到班级" use-label-slot center wx:if="{{ haveClass }}">
+      <view>
+        <van-switch
+          checked="{{ syncToClass }}"
+          disabled="{{ !selectCourseBelongToClass }}"
+          active-color="#07c160"
+          inactive-color="#ee0a24"
+          size="20px"
+          bind:change="syncToClassOnChange"
+          wx:if="{{ isOwner }}"
+        />
+        <view wx:else>同步自班级日程库</view>
+      </view>
+      <view slot="label" wx:if="{{ isOwner }}">
+        <view wx:if="{{ !syncToClass }}">
+          不同步到班级日程库
+        </view>
+        <view wx:else>
+          同步到班级日程库
+        </view>
+      </view>
+    </van-cell>
+  </view>
+
+  <view class="container">
+    <view class="background-title">最后一步</view>
+    <van-row gutter="5">
+      <van-col span="8">
+        <van-button
+          type="danger"
+          block
+          bind:click="deleteEvent"
+        >删除日程</van-button>
+      </van-col>
+      <van-col span="16">
+        <van-button
+          type="primary"
+          block
+          disabled="{{ eventName==null || selectEndDateOnDisplay=='' }}"
+          bind:click="modifyEvent"
+          loading="{{ onModifyEventProcess }}"
+          loading-text="修改日程中..."
+        >确认修改日程</van-button>
+      </van-col>
+    </van-row>
+  </view>
 </view>

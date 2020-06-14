@@ -1,1 +1,2 @@
 /* pages/event/eventModify.wxss */
+@import "./eventModify.skeleton.wxss";

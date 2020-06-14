@@ -18,7 +18,8 @@ Page({
       courseName: '',
       courseTeacher: '',
       coursePlace: ''
-    }
+    },
+    onLoadingStatus: true // 数据处理完后渲染课表
   },
 
   showCourseDetails(e) {
@@ -94,7 +95,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.getData();
+
   },
 
   /**
@@ -261,7 +262,8 @@ Page({
       };
     };
     this.setData({
-      courseTimetable: courseTimetable
+      courseTimetable: courseTimetable,
+      onLoadingStatus: false
     });
   },
 })

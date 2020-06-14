@@ -1,0 +1,111 @@
+<!--
+此文件为开发者工具生成，生成时间: 2020/6/14 下午6:14:42 
+使用方法：
+1. 在"pages\event\eventModify.wxml"中使用`include`指令引入此模板，
+2. 在"pages\event\eventModify.wxss"中使用`import`指令引入"pages\event\eventModify.skeleton.wxss"
+3. 书写对应的逻辑，来控制骨架屏的显示与隐藏
+
+更多详细信息可以参考文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/skeleton.html
+-->
+<template name="skeleton">
+  <view class="sk-container">
+    <view class="container">
+      <view class="background-title sk-transparent sk-text-14-2857-564 sk-text" style="background-size: 16.2225% 1.225rem;">基本信息</view>
+      <view is="miniprogram_npm/@vant/weapp/cell/index">
+        <view class="van-cell weapp-cell-index--van-cell van-cell--center weapp-cell-index--van-cell--center van-cell--clickable weapp-cell-index--van-cell--clickable sk-pseudo sk-pseudo-circle" hover-class="van-cell--hover hover-class" hover-stay-time="70"
+          style="true">
+          <view class="van-cell__title weapp-cell-index--van-cell__title sk-transparent" style="true">课程
+            <view class="van-cell__label weapp-cell-index--van-cell__label "></view>
+          </view>
+          <view class="van-cell__value weapp-cell-index--van-cell__value ">
+            <view class="sk-transparent sk-text-20-8333-557 sk-text" style="background-size: 34.761% 1.5rem; background-position-x: 100%;">
+              同步课程
+            </view>
+          </view>
+          <view is="miniprogram_npm/@vant/weapp/icon/index" class="van-cell__right-icon-wrap weapp-cell-index--van-cell__right-icon-wrap ">
+            <view class="weapp-cell-index--van-cell__right-icon van-icon icon-index--van-icon van-icon-arrow icon-index--van-icon-arrow sk-pseudo sk-pseudo-circle" style="color: ;font-size: ;"></view>
+          </view>
+        </view>
+      </view>
+      <view is="miniprogram_npm/@vant/weapp/popup/index">
+        <view is="miniprogram_npm/@vant/weapp/overlay/index">
+          <view is="miniprogram_npm/@vant/weapp/transition/index"></view>
+        </view>
+      </view>
+      <view is="miniprogram_npm/@vant/weapp/field/index">
+        <view is="miniprogram_npm/@vant/weapp/cell/index">
+          <view class="field-index--van-field van-cell weapp-cell-index--van-cell sk-pseudo sk-pseudo-circle" hover-class="van-cell--hover hover-class" hover-stay-time="70" style="true">
+            <view class="van-cell__title weapp-cell-index--van-cell__title sk-transparent sk-text-20-8333-743 sk-text" style="max-width: 90px; min-width: 90px; background-size: 62.2222% 1.5rem;">日程名称</view>
+            <view class="van-cell__value weapp-cell-index--van-cell__value ">
+              <view class="van-field__body field-index--van-field__body van-field__body--text field-index--van-field__body--text"><input class="van-field__input field-index--van-field__input sk-transparent sk-text-20-8333-1000 sk-text" cursor="-1" maxlength="20" placeholder="请输入日程名称" placeholder-class="van-field__placeholder" placeholder-style="true" selection-end="-1"
+                  selection-start="-1" type="text" value="true" style="background-size: 38.7046% 1.5rem;">请输入日程名称</input>
+                <view class="van-field__icon-container field-index--van-field__icon-container"></view>
+                <view class="van-field__button field-index--van-field__button"></view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view is="miniprogram_npm/@vant/weapp/field/index">
+        <view is="miniprogram_npm/@vant/weapp/cell/index">
+          <view class="field-index--van-field van-cell weapp-cell-index--van-cell sk-pseudo sk-pseudo-circle" hover-class="van-cell--hover hover-class" hover-stay-time="70" style="true">
+            <view class="van-cell__title weapp-cell-index--van-cell__title sk-transparent sk-text-20-8333-90 sk-text" style="max-width: 90px; min-width: 90px; background-size: 62.2222% 1.5rem;">日程描述</view>
+            <view class="van-cell__value weapp-cell-index--van-cell__value ">
+              <view class="van-field__body field-index--van-field__body van-field__body--text field-index--van-field__body--text"><input class="van-field__input field-index--van-field__input sk-transparent sk-text-20-8333-925 sk-text" cursor="-1" maxlength="50" placeholder="请输入日程描述（可选）" placeholder-class="van-field__placeholder" placeholder-style="true" selection-end="-1"
+                  selection-start="-1" type="text" value="true" style="background-size: 60.8215% 1.5rem;">请输入日程描述（可选）</input>
+                <view class="van-field__icon-container field-index--van-field__icon-container"></view>
+                <view class="van-field__button field-index--van-field__button"></view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="container">
+      <view class="background-title sk-transparent sk-text-14-2857-343 sk-text" style="background-size: 16.2225% 1.225rem;">日程设置</view>
+      <view is="miniprogram_npm/@vant/weapp/cell/index">
+        <view class="van-cell weapp-cell-index--van-cell van-cell--center weapp-cell-index--van-cell--center van-cell--clickable weapp-cell-index--van-cell--clickable sk-pseudo sk-pseudo-circle" hover-class="van-cell--hover hover-class" hover-stay-time="70"
+          style="true">
+          <view class="van-cell__title weapp-cell-index--van-cell__title sk-transparent" style="true">截止日期
+            <view class="van-cell__label weapp-cell-index--van-cell__label "></view>
+          </view>
+          <view class="van-cell__value weapp-cell-index--van-cell__value ">
+            <view class="sk-transparent sk-text-20-8333-719 sk-text" style="background-size: 48.2852% 1.5rem; background-position-x: 100%;">
+              2020-06-25
+            </view>
+          </view>
+          <view is="miniprogram_npm/@vant/weapp/icon/index" class="van-cell__right-icon-wrap weapp-cell-index--van-cell__right-icon-wrap ">
+            <view class="weapp-cell-index--van-cell__right-icon van-icon icon-index--van-icon van-icon-arrow icon-index--van-icon-arrow sk-pseudo sk-pseudo-circle" style="color: ;font-size: ;"></view>
+          </view>
+        </view>
+      </view>
+      <view is="miniprogram_npm/@vant/weapp/calendar/index">
+        <view is="miniprogram_npm/@vant/weapp/popup/index">
+          <view is="miniprogram_npm/@vant/weapp/overlay/index">
+            <view is="miniprogram_npm/@vant/weapp/transition/index"></view>
+          </view>
+        </view>
+        <van-toast></van-toast>
+      </view>
+    </view>
+    <view class="container">
+      <view class="background-title sk-transparent sk-text-14-2857-292 sk-text" style="background-size: 16.2225% 1.225rem;">最后一步</view>
+      <view is="miniprogram_npm/@vant/weapp/row/index">
+        <view class="van-row row-index--van-row sk-pseudo sk-pseudo-circle" style="margin-right: -2.5px; margin-left: -2.5px;">
+          <view is="miniprogram_npm/@vant/weapp/col/index">
+            <view class=" van-col col-index--van-col van-col--8 col-index--van-col--8" style="padding-left: 2.5px; padding-right: 2.5px;">
+              <view is="miniprogram_npm/@vant/weapp/button/index"><button app-parameter="true" business-id="true" class="van-button button-index--van-button van-button--danger button-index--van-button--danger van-button--normal button-index--van-button--normal van-button--block button-index--van-button--block sk-button sk-pseudo sk-pseudo-circle"
+                  data-detail="null" form-type="true" hover-class="van-button--active hover-class" lang="true" open-type="true" send-message-img="true" send-message-path="true" send-message-title="true" session-from="true" style="border: none;"><view class="van-button__text button-index--van-button__text sk-transparent sk-text-15-0000-950 sk-text" style="background-size: 100% 1.25rem; background-position-x: 50%;">删除日程</view></button></view>
+            </view>
+          </view>
+          <view is="miniprogram_npm/@vant/weapp/col/index">
+            <view class=" van-col col-index--van-col van-col--16 col-index--van-col--16" style="padding-left: 2.5px; padding-right: 2.5px;">
+              <view is="miniprogram_npm/@vant/weapp/button/index"><button app-parameter="true" business-id="true" class="van-button button-index--van-button van-button--primary button-index--van-button--primary van-button--normal button-index--van-button--normal van-button--block button-index--van-button--block sk-button sk-pseudo sk-pseudo-circle"
+                  data-detail="null" form-type="true" hover-class="van-button--active hover-class" lang="true" open-type="true" send-message-img="true" send-message-path="true" send-message-title="true" session-from="true" style="border: none;"><view class="van-button__text button-index--van-button__text sk-transparent sk-text-15-0000-920 sk-text" style="background-size: 100% 1.25rem; background-position-x: 50%;">确认修改日程</view></button></view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>

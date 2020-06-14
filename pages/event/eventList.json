@@ -1,4 +1,5 @@
 {
   "usingComponents": {},
-  "navigationBarTitleText": "班级日程库"
+  "navigationBarTitleText": "班级日程库",
+  "enablePullDownRefresh": true
 }

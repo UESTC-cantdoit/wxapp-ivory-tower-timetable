@@ -10,7 +10,9 @@ Page({
     classExist: false,
     classId: '',
     searchedClassId: '',
-    searchedClassName: ''
+    searchedClassName: '',
+    onSearchClassStatus: false,
+    onJoinClassStatus: false
   },
 
   inputClassId: function(e) {
@@ -20,7 +22,7 @@ Page({
   searchClass: function(e) {
     if (this.data.classId !== '') { 
       this.setData({
-        haveSearchedClass: true
+        onSearchClassStatus: true
       })
       console.log(this.data.classId);
       const that = this ;
@@ -34,14 +36,17 @@ Page({
           console.log("classid",that.data.classId)
           if (res.result.data.length !== 0) {
             that.setData({
-              searchedClassId: that.data.classId,
               haveSearchedClass: true,
+              searchedClassId: that.data.classId,
               searchedClassName: res.result.data[0].className,
-              classExist: true
+              classExist: true,
+              onSearchClassStatus: false
             });
-          }else {
+          } else {
             that.setData({
-              classExist: false
+              haveSearchedClass: true,
+              classExist: false,
+              onSearchClassStatus: false
             });
           }
         }
@@ -50,18 +55,27 @@ Page({
   },
 
   joinClass: function(e) {
+    var that = this;
+    const classId = this.data.searchedClassId;
+    const className = this.data.searchedClassName;
     wx.showModal({
       title: '加入班级',
-      content: '您将加入班级：' + this.data.searchedClassName,
+      content: '您将加入班级：' + className,
       success: (res) => {
         if (res.confirm) {
+          that.setData({
+            onJoinClassStatus: true
+          });
           //云数据库操作：添加记录
           db.collection('users-class').add({
             data: {
-              classId: this.data.searchedClassId,
-              className: this.data.searchedClassName
+              classId: classId,
+              className: className
             }
           }).then(function(){
+            getApp().globalData.classId = classId;
+            getApp().globalData.className = className;
+            getApp().globalData.haveClass = true;
             console.log('Join class successfully.');
             wx.navigateBack();
           })

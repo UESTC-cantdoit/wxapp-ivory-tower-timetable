@@ -21,7 +21,8 @@ Page({
     haveClass: getApp().globalData.haveClass,
     syncToClass: false, // 需要获取
     defaultSyncToClass: false,  // 修改前是否已同步到班级；需要获取
-    onModifyEventProcess: false
+    onModifyEventProcess: false,
+    onLoadingStatus: true
   },
 
   inputEventName(value) {
@@ -238,9 +239,6 @@ Page({
     this.setData({
       eventId: options.eventId
     });
-    console.log('当前 eventId: '+this.data.eventId);
-    this.getData();
-    this.getCourses();
   },
 
   /**
@@ -276,6 +274,8 @@ Page({
     this.setData({
       haveClass: getApp().globalData.haveClass
     });
+    this.getData();
+    this.getCourses();
   },
 
   /**
@@ -370,6 +370,7 @@ Page({
             selectCourse_id: course._id,
             selectCourseBelongToClass: course.selectCourseBelongToClass,
             selectCourse_classId: course.classId,
+            onLoadingStatus: false
           })
         })
       }

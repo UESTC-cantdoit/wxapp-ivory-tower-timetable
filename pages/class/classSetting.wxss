@@ -1,1 +1,2 @@
 /* pages/class/classSetting.wxss */
+@import "classSetting.skeleton.wxss";

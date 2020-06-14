@@ -62,3 +62,8 @@ page {
   display: block;
   margin-bottom: 15px;
 }
+
+.loading-gif {
+  width: 100px;
+  height: 100px;
+}

@@ -75,6 +75,7 @@ Page({
                 app.globalData.classSetting.enableSearch = enableSearch;
                 app.globalData.classId = classId;
                 app.globalData.haveClass = true;
+                app.globalData.isClassCreator = true;
                 console.log('Create class successfully.');
                 wx.navigateBack();
               })
