@@ -106,6 +106,20 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    this.setData({
+      haveClass: getApp().globalData.haveClass,
+      activeCourseNum: getApp().globalData.activeCourseNum,
+      displayMyClassModule: getApp().globalData.settings.displayMyClassModule,
+      focusEventDay: getApp().globalData.settings.focusEventDay,
+      activeEventNum: getApp().globalData.activeEventNum,
+      className: getApp().globalData.className,
+      classId: getApp().globalData.classId,
+      openid: getApp().globalData.userInfo.openid,
+      isClassCreator: getApp().globalData.isClassCreator,
+      focusEvent: getApp().globalData.home.focusEvent,
+      starEvent: getApp().globalData.home.starEvent
+    });
+
     this.getDataOnPage();
 
     if ( getApp().globalData.courseList = true ){
