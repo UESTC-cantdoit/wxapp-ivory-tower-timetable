@@ -9,6 +9,8 @@ Page({
     noteInfo: "嘿，还没有来自其他人的同步日程哦",
     noteInfoDisplay: false,
     event: [],
+    haveOthersEvent: false,
+    haveOwnEvent: false,
     onLoadingStatus: true // 加载完成后显示页面
   },
 
@@ -183,23 +185,34 @@ Page({
           //处理 eventStar
           if (event.star) {
             event.eventStar = true;
-          }else {
+          } else {
             event.eventStar = false;
           }
           //处理 ownEvent 和 inEvent
           if (event._openid == getApp().globalData.userInfo.openid ){
             if (event.pre_id) {
               event.inEvent = true
-            }else{
+            } else {
               event.ownEvent = true
+              if (!that.data.haveOwnEvent) {  // 已有个人添加的同步日程
+                that.setData({
+                  haveOwnEvent: true
+                });
+              }
             } 
+          } else {
+            if (!that.data.haveOthersEvent) { // 已有别人添加的同步日程
+              that.setData({
+                haveOthersEvent: true
+              });
+            }
           }
           
           if (event.pre_id) {
             pre_eventArr.push({
               pre_id: event.pre_id
             })
-          }else {
+          } else {
             if ( event.courseName.length !== 0 ) {
               eventArr.push({
                 eventId: event._id,
@@ -216,7 +229,7 @@ Page({
                 ownEvent: event.ownEvent,
                 inEvent: event.inEvent,
               })
-            }else{
+            } else {
               eventArr.push({
                 eventId: event._id,
                 eventTitle: event.eventName,

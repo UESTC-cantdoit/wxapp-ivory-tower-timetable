@@ -77,6 +77,7 @@ Page({
             getApp().globalData.classId = classId;
             getApp().globalData.className = className;
             getApp().globalData.haveClass = true;
+            getApp().globalData.isClassCreator = false;
             console.log('Join class successfully.');
             wx.navigateBack();
           })
