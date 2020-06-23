@@ -1,17 +1,20 @@
 /* pages/setting/versionDialog.wxss */
+.container {
+  padding-bottom: 40px;
+}
+
 .version-title {
   margin: 0;
   font-weight: bold;
   font-size: 14px;
-  color: rgba(69,90,100,.6);
+  color: rgba(69,90,100,.8);
 }
 
 .version-text {
   font-weight: normal;
   font-size: 16px;
-  color: rgba(69,90,100,.6);
-  padding-left: 30px;
-  padding-bottom: 10px;
+  color: rgba(69,90,100,.8);
+  padding: 0px 30px 10px 30px;
 }
 
 .version-date {
@@ -19,5 +22,6 @@
   font-weight: normal;
   font-size: 14px;
   color: rgba(69,90,100,.6);
+  padding-top: 10px;
   padding-right: 30px;
 }

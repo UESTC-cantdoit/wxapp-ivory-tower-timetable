@@ -5,8 +5,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    version: '1.0.0', // 小程序版本，从全局变量获取
-    versionDate: '2020-06', // 小程序版本日期，从全局变量获取
+    version: getApp().globalData.app.version, // 小程序版本，从全局变量获取
+    versionDate: getApp().globalData.app.versionDate, // 小程序版本日期，从全局变量获取
     haveClass: getApp().globalData.haveClass
   },
 

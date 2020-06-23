@@ -25,6 +25,10 @@ App({
   },
 
   globalData: {
+    app: {  // 小程序版本
+      version: '1.0.1',
+      versionDate: '2020-06',
+    },
     userInfo: {},
     haveClass: false,
     classId: '',

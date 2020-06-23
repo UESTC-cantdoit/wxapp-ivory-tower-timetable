@@ -1,5 +1,7 @@
 // pages/event/event.js
 const db = wx.cloud.database();
+import Notify from '../../miniprogram_npm/@vant/weapp/notify/notify';
+
 // 滑动手势处理 https://www.jianshu.com/p/d4bb2f8eedc3
 let minOffset = 30; //最小偏移量，低于这个值不响应滑动处理
 let minTime = 40; // 最小时间，单位：毫秒，低于这个值不响应滑动处理
@@ -63,6 +65,12 @@ Page({
     onLoadingStatus: true
   },
 
+  tabOnChange(e) {
+    this.setData({
+      activeTab: e.detail.index
+    });
+  },
+
   createEvent() {
     wx.navigateTo({
       url: 'eventCreate'
@@ -73,24 +81,35 @@ Page({
     const that = this ;
     wx.showModal({
       title: '清空已结束日程',
-      content: '清空操作无法撤销，您确定要清空已结束日程吗',
+      content: '清空操作无法撤销，您确定要清空已结束（包括已完成）日程吗',
       success (res) {
         if (res.confirm) {
-          if (that.data.event.length != 0) {
-            let events = that.data.event;
-            for (let i = 0; i < events.length; i++) {
-              const event = events[i];
-              if (event.eventStatus == '已结束') {
-                db.collection('events').doc(event.eventId).remove()
-                events.splice(i,1);
+          let haveDeleteEndEvent = false;
+          let events = that.data.event;
+          const eventsLength = events.length;
+          if (eventsLength != 0) {  // 存在日程时
+            let count = 0;
+            for (let i = 0; i < eventsLength; i++) {
+              const event = events[count];
+              if (event.eventStatus == '已结束' || event.eventStatus == '已完成') {
+                db.collection('events').doc(event.eventId).remove();
+                events.splice(count, 1);
+                haveDeleteEndEvent = true;
+              } else {
+                count = count + 1;
               }
             }
+          }
+          if (haveDeleteEndEvent) { // 清空结束日程后
             that.setData({
               event: events
-            })
+            });
+            Notify({ type: 'success', message: '您成功删除已结束日程', duration: 1000 });
+          } else {  // 没有清空结束日程（结束日程不存在）
+            Notify({ type: 'primary', message: '当前没有已结束日程哦', duration: 1000 });
           }
-        } else {
-          console.log('取消清空已结束日程操作');
+        } else {  // 取消操作
+          // console.log('取消清空已结束日程操作');
         }
       }
     });
@@ -308,6 +327,7 @@ Page({
     });
     this.getDatabyCloud();
   },
+
   /**
    * 生命周期函数--监听页面隐藏
    */
@@ -335,7 +355,7 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    console.log("上拉触底");
+    // console.log("上拉触底");
     let that = this;
     if ( currentEventCount == 10 ) {
       that.getDatabyCloud();
@@ -348,6 +368,7 @@ Page({
   onShareAppMessage: function () {
 
   },
+
   getDatabyCloud: function () {
     var that = this;
     // console.log('event',getApp().globalData.userInfo.openid)
@@ -359,10 +380,10 @@ Page({
         eventCount: eventCount,
       },
       success: (res) => {
-        console.log('events',res.result.list);
+        // console.log('events',res.result.list);
         eventCount += 10;
         
-        //删除已结束已经超过 14 天的日程
+        // 删除已结束已经超过 14 天的日程
         let today = new Date();
         let todayDate = today.getTime() - (today.getTime()%(1000 * 60 * 60 * 24)) - 8*1000*60*60;
         let deleteDate = todayDate - (1000*60*60*24*14);
@@ -371,11 +392,11 @@ Page({
           for (let i = 0; i < res.result.list.length; i++) {
             let endDate = new Date(res.result.list[i].endDate);
             if ( endDate.getTime() < deleteDate ) {
-              db.collection('events').doc(res.result.list[i]._id).remove()
+              db.collection('events').doc(res.result.list[i]._id).remove();
               res.result.list.splice(i,1);
             }
           }
-          console.log('res',res.result.list)
+          // console.log('res',res.result.list);
         }
 
         currentEventCount = res.result.list.length;
@@ -450,9 +471,9 @@ Page({
           event: eventArr,
           eventCount: eventArr.length
         })
-        console.log( activeEventCount )
+        // console.log( activeEventCount )
         if ( activeEventCount < 8 && (currentEventCount == 10)) {
-          console.log('##')
+          // console.log('##')
           that.getDatabyCloud();
         } else {
           that.setData({

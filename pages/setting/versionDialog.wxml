@@ -1,4 +1,16 @@
 <!--pages/setting/versionDialog.wxml-->
+<!-- 版本 1.0.1 日志 -->
+<view class="container">
+  <van-divider contentPosition="left">
+    <view class="version-title">version 1.0.1</view>
+  </van-divider>
+  <view>
+    <view class="version-text">- 现在可以一键删除已结束日程</view>
+    <view class="version-text">- 已结束 14 天及以上的日程将不再显示</view>
+  </view>
+  <view class="version-date">2020-06-23</view>
+</view>
+
 <!-- 版本 1.0.0 日志 -->
 <view class="container">
   <van-divider contentPosition="left">
@@ -8,5 +20,5 @@
     <view class="version-text">微信小程序“象牙塔课程表”正式上线，</view>
     <view class="version-text">用它简化您的学习生活吧！</view>
   </view>
-  <view class="version-date">2020-06</view>
+  <view class="version-date">2020-06-15</view>
 </view>

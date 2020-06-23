@@ -13,6 +13,7 @@
   <van-tabs
     active="{{ activeTab }}"
     color="#04BE02"
+    bind:change="tabOnChange"
     swipeable
     animated
     sticky
@@ -91,6 +92,8 @@
   bind:click="createEvent"
   wx:else
 />
+
+<van-notify id="van-notify" />
 
 <van-action-sheet
   description="{{ selectEvent.title }}"
