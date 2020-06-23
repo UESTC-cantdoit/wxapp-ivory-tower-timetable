@@ -75,7 +75,19 @@ Page({
       content: '清空操作无法撤销，您确定要清空已结束日程吗',
       success (res) {
         if (res.confirm) {
-          // to do
+          if (this.data.event.length != 0) {
+            let events = this.data.event;
+            for (let i = 0; i < events.length; i++) {
+              const event = events[i];
+              if (event.eventStatus == '已结束') {
+                db.collection('events').doc(event._id).remove()
+                events.splice(i,1);
+              }
+            }
+            this.setData({
+              event: events
+            })
+          }
         } else {
           console.log('取消清空已结束日程操作');
         }
@@ -348,6 +360,23 @@ Page({
       success: (res) => {
         console.log('events',res.result.list);
         eventCount += 10;
+        
+        //删除已结束已经超过 14 天的日程
+        let today = new Date();
+        let todayDate = today.getTime() - (today.getTime()%(1000 * 60 * 60 * 24)) - 8*1000*60*60;
+        let deleteDate = todayDate - (1000*60*60*24*14);
+
+        if (res.result.list.length != 0) {
+          for (let i = 0; i < res.result.list.length; i++) {
+            let endDate = new Date(res.result.list[i].endDate);
+            if ( endDate.getTime() < deleteDate ) {
+              db.collection('events').doc(res.result.list[i]._id).remove()
+              res.result.list.splice(i,1);
+            }
+          }
+          console.log('res',res.result.list)
+        }
+
         currentEventCount = res.result.list.length;
         //格式化结果
         for(let i=0;i<res.result.list.length;i++){
