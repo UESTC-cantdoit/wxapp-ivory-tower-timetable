@@ -70,21 +70,22 @@ Page({
   },
 
   deleteEndEvent() {
+    const that = this ;
     wx.showModal({
       title: '清空已结束日程',
       content: '清空操作无法撤销，您确定要清空已结束日程吗',
       success (res) {
         if (res.confirm) {
-          if (this.data.event.length != 0) {
-            let events = this.data.event;
+          if (that.data.event.length != 0) {
+            let events = that.data.event;
             for (let i = 0; i < events.length; i++) {
               const event = events[i];
               if (event.eventStatus == '已结束') {
-                db.collection('events').doc(event._id).remove()
+                db.collection('events').doc(event.eventId).remove()
                 events.splice(i,1);
               }
             }
-            this.setData({
+            that.setData({
               event: events
             })
           }
@@ -306,6 +307,7 @@ Page({
       haveClass: getApp().globalData.haveClass
     });
     this.getDatabyCloud();
+    this.deleteEndEvent()
   },
   /**
    * 生命周期函数--监听页面隐藏
