@@ -69,6 +69,20 @@ Page({
     })
   },
 
+  deleteEndEvent() {
+    wx.showModal({
+      title: '清空已结束日程',
+      content: '清空操作无法撤销，您确定要清空已结束日程吗',
+      success (res) {
+        if (res.confirm) {
+          // to do
+        } else {
+          console.log('取消清空已结束日程操作');
+        }
+      }
+    });
+  },
+
   showEventOperation(event) {
     const eventStar = event.currentTarget.dataset.eventstar;
     const eventStatus = event.currentTarget.dataset.eventstatus;

@@ -34,14 +34,18 @@ page {
   right: 0;
   margin: 15px;
   font-size: 50px;
-  color: #04BE02;
-  background-color: white;
   border-radius: 50%;
   overflow: hidden;
-  /* Shadow
-  box-shadow:0 6rpx 10rpx 2rpx rgba(181, 181, 181, 0.397);
-  -webkit-box-shadow:0 6rpx 10rpx 2rpx rgba(181, 181, 181, 0.397);
-  */
+}
+
+.primary-btn {
+  color: #04BE02;
+  background-color: white;
+}
+
+.default-btn {
+  color: rgb(99, 99, 99);
+  background-color: white;
 }
 
 .body {

@@ -23,6 +23,7 @@
           <template is="event" data="{{ ...item }}" />
         </view>
       </block>
+      <van-divider contentPosition="center">仅显示 14 天内的结束日程</van-divider>
     </van-tab>
     <van-tab title="当前日程">
       <block wx:for="{{ event }}" wx:key="eventId">
@@ -78,9 +79,17 @@
 </template>
 
 <van-icon
+  name="clear"
+  class="float-btn default-btn"
+  bind:click="deleteEndEvent"
+  wx:if="{{ activeTab == 0 }}"
+/>
+
+<van-icon
   name="add"
-  class="float-btn"
+  class="float-btn primary-btn"
   bind:click="createEvent"
+  wx:else
 />
 
 <van-action-sheet
