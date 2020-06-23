@@ -86,17 +86,13 @@ Page({
         if (res.confirm) {
           let haveDeleteEndEvent = false;
           let events = that.data.event;
-          const eventsLength = events.length;
-          if (eventsLength != 0) {  // 存在日程时
-            let count = 0;
-            for (let i = 0; i < eventsLength; i++) {
-              const event = events[count];
+          if (events.length != 0) {  // 存在日程时
+            for (let i = 0; i < events.length; i++) {
+              const event = events[i];
               if (event.eventStatus == '已结束' || event.eventStatus == '已完成') {
                 db.collection('events').doc(event.eventId).remove();
-                events.splice(count, 1);
+                events.splice(i--, 1);
                 haveDeleteEndEvent = true;
-              } else {
-                count = count + 1;
               }
             }
           }
